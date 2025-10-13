@@ -26,8 +26,8 @@ public class Limpieza extends Empleado {
         this.area = area;
     }
 
-    public void setSalary(float salary) {
-        this.salary = salary
+    public void setsalario(float salario) {
+        this.salario = salario;
     }
 
     // Metodos
@@ -35,5 +35,16 @@ public class Limpieza extends Empleado {
 
     public void reportarDano() {}
 
-    public String toString() {}
+    @Override
+    public String toString() {
+        return "Limpieza{" +
+                "ID=" + ID +
+                ", tipo='" + tipo + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", telefono=" + telefono +
+                ", direccion='" + direccion + '\'' +
+                ", salario=" + salario +
+                ", area='" + area + '\'' +
+                '}';
+    }
 }

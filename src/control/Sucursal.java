@@ -3,6 +3,7 @@ public class Sucursal {
     private String ubicacion;
     private String servicios;
     private float cuota;
+    private Empleado empleados[];
     private Cliente clientes[];
     private int noClientes;
 
@@ -24,16 +25,6 @@ public class Sucursal {
         return horario;
     }
 
-    public Cliente getClientes() {
-        String clientes = "";
-        for (int i = 0; i < noClientes; i++) {
-            clientes += clientes[i].toString();
-            if (i < noClientes- 1) // evita agregar el salto de linea si es el ultimo cliente
-                ubc += '\n';
-        }
-        return clientes;
-    }
-
     public float getCuota() {
         return cuota;
     }
@@ -45,7 +36,14 @@ public class Sucursal {
     public String getUbicacion() {
         return ubicacion;
     }
-    // Setters
+
+    public Empleado[] getEmpleados() {
+        return empleados;
+    }
+
+    public Cliente[] getClientes() {
+        return clientes;
+    }
 
     // Metodos
     public void addClient(Cliente cliente) {}
@@ -56,5 +54,14 @@ public class Sucursal {
 
     public void removeEmploye(long ID) {}
 
-    public String toString() {}
+    public String toString() {    //MUESTRA LA INFORMACION DE LA SUCURSAL
+        return "Sucursal{" +
+                "horario='" + horario + '\'' +
+                ", ubicacion='" + ubicacion + '\'' +
+                ", servicios='" + servicios + '\'' +
+                ", cuota=" + cuota +
+                ", noClientes=" + noClientes +
+                '}';
+
+    }
 }

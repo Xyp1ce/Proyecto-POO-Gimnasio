@@ -1,5 +1,5 @@
 public class ServicioAlCliente extends Empleado {
-    private String languagueProfiency; // Bueno, regular, malo, de la verga
+    private String idioma; // Bueno, regular, malo, peor
     private int noCustomers;
     private float commission;
 
@@ -9,23 +9,23 @@ public class ServicioAlCliente extends Empleado {
         commission = 0;
     }
 
-    public ServicioAlCliente(String languagueProfiency, int noCustomers) {
+    public ServicioAlCliente(String idioma, int noCustomers) {
         super();
-        this.languagueProfiency = languagueProfiency;
+        this.idioma = idioma;
         this.noCustomers = noCustomers;
         commission = 0; // se calculara en base a las encuestas de satisfaccion
     }
 
-    public ServicioAlCliente(String type, String name, long telephone, String address, String languagueProfiency, int noCustomers) {
+    public ServicioAlCliente(String type, String name, long telephone, String address, String idioma, int noCustomers) {
         super(type, name, telephone, address);
-        this.languagueProfiency = languagueProfiency;
+        this.idioma = idioma;
         this.noCustomers = noCustomers;
         commission = 0;
     }
 
     // Getters
     public String getLanguague() {
-        return languagueProfiency;
+        return idioma;
     }
 
     // Setters
@@ -33,8 +33,8 @@ public class ServicioAlCliente extends Empleado {
         this.commission = commission;
     }
 
-    public void setSalary(float salary) {
-        this.salary = salary;
+    public void setsalario(float salario) {
+        this.salario = salario;
     }
 
     // Metodos
@@ -46,5 +46,18 @@ public class ServicioAlCliente extends Empleado {
 
     public void doSatisfactionSurvey() {}
 
-    public String toString() {}
+    @Override
+    public String toString() {
+        return "ServicioAlCliente{" +
+                "ID=" + ID +
+                ", tipo='" + tipo + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", telefono=" + telefono +
+                ", direccion='" + direccion + '\'' +
+                ", salario=" + salario +
+                ", idioma='" + idioma + '\'' +
+                ", noCustomers=" + noCustomers +
+                ", commission=" + commission +
+                '}';
+    }
 }

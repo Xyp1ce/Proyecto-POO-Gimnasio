@@ -1,55 +1,88 @@
 public class Cliente {
     private long ID;
-    private String name;
-    private String type;
-    private String historialVisitas;
-    private String telephone;
+    private String nombre;
+    private String tipo;
+    private int historialVisitas;
+    private String telefono;
 
     // Constructor
-    public Cliente() {}
-
-    public Cliente(String name, String type, String telephone) {
-        // ID = numero aleatorio
-        this.name = name;
-        this.type = type;
-        this.telephone = telephone;
+    public Cliente() {
+        setID();
         historialVisitas = 0;
     }
 
-    // Getters
+    public Cliente(String nombre, String tipo, String telefono) {
+        setID();
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.telefono = telefono;
+        historialVisitas = 0;
+    }
+
+    // GETTERS Y SETTERS 
+    public void setID() {
+        long nuevoID;
+        do {
+            nuevoID = (long)(Math.random() * 90000000L) + 10000000L; // 8 dígitos
+        } while (Gimnasio.validarIDcliente(nuevoID) != false);
+        this.ID = nuevoID;
+    }
+
     public long getID() {
         return ID;
     }
 
-    public String getName() {
-        return name;
+    public String getnombre() {
+        return nombre;
     }
 
-    public String getTelephone() {
-        return telephone;
+    public String gettelefono() {
+        return telefono;
+    }
+    
+    public void settelefono(String telefono) {
+        this.telefono = telefono;
     }
 
-    public String getType() {
-        return type;
+    public String gettipo() {
+        return tipo;
     }
 
-    // Setters
-    public void setType(String type) {
-        this.type = type;
+    public void settipo(String tipo) {
+        this.tipo = tipo;
     }
 
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
-    }
 
     // Metodos
-    public void registerVisit() {}
+    public void registrarVisita() {
+        historialVisitas++;
+    }
 
-    public boolean payMembresy() {} // true si se pago bien false si no
+    @Override
+    public String toString() {      //MUESTRA LA INFORMACION DEL CLIENTE
+        return "Cliente{" +
+                "ID=" + ID +
+                ", nombre='" + nombre + '\'' +
+                ", tipo='" + tipo + '\'' +
+                ", historialVisitas='" + historialVisitas + '\'' +
+                ", telefono='" + telefono + '\'' +
+                '}';
+    }
 
-    public boolean cancelMembresy() {} // true si se cancelo bien false si no
+    // PROXIMAS FUNCIONES
+    /*
+    public boolean evaluarEntrenador() {    // true si lo recomienda false si no
 
-    public String toSring() {}
+    } 
 
-    public boolean evaluarEntrenador() {} // true si lo recomienda false si no
+
+    public boolean pagarMembresia() {  // true si se pago bien false si no
+        
+    }
+
+    public boolean cancelarMembresia() { // true si se cancelo bien false si no
+    
+    }
+    */
+
 }
