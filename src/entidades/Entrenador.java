@@ -1,3 +1,5 @@
+package entidades;
+
 public class Entrenador extends Empleado {
     // Varios son arreglos porque pueden tener varias
     private String especialidades[];

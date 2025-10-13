@@ -1,3 +1,5 @@
+package entidades;
+
 public class Limpieza extends Empleado {
     private String area;
 

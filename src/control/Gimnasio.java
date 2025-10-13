@@ -1,3 +1,8 @@
+package control;
+
+import entidades.Empleado;
+import entidades.Cliente;
+
 public class Gimnasio {
     //ATRIBUTOS
     private String nombre = "Gimnasio de los papus pros";
@@ -22,13 +27,18 @@ public class Gimnasio {
     }
 
     public String getUbicaciones() {
-        String ubc = "";
+        StringBuilder ubc = new StringBuilder();
+        boolean first = true;
         for (Sucursal sucursal : sucursales) {
-            ubc += sucursal.getUbicacion();
-            if (sucursal != sucursales[sucursales.length - 1]) // evita agregar la coma si es la ultima ubicacion
-                ubc += ",";
+            if (sucursal != null) {
+                if (!first) {
+                    ubc.append(",");
+                }
+                ubc.append(sucursal.getUbicacion());
+                first = false;
+            }
         }
-        return ubc;
+        return ubc.toString();
     }
 
     ////////////    METODOS    ////////////

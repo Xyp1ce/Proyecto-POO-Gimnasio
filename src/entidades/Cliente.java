@@ -1,3 +1,7 @@
+package entidades;
+
+import control.Gimnasio;
+
 public class Cliente {
     private long ID;
     private String nombre;

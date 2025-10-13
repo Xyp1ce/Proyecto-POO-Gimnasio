@@ -1,0 +1,15 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Run Gimnasio",
+            "request": "launch",
+            "mainClass": "control.Gimnasio",
+            "projectName": "Proyecto-POO-Gimnasio",
+            "preLaunchTask": "compilar.bat",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}

@@ -1,3 +1,5 @@
+package entidades;
+
 public class ServicioAlCliente extends Empleado {
     private String idioma; // Bueno, regular, malo, peor
     private int noCustomers;

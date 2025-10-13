@@ -1,3 +1,7 @@
+package entidades;
+
+import control.Gimnasio;
+
 public class Empleado {
     protected long ID; // El ID ES UN NUMERO DE 8 DIGITOS QUE SE GENERA ALEATORIAMENTE
     protected String tipo;

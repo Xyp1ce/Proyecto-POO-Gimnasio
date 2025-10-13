@@ -1,3 +1,8 @@
+package control;
+
+import entidades.Empleado;
+import entidades.Cliente;
+
 public class Sucursal {
     private String horario;
     private String ubicacion;
