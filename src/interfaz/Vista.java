@@ -1,6 +1,5 @@
 package interfaz;
-import control.Gimnasio;
-import control.Sucursal;
+import control.*;
 import javax.swing.JOptionPane;
 
 public class Vista {

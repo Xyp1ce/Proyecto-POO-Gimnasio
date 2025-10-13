@@ -4,6 +4,7 @@ import entidades.Empleado;
 import entidades.Cliente;
 
 public class Sucursal {
+    private int noSucursal;
     private String horario;
     private String ubicacion;
     private String servicios;
@@ -15,7 +16,8 @@ public class Sucursal {
     // Constructor
     public Sucursal() {}
 
-    public Sucursal(String horario, String ubicacion, String servicios, float cuota) {
+    public Sucursal(int noSucursal, String horario, String ubicacion, String servicios, float cuota) {
+        this.noSucursal = 0;
         this.horario = horario;
         this.ubicacion = ubicacion;
         this.servicios = servicios;
@@ -25,29 +27,60 @@ public class Sucursal {
     }
 
     // Getters
+    public int getNoSucursal() {
+        return noSucursal;
+    }
+
+    public void setNoSucursal(int noSucursal) {
+        this.noSucursal = noSucursal;
+    }
 
     public String getHorario() {
         return horario;
+    }
+
+    public void setHorario(String horario) {
+        this.horario = horario;
     }
 
     public float getCuota() {
         return cuota;
     }
 
+    public void setCuota(float cuota) {
+        this.cuota = cuota;
+    }
+
     public String getServicios() {
         return servicios;
+    }
+
+    public void setServicios(String servicios) {
+        this.servicios = servicios;
     }
 
     public String getUbicacion() {
         return ubicacion;
     }
 
+    public void setUbicacion(String ubicacion) {
+        this.ubicacion = ubicacion;
+    }
+
     public Empleado[] getEmpleados() {
         return empleados;
     }
 
+    public void setEmpleados(Empleado[] empleados) {
+        this.empleados = empleados;
+    }
+
     public Cliente[] getClientes() {
         return clientes;
+    }
+
+    public void setClientes(Cliente[] clientes) {
+        this.clientes = clientes;
     }
 
     // Metodos
