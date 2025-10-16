@@ -5,6 +5,7 @@ import entidades.Cliente;
 
 public class Sucursal {
     private int noSucursal;
+    private String nombre;
     private String horario;
     private String ubicacion;
     private String servicios;
@@ -16,13 +17,13 @@ public class Sucursal {
     // Constructor
     public Sucursal() {}
 
-    public Sucursal(int noSucursal, String horario, String ubicacion, String servicios, float cuota) {
+    public Sucursal(int noSucursal, String nombre, String horario, String ubicacion, String servicios, float cuota) {
         this.noSucursal = 0;
         this.horario = horario;
         this.ubicacion = ubicacion;
         this.servicios = servicios;
         this.cuota = cuota;
-        clientes = new Cliente[100]; // Maximo 100 clientes por sucursal
+        clientes = new Cliente[100]; // MAXIMO 100 CLIENTES POR SUCURSAL
         noClientes = 0;
     }
 
@@ -33,6 +34,14 @@ public class Sucursal {
 
     public void setNoSucursal(int noSucursal) {
         this.noSucursal = noSucursal;
+    }
+
+    public String getNombre(){
+        return nombre;
+    }
+
+    public void setNombre(String nombre){
+        this.nombre = nombre;
     }
 
     public String getHorario() {
@@ -84,7 +93,14 @@ public class Sucursal {
     }
 
     // Metodos
-    public void addClient(Cliente cliente) {}
+    public void addClient(Cliente cliente) {
+    	if (noClientes < clientes.length) {
+			clientes[noClientes] = cliente;
+			noClientes++;
+		} else {
+			System.out.println("No se pueden agregar más clientes, capacidad máxima alcanzada.");
+		}
+    }
 
     public void removeClient(long ID) {}
 

@@ -2,12 +2,11 @@ package control;
 
 import entidades.Empleado;
 import entidades.Cliente;
+import interfaz.Vista;
 
 public class Gimnasio {
     //ATRIBUTOS
     private String nombre = "Gimnasio de los papus pros";
-    // No agregue el atributo de ubicaciones porque ese ira en
-    // la clase surcursal, tiene mas sentido
     private static Sucursal sucursales[];
 
     //MAIN
@@ -15,6 +14,7 @@ public class Gimnasio {
         Gimnasio gimnasio = new Gimnasio();
         gimnasio.generarSucursales();
         System.out.println(gimnasio);
+        Vista.menu();
     }
 
     // CONSTRUCTORES
@@ -28,24 +28,25 @@ public class Gimnasio {
     }
 
     public String getUbicaciones() {
-        StringBuilder ubc = new StringBuilder();
+        String ubc = "";
         boolean first = true;
-        for (Sucursal sucursal : sucursales) {
+        for (int i = 0; i < sucursales.length; i++) {
+            Sucursal sucursal = sucursales[i];
             if (sucursal != null) {
                 if (!first) {
-                    ubc.append(",");
+                    ubc += ",";
                 }
-                ubc.append(sucursal.getUbicacion());
+                ubc += sucursal.getUbicacion();
                 first = false;
             }
         }
-        return ubc.toString();
+        return ubc;
     }
 
     ////////////    METODOS    ////////////
 
     //VALIDA SI SE REPIDE EL ID DE UN EMPLEADO EN TODAS LAS SUCURSALES
-    public static boolean validarIDempleado(long ID) { // true si existe el empleado, false si no
+    public static boolean validarIDempleado(long ID) { // TRUE SI EXISTE EL EMPLEADO, FALSE SI NO
         for (Sucursal sucursal : sucursales) {
             for (Empleado empleado : sucursal.getEmpleados()) {
                 if (empleado.getID() == ID) {
@@ -57,7 +58,7 @@ public class Gimnasio {
     }
 
     //VALIDA SI SE REPIDE EL ID DE UN CLIENTE EN TODAS LAS SUCURSALES
-    public static boolean validarIDcliente(long ID) { // true si existe el cliente, false si no
+    public static boolean validarIDcliente(long ID) { // TRUE SI EXISTE EL CLIENTE, FALSE SI NO
         for (Sucursal sucursal : sucursales) {
             for (Cliente cliente : sucursal.getClientes()) {
                 if (cliente.getID() == ID) {
@@ -71,6 +72,7 @@ public class Gimnasio {
     //GENERAR UNA LISTA DE 4 SUCURSALES CON DATOS ALEATORIOS
     public void generarSucursales() {
         int[] numeros = {0, 1, 2, 3};
+        String[] nombres = {"Peninsula", "Plaza Rio", "Santa Fe", "Dubai"};
         String[] horarios = {"6:00-22:00", "5:00-23:00", "24 horas", "7:00-21:00"};
         String[] ubicaciones = {"Centro", "Norte", "Sur", "Este", "Oeste", "Playa", "Montaña", "Valle"};
         String[] servicios = {"Pesas, Cardio", "Yoga, Pilates", "Natación, Spa", "Crossfit, Boxeo"};
@@ -78,31 +80,34 @@ public class Gimnasio {
 
         for (int i = 0; i < 4; i++) {
             int noSucursal = numeros[(int)(Math.random() * numeros.length)];
+            String nombre = nombres[(int)(Math.random()) * nombres.length];
             String horario = horarios[(int)(Math.random() * horarios.length)];
             String ubicacion = ubicaciones[(int)(Math.random() * ubicaciones.length)];
             String servicio = servicios[(int)(Math.random() * servicios.length)];
             float cuota = cuotas[(int)(Math.random() * cuotas.length)];
 
-            addSucursal(new Sucursal(noSucursal, horario, ubicacion, servicio, cuota));
+            addSucursal(new Sucursal(noSucursal, nombre, horario, ubicacion, servicio, cuota));
         }
     }
 
+    //METODO PARA AGREGAR UNA SUCURSAL A LA LISTA DE SUCURSALES
     public void addSucursal(Sucursal sucursal) {
-        // Crear un arreglo temporal con tamaño +1
+        // CREAR UN ARREGLO TEMPORAL CON UN ESPACIO EXTRA
         Sucursal[] temp = new Sucursal[sucursales.length + 1];
-        // Copiar las sucursales existentes
+        // COPIAR LAS SUCURSALES EXISTENTES AL ARREGLO TEMPORAL
         for (int i = 0; i < sucursales.length; i++) {
             temp[i] = sucursales[i];
         }
-        // Agregar la nueva sucursal al final
+        // AGREGAR LA NUEVA SUCURSAL AL FINAL DEL ARREGLO TEMPORAL
         temp[sucursales.length] = sucursal;
-        // Reasignar el arreglo original
+        // REASIGNAR EL ARREGLO TEMPORAL A LA VARIABLE DE SUCURSALES
         sucursales = temp;
+
     }
 
     public void removeSucursal(int noSucursal) {
         int count = 0;
-        // Contar cuántas sucursales quedan después de eliminar
+        // CONTAR CUANTAS SUCURSALES NO TIENEN EL NUMERO DE SUCURSAL A ELIMINAR
         for (Sucursal s : sucursales) {
             if (s != null && s.getNoSucursal() != noSucursal) {
                 count++;

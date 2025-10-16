@@ -3,6 +3,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Gimnasio",
+            "request": "launch",
+            "mainClass": "Gimnasio",
+            "projectName": "Proyecto-POO-Gimnasio_3a15b6e6"
+        },
+        {
+            "type": "java",
             "name": "Run Gimnasio",
             "request": "launch",
             "mainClass": "control.Gimnasio",
