@@ -20,6 +20,7 @@ public class Gimnasio {
     // CONSTRUCTORES
     public Gimnasio(){
         sucursales = new Sucursal[0]; 
+        generarSucursales();
     }
 
     // GETTERS Y SETTERS
@@ -102,7 +103,6 @@ public class Gimnasio {
         temp[sucursales.length] = sucursal;
         // REASIGNAR EL ARREGLO TEMPORAL A LA VARIABLE DE SUCURSALES
         sucursales = temp;
-
     }
 
     public void removeSucursal(int noSucursal) {
@@ -126,7 +126,7 @@ public class Gimnasio {
     @Override
     public String toString() {
         String header =
-            "==============================\n" +
+            "\n==============================\n" +
             "      " + nombre + "\n" +
             "==============================\n" +
             "Ubicaciones: " + getUbicaciones() + "\n" +
@@ -145,6 +145,31 @@ public class Gimnasio {
                 sucursalesStr += "  Servicios  : " + sucursal.getServicios() + "\n";
                 sucursalesStr += "  Cuota      : $" + String.format("%.2f", sucursal.getCuota()) + "\n";
                 sucursalesStr += "--------------------------------\n";
+                idx++;
+            }
+        }
+        return header + sucursalesStr;
+    }
+
+    public String twoString() {
+        String header =
+            "\n==============================\n" +
+            "      " + nombre + "\n" +
+            "==============================\n" +
+            "Ubicaciones: " + getUbicaciones() + "\n" +
+            "No. de Sucursales: " + sucursales.length + "\n" +
+            "-----------------------------------------------------\n" +
+            "Datos de Sucursales:\n";
+
+        String sucursalesStr = "";
+        int idx = 1;
+        for (int i = 0; i < sucursales.length; i++) {
+            Sucursal sucursal = sucursales[i];
+            if (sucursal != null) {
+                sucursalesStr += "Sucursal #" + idx + "\n";
+                sucursalesStr += "  Horario    : " + sucursal.getHorario() + " ||";
+                sucursalesStr += "  Ubicación  : " + sucursal.getUbicacion() + "\n";
+                sucursalesStr += "----------------------------------------------------\n";
                 idx++;
             }
         }

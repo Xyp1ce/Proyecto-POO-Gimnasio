@@ -1,7 +1,7 @@
 #!/bin/bash
 # Crear la carpeta bin si no existe
 if [ ! -d "bin" ]; then
-    mkdir bin
+  mkdir bin
 fi
 
 # Compilar todos los archivos .java recursivamente
@@ -10,6 +10,5 @@ javac -d bin -cp bin $tmpfiles
 
 # Ejecutar el programa principal
 cd bin
-java paquete.principal.Gimnasio
+java control.Gimnasio
 cd ..
-

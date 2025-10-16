@@ -93,8 +93,7 @@ public class Sucursal {
     }
 
     // Metodos
-    public void addClient(Cliente cliente) {
-    	if (noClientes < clientes.length) {
+    public void addClient(Cliente cliente) { if (noClientes < clientes.length) {
 			clientes[noClientes] = cliente;
 			noClientes++;
 		} else {
