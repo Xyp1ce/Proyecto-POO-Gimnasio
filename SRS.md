@@ -37,7 +37,7 @@ SRS (Software Requirements Specification) del Sistema de Gimnasio
     RF-08: Gestionar ClaseGrupal (cupos, horario, inscripción/cancelación).
     RF-09: Crear/editar PlanEntrenamiento con Rutinas/Ejercicios; asignar a Cliente.
     RF-10: Menú de navegación con JOptionPane para todas las operaciones.
-    RF-11: Persistencia CSV: cargar al iniciar, guardar al salir y auto-guardado periódico.
+    RF-11: Persistencia txt: cargar al iniciar, guardar al salir y auto-guardado periódico.
     RF-12: Reportes: morosidad, asistencia, ocupación de clases, estado de equipos, ingresos.
     RF-13: Validaciones de entrada y reglas (no cupos negativos, pagos > 0, documentos válidos).
     RF-14: Manejo de errores con mensajes claros y reintentos por JOptionPane.
@@ -45,7 +45,7 @@ SRS (Software Requirements Specification) del Sistema de Gimnasio
     Requisitos no funcionales (RNF)
 
     RNF-01: Simplicidad: sin uso de lambdas, streams avanzados, frameworks ni redes.
-    RNF-02: Persistencia legible en archivos CSV/Texto.
+    RNF-02: Persistencia legible en archivos txt/Texto.
     RNF-03: Concurrencia limitada a hilos básicos (Thread), synchronized en repositorios.
     RNF-04: Mantenibilidad: alta cohesión por clase, bajo acoplamiento entre módulos.
     RNF-05: Portabilidad: ejecución en JRE estándar.
@@ -116,7 +116,7 @@ SRS (Software Requirements Specification) del Sistema de Gimnasio
 
 8.11 Persistencia
 
-    CSV por entidad con separador claro; manejo de escape de comas si aplica.
+    txt por entidad con separador claro; manejo de escape de comas si aplica.
     Repositorios con synchronized en operaciones de lectura/escritura.
     Carga inicial y guardado al salir; auto-guardado en hilo.
 
@@ -151,7 +151,7 @@ SRS (Software Requirements Specification) del Sistema de Gimnasio
 
     Suposiciones y restricciones
 
-    No base de datos; sólo archivos CSV/Texto.
+    No base de datos; sólo archivos txt/Texto.
     Sin redes; sin hilos complejos; sin librerías externas.
     Java estándar; interacción por JOptionPane únicamente.
 
@@ -186,6 +186,6 @@ SRS (Software Requirements Specification) del Sistema de Gimnasio
 
     Riesgos y mitigaciones
 
-    Corrupción de CSV por cierre inesperado: auto-guardado con rotación (archivo.bak).
+    Corrupción de txt por cierre inesperado: auto-guardado con rotación (archivo.bak).
     Inconsistencia por concurrencia: synchronized en repositorios y estructuras compartidas.
     Complejidad del menú: dividir en submenús y controladores simples.
