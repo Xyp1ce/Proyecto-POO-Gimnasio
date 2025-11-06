@@ -62,16 +62,12 @@ Guía de metas y versiones (roadmap detallado)
         Clases: Menu (coordinador estático), Controladores simples por sección.
         Aceptación: Flujos básicos navegables por JOptionPane.
 
-    1.3.0 Persistencia básica en archivos CSV (persistencia)
-        Objetivo: Guardar y cargar datos de clientes, empleados, sucursales.
-        Clases: RepositorioXxx (ClienteRepositorio, EmpleadoRepositorio, etc.) con lectura/escritura CSV.
-        Métodos: guardar(), cargar(), validaciones de formato.
-        Aceptación: Iniciar, cargar datos; al salir, guardar y reabrir comprobando consistencia.
+1.3.0 Persistencia mínima con TXT
 
-    1.3.1 Persistencia extendida (membresías, pagos, clases)
-        Objetivo: Completar persistencia de entidades restantes.
-        Archivos: clientes.csv, empleados.csv, sucursales.csv, equipos.csv, membresias.csv, pagos.csv, clases.csv, planes.csv, rutinas.csv, ejercicios.csv.
-        Aceptación: Recorrer ciclo completo CRUD con carga/guardado.
+    Crear PersistenciaBasica con métodos: guardar/cargarPersonas, guardar/cargarSucursales, guardar/cargarSesiones.
+    Crear carpeta data/ y archivos vacíos si no existen.
+    Integrar al flujo de la app: cargar al iniciar, guardar al salir.
+
 
     1.4.0 Interfaces para “herencia múltiple” (en Java)
         Objetivo: Cubrir herencia múltiple mediante interfaces.
