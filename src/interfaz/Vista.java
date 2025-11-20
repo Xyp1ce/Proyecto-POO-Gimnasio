@@ -15,7 +15,7 @@ public class Vista {
   public static void menu() {
     String opcion = "";
     do{
-      opcion = JOptionPane.showInputDialog(null, "Bienvenido al nuevo super genial" + gimnasio.getNombre()+
+      opcion = JOptionPane.showInputDialog(null, "Bienvenido al nuevo super genial " +
           gimnasio.twoString() +
           "\nPor favor Seleccione una de las siguientes opciones: "+
           "\n[1] Agregar Sucursal"+
