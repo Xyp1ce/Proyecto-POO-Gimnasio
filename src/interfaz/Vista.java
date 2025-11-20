@@ -24,6 +24,9 @@ public class Vista {
           "\n[4] Salir"+
           "\nOpcion:\t");
       switch(opcion){
+      	case null:
+		  JOptionPane.showMessageDialog(null, "Saliendo del programa...");
+		  System.exit(0);
         case "1": //LLAMAR AL METODO ADECUADO PARA AGREGAR UNA SUCURSAL
           agregarSucursal();
           break;
@@ -39,7 +42,7 @@ public class Vista {
         default:
           JOptionPane.showMessageDialog(null, "Opcion invalida");
       }
-    }while(opcion != "3" || opcion != "Cancelar");
+    }while(opcion != "4");
     System.exit(0);
   }
 
@@ -68,5 +71,6 @@ public class Vista {
     JOptionPane.showMessageDialog(null, "Cliente agregado exitosamente");
   }
 
-  // agregarEpleado
+  // AGREGAREMPLEADO
+  
 }

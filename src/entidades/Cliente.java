@@ -2,8 +2,9 @@ package entidades;
 
 import control.Gimnasio;
 
-public class Cliente {
-    private long ID;
+public class Cliente extends Persona {
+	private static final long serialVersionUID = 100L;
+	private long ID;
     private String nombre;
     private String tipo;
     private int historialVisitas;

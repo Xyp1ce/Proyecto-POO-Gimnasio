@@ -1,8 +1,9 @@
 package entidades;
 
-public class Entrenador extends Empleado {
-    // Varios son arreglos porque pueden tener varias
-    private String especialidades[];
+
+public class Entrenador extends Empleado{
+	private static final long serialVersionUID = 111L;
+	private String especialidades[];
     private String certificaciones[];
     private String rutinas[];
     private float commssion;
@@ -74,7 +75,7 @@ public class Entrenador extends Empleado {
         // CICLO QUE VERIFICA SI YA EXISTE LA CERTIFICACION, EN CASO DE QUE NO, LA AGREGA
         for (String cert : certificaciones) {
             if (cert.equalsIgnoreCase(certificacion)) {
-                return; // Ya existe, no agregar
+                return; // YA EXISTE, NO AGREGAR
             }
         }
 

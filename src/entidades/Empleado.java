@@ -2,10 +2,11 @@ package entidades;
 
 import control.Gimnasio;
 
-public class Empleado {
-    protected long ID; // El ID ES UN NUMERO DE 8 DIGITOS QUE SE GENERA ALEATORIAMENTE
+public class Empleado extends Persona{
+	private static final long serialVersionUID = 110L;
+	protected long ID; // El ID ES UN NUMERO DE 8 DIGITOS QUE SE GENERA ALEATORIAMENTE
     protected String tipo;
-    protected String tareas_programadas;    //ANTES DE LLAMABA WORK_SCHEDULE    
+    protected String tareas_programadas;    //ANTES SE LLAMABA WORK_SCHEDULE
     protected String nombre;
     protected long telefono;
     protected String direccion;

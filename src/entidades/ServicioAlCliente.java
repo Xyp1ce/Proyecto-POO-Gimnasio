@@ -1,12 +1,13 @@
 package entidades;
 
 public class ServicioAlCliente extends Empleado {
-    private String idioma; // Bueno, regular, malo, peor
+	private static final long serialVersionUID = 104L;
+	private String idioma; // BUENO, REGULAR, MALO, HORRIBLE
     private int noCustomers;
     private float commission;
 
     // Constructor
-    public ServicioAlCliente(){ // vacio
+    public ServicioAlCliente(){ // VACIO
         super();
         commission = 0;
     }
@@ -15,7 +16,7 @@ public class ServicioAlCliente extends Empleado {
         super();
         this.idioma = idioma;
         this.noCustomers = noCustomers;
-        commission = 0; // se calculara en base a las encuestas de satisfaccion
+        commission = 0; // SE CALCULA EN BASE A ENCUESTAS DE SATISFACCION
     }
 
     public ServicioAlCliente(String type, String name, long telephone, String address, String idioma, int noCustomers) {

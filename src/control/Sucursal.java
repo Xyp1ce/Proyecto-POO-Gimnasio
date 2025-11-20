@@ -10,8 +10,8 @@ public class Sucursal {
     private String ubicacion;
     private String servicios;
     private float cuota;
-    private Empleado empleados[];
-    private Cliente clientes[];
+    private Empleado empleados[] = new Empleado[50]; // MAXIMO 50 EMPLEADOS POR SUCURSAL
+    private Cliente clientes[] = new Cliente[1000]; // MAXIMO 1000 CLIENTES POR SUCURSAL
     private int noClientes;
 
     // Constructor

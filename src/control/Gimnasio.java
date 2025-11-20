@@ -7,6 +7,7 @@ import interfaz.*;
 
 public class Gimnasio implements Serializable{
 	private static final long serialVersionUID = 1L;
+	
 	//ATRIBUTOS
     private String nombre = "Gimnasio de los papus pros";
     private static Sucursal sucursales[];
@@ -50,25 +51,19 @@ public class Gimnasio implements Serializable{
 
     //VALIDA SI SE REPIDE EL ID DE UN EMPLEADO EN TODAS LAS SUCURSALES
     public static boolean validarIDempleado(long ID) { // TRUE SI EXISTE EL EMPLEADO, FALSE SI NO
-        for (Sucursal sucursal : sucursales) {
-            for (Empleado empleado : sucursal.getEmpleados()) {
-                if (empleado.getID() == ID) {
+        for (Sucursal sucursal : sucursales) 
+            for (Empleado empleado : sucursal.getEmpleados()) 
+                if (empleado.getID() == ID) 
                     return true;
-                }
-            }
-        }
         return false;
     }
 
     //VALIDA SI SE REPIDE EL ID DE UN CLIENTE EN TODAS LAS SUCURSALES
     public static boolean validarIDcliente(long ID) { // TRUE SI EXISTE EL CLIENTE, FALSE SI NO
-        for (Sucursal sucursal : sucursales) {
-            for (Cliente cliente : sucursal.getClientes()) {
-                if (cliente.getID() == ID) {
+        for (Sucursal sucursal : sucursales)
+            for (Cliente cliente : sucursal.getClientes())
+                if (cliente.getID() == ID)
                     return true;
-                }
-            }
-        }
         return false;
     }
 
@@ -98,9 +93,9 @@ public class Gimnasio implements Serializable{
         // CREAR UN ARREGLO TEMPORAL CON UN ESPACIO EXTRA
         Sucursal[] temp = new Sucursal[sucursales.length + 1];
         // COPIAR LAS SUCURSALES EXISTENTES AL ARREGLO TEMPORAL
-        for (int i = 0; i < sucursales.length; i++) {
+        for (int i = 0; i < sucursales.length; i++)
             temp[i] = sucursales[i];
-        }
+        
         // AGREGAR LA NUEVA SUCURSAL AL FINAL DEL ARREGLO TEMPORAL
         temp[sucursales.length] = sucursal;
         // REASIGNAR EL ARREGLO TEMPORAL A LA VARIABLE DE SUCURSALES
@@ -110,18 +105,14 @@ public class Gimnasio implements Serializable{
     public void removeSucursal(int noSucursal) {
         int count = 0;
         // CONTAR CUANTAS SUCURSALES NO TIENEN EL NUMERO DE SUCURSAL A ELIMINAR
-        for (Sucursal s : sucursales) {
-            if (s != null && s.getNoSucursal() != noSucursal) {
+        for (Sucursal s : sucursales)
+            if (s != null && s.getNoSucursal() != noSucursal) 
                 count++;
-            }
-        }
         Sucursal[] temp = new Sucursal[count];
         int idx = 0;
-        for (Sucursal s : sucursales) {
-            if (s != null && s.getNoSucursal() != noSucursal) {
+        for (Sucursal s : sucursales)
+            if (s != null && s.getNoSucursal() != noSucursal)
                 temp[idx++] = s;
-            }
-        }
         sucursales = temp;
     }
 
@@ -165,8 +156,7 @@ public class Gimnasio implements Serializable{
 
         String sucursalesStr = "";
         int idx = 1;
-        for (int i = 0; i < sucursales.length; i++) {
-            Sucursal sucursal = sucursales[i];
+        for (Sucursal sucursal : sucursales)
             if (sucursal != null) {
                 sucursalesStr += "Sucursal #" + idx + "\n";
                 sucursalesStr += "  Horario    : " + sucursal.getHorario() + " ||";
@@ -174,7 +164,6 @@ public class Gimnasio implements Serializable{
                 sucursalesStr += "----------------------------------------------------\n";
                 idx++;
             }
-        }
         return header + sucursalesStr;
     }
 }

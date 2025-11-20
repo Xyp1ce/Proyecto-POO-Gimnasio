@@ -1,7 +1,11 @@
 package entidades;
 
 public class Limpieza extends Empleado {
-    private String area;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 112L;
+	private String area;
 
     // Constructor
     public Limpieza() {
