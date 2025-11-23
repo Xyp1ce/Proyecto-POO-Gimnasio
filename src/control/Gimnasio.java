@@ -16,7 +16,7 @@ public class Gimnasio implements Serializable{
         Gimnasio gimnasio = new Gimnasio();
         gimnasio.generarSucursales();
         System.out.println(gimnasio);
-        Vista.menu();
+        MenuPrincipal.menu();
     }
 
     // CONSTRUCTORES
@@ -123,6 +123,14 @@ public class Gimnasio implements Serializable{
             }
         }
         sucursales = temp;
+    }
+
+    public Sucursal buscarSucursal(int noSucursal) {
+      for(Sucursal s : sucursales) {
+        if(s.getNoSucursal() == noSucursal)
+          return s;
+      }
+      return null;
     }
 
     @Override
