@@ -15,7 +15,7 @@ public class Vista {
   public static void menu() {
     String opcion = "";
     do{
-      opcion = JOptionPane.showInputDialog(null, "Bienvenido al nuevo super genial" + gimnasio.getNombre()+
+      opcion = JOptionPane.showInputDialog(null, "Bienvenido al nuevo super genial " +
           gimnasio.twoString() +
           "\nPor favor Seleccione una de las siguientes opciones: "+
           "\n[1] Agregar Sucursal"+
@@ -63,7 +63,7 @@ public class Vista {
     String telefono = JOptionPane.showInputDialog("Ingrese el telefono del cliente:");
 
     Cliente cliente = new Cliente(nombre, tipo, telefono);
-    // gimnasio.addCliente(cliente); // Falta seleccionar la sucursal donde se agregara el cliente
+    // gimnasio.addCliente(cliente); // FALTA SELECCIONAR LA SUCURSAR DONDE SE VA A GUARDAR EL SEMESTRE
 
     JOptionPane.showMessageDialog(null, "Cliente agregado exitosamente");
   }

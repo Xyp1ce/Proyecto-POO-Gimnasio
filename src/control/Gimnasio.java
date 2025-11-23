@@ -1,11 +1,13 @@
 package control;
 
-import entidades.Empleado;
-import entidades.Cliente;
-import interfaz.Vista;
+import java.io.Serializable;
 
-public class Gimnasio {
-    //ATRIBUTOS
+import entidades.*;
+import interfaz.*;
+
+public class Gimnasio implements Serializable{
+	private static final long serialVersionUID = 1L;
+	//ATRIBUTOS
     private String nombre = "Gimnasio de los papus pros";
     private static Sucursal sucursales[];
 
