@@ -1,7 +1,6 @@
 package interfaz;
 import javax.swing.JOptionPane;
 import control.*;
-import entidades.*;
 
 public class MenuPrincipal {
 
@@ -22,8 +21,8 @@ public class MenuPrincipal {
           "\nOpcion:\t");
       switch(opciones){
         case null:
-          JOptionPane.showMessageDialog(null, "Opcion invalida");
-          System.exit(0);
+          JOptionPane.showMessageDialog(null, "Regresando (cancelado)");
+          return;
         case "1": //LLAMAR AL METODO ADECUADO PARA AGREGAR UNA SUCURSAL
           agregarSucursal();
           break;
@@ -34,11 +33,18 @@ public class MenuPrincipal {
           // SUCURSAL SELECCIONADA Y LLAMAR A SUS METODOS
           // MENU SUCURSAL
           opcion = JOptionPane.showInputDialog(null,"Selecciona una sucursal\n" + gimnasio.twoString());
-          opcSurcusal = Integer.parseInt(opcion);
-          if(gimnasio.buscarSucursal(opcSurcusal) != null)
+          if (opcion == null) break; // usuario canceló
+          try {
+            opcSurcusal = Integer.parseInt(opcion.trim());
+          } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Entrada inválida. Introduce el número de sucursal mostrado.");
+            break;
+          }
+          if (gimnasio.buscarSucursal(opcSurcusal) != null) {
             MenuSucursal.menu(gimnasio.buscarSucursal(opcSurcusal));
-          else 
-            JOptionPane.showMessageDialog(null, "No se encontro esa sucursal\n");
+          } else {
+            JOptionPane.showMessageDialog(null, "No se encontró esa sucursal\n");
+          }
           break;
         case "4":
           JOptionPane.showMessageDialog(null, "Saliendo del programa...");
@@ -46,31 +52,34 @@ public class MenuPrincipal {
         default:
           JOptionPane.showMessageDialog(null, "Opcion invalida");
       }
-    }while(opciones != "4");
+    } while (!"4".equals(opciones));
   }
 
   public static void agregarSucursal(){
-    int noSucursal = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero de la sucursal"));
-    String nombre = JOptionPane.showInputDialog("Ingrese el nombre de la Sucursal:");
-    String horario = JOptionPane.showInputDialog("Ingrese el horario en el siguiente formato hh:hh\n(Hora de apertura : Hora de Cierre)");
-    String ubicacion = JOptionPane.showInputDialog("Ingrese la Direccion de la Sucursal");
-    String servicios = JOptionPane.showInputDialog("Ingrese los servicios especializados realizados por la sucursal");
-    float cuota = Float.parseFloat(JOptionPane.showInputDialog("Ingrese la cuota"));
+    try {
+      String inputNo = JOptionPane.showInputDialog("Ingrese el numero de la sucursal");
+      if (inputNo == null) return; // cancelar
+      int noSucursal = Integer.parseInt(inputNo.trim());
 
-    Sucursal sucursal = new Sucursal(noSucursal, nombre, horario, ubicacion, servicios, cuota );
-    gimnasio.addSucursal(sucursal);
+      String nombre = JOptionPane.showInputDialog("Ingrese el nombre de la Sucursal:");
+      if (nombre == null) return;
+      String horario = JOptionPane.showInputDialog("Ingrese el horario en el siguiente formato hh:hh\n(Hora de apertura : Hora de Cierre)");
+      if (horario == null) return;
+      String ubicacion = JOptionPane.showInputDialog("Ingrese la Direccion de la Sucursal");
+      if (ubicacion == null) return;
+      String servicios = JOptionPane.showInputDialog("Ingrese los servicios especializados realizados por la sucursal");
+      if (servicios == null) return;
 
-    JOptionPane.showMessageDialog(null, "Sucursal agregada exitosamente");
-  }
+      String cuotaStr = JOptionPane.showInputDialog("Ingrese la cuota");
+      if (cuotaStr == null) return;
+      float cuota = Float.parseFloat(cuotaStr.trim());
 
-  public static void agregarCliente(){
-    String nombre = JOptionPane.showInputDialog("Ingrese el nombre del cliente:");
-    String tipo = JOptionPane.showInputDialog("Ingrese el tipo de cliente:\n[1] Regular\n[2] Premium");
-    String telefono = JOptionPane.showInputDialog("Ingrese el telefono del cliente:");
+      Sucursal sucursal = new Sucursal(noSucursal, nombre, horario, ubicacion, servicios, cuota );
+      gimnasio.addSucursal(sucursal);
 
-    Cliente cliente = new Cliente(nombre, tipo, telefono);
-    // gimnasio.addCliente(cliente); // FALTA SELECCIONAR LA SUCURSAR DONDE SE VA A GUARDAR EL SEMESTRE
-
-    JOptionPane.showMessageDialog(null, "Cliente agregado exitosamente");
+      JOptionPane.showMessageDialog(null, "Sucursal agregada exitosamente");
+    } catch (NumberFormatException ex) {
+      JOptionPane.showMessageDialog(null, "Entrada numérica inválida. Operación cancelada.");
+    }
   }
 }

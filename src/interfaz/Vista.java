@@ -1,6 +1,5 @@
 package interfaz;
 import control.*;
-import entidades.*;
 
 public class Vista {
   //ATRIBUTOS
