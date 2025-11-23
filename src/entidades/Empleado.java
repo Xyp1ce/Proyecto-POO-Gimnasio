@@ -53,6 +53,9 @@ public class Empleado {
         this.direccion = direccion;
     }
 
+    public void setTelefono(long telefono) {
+        this.telefono = telefono;
+    }
     // METODOS
     public void registrarEntrada() {}
 

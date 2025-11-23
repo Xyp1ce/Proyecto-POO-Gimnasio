@@ -50,9 +50,13 @@ public class Gimnasio implements Serializable{
 
     //VALIDA SI SE REPIDE EL ID DE UN EMPLEADO EN TODAS LAS SUCURSALES
     public static boolean validarIDempleado(long ID) { // TRUE SI EXISTE EL EMPLEADO, FALSE SI NO
+        if (sucursales == null) return false;
         for (Sucursal sucursal : sucursales) {
-            for (Empleado empleado : sucursal.getEmpleados()) {
-                if (empleado.getID() == ID) {
+            if (sucursal == null) continue;
+            Empleado[] empleados = sucursal.getEmpleados();
+            if (empleados == null) continue;
+            for (Empleado empleado : empleados) {
+                if (empleado != null && empleado.getID() == ID) {
                     return true;
                 }
             }
@@ -62,9 +66,13 @@ public class Gimnasio implements Serializable{
 
     //VALIDA SI SE REPIDE EL ID DE UN CLIENTE EN TODAS LAS SUCURSALES
     public static boolean validarIDcliente(long ID) { // TRUE SI EXISTE EL CLIENTE, FALSE SI NO
+        if (sucursales == null) return false;
         for (Sucursal sucursal : sucursales) {
-            for (Cliente cliente : sucursal.getClientes()) {
-                if (cliente.getID() == ID) {
+            if (sucursal == null) continue;
+            Cliente[] clientes = sucursal.getClientes();
+            if (clientes == null) continue;
+            for (Cliente cliente : clientes) {
+                if (cliente != null && cliente.getID() == ID) {
                     return true;
                 }
             }
@@ -82,7 +90,7 @@ public class Gimnasio implements Serializable{
         float[] cuotas = {300.0f, 450.0f, 600.0f, 750.0f};
 
         for (int i = 0; i < 4; i++) {
-            int noSucursal = numeros[(int)(Math.random() * numeros.length)];
+            int noSucursal = numeros[i];
             String nombre = nombres[(int)(Math.random()) * nombres.length];
             String horario = horarios[(int)(Math.random() * horarios.length)];
             String ubicacion = ubicaciones[(int)(Math.random() * ubicaciones.length)];
@@ -126,11 +134,14 @@ public class Gimnasio implements Serializable{
     }
 
     public Sucursal buscarSucursal(int noSucursal) {
-      for(Sucursal s : sucursales) {
-        if(s.getNoSucursal() == noSucursal)
-          return s;
-      }
-      return null;
+        if (sucursales == null)
+            return null;
+        for (Sucursal s : sucursales) {
+            if (s != null && s.getNoSucursal() == noSucursal) {
+                return s;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -172,15 +183,13 @@ public class Gimnasio implements Serializable{
             "Datos de Sucursales:\n";
 
         String sucursalesStr = "";
-        int idx = 1;
         for (int i = 0; i < sucursales.length; i++) {
             Sucursal sucursal = sucursales[i];
             if (sucursal != null) {
-                sucursalesStr += "Sucursal #" + idx + "\n";
+                sucursalesStr += "Sucursal No: " + sucursal.getNoSucursal() + " - " + sucursal.getUbicacion() + "\n";
                 sucursalesStr += "  Horario    : " + sucursal.getHorario() + " ||";
                 sucursalesStr += "  Ubicación  : " + sucursal.getUbicacion() + "\n";
                 sucursalesStr += "----------------------------------------------------\n";
-                idx++;
             }
         }
         return header + sucursalesStr;

@@ -7,7 +7,7 @@ public class Cliente {
     private String nombre;
     private String tipo;
     private int historialVisitas;
-    private String telefono;
+    private long telefono;
 
     // Constructor
     public Cliente() {
@@ -15,7 +15,7 @@ public class Cliente {
         historialVisitas = 0;
     }
 
-    public Cliente(String nombre, String tipo, String telefono) {
+    public Cliente(String nombre, String tipo, long telefono) {
         setID();
         this.nombre = nombre;
         this.tipo = tipo;
@@ -40,11 +40,11 @@ public class Cliente {
         return nombre;
     }
 
-    public String gettelefono() {
+    public long gettelefono() {
         return telefono;
     }
     
-    public void settelefono(String telefono) {
+    public void settelefono(long telefono) {
         this.telefono = telefono;
     }
 

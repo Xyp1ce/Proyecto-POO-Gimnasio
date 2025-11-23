@@ -18,11 +18,13 @@ public class Sucursal {
     public Sucursal() {}
 
     public Sucursal(int noSucursal, String nombre, String horario, String ubicacion, String servicios, float cuota) {
-        this.noSucursal = 0;
+        this.noSucursal = noSucursal;
+        this.nombre = nombre;
         this.horario = horario;
         this.ubicacion = ubicacion;
         this.servicios = servicios;
         this.cuota = cuota;
+        empleados = new Empleado[100]; // MAXIMO 100 EMPLEADOS POR SUCURSAL
         clientes = new Cliente[100]; // MAXIMO 100 CLIENTES POR SUCURSAL
         noClientes = 0;
     }
@@ -93,7 +95,8 @@ public class Sucursal {
     }
 
     // Metodos
-    public void addClient(Cliente cliente) { if (noClientes < clientes.length) {
+    public void addClient(Cliente cliente) { 
+        if (noClientes < clientes.length) {
 			clientes[noClientes] = cliente;
 			noClientes++;
 		} else {
@@ -106,6 +109,13 @@ public class Sucursal {
     public void registerEmploye(Empleado emleado) {}
 
     public void removeEmploye(long ID) {}
+
+    public Cliente buscarCliente(long ID) {
+        for(Cliente c : clientes) 
+            if(c != null && c.getID() == ID) 
+                return c;
+        return null;
+    }
 
     public String toString() {    //MUESTRA LA INFORMACION DE LA SUCURSAL
         return "Sucursal{" +
