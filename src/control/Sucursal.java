@@ -4,127 +4,203 @@ import entidades.Empleado;
 import entidades.Cliente;
 
 public class Sucursal {
-    private int noSucursal;
-    private String nombre;
-    private String horario;
-    private String ubicacion;
-    private String servicios;
-    private float cuota;
-    private Empleado empleados[];
-    private Cliente clientes[];
-    private int noClientes;
+    // ATRIBUTOS PRINCIPALES DE LA SUCURSAL
+    private int numeroSucursal;
+    private String nombreSucursal;
+    private String horarioOperacion;
+    private String ubicacionSucursal;
+    private String serviciosEspeciales;
+    private float cuotaMensual;
+    private Empleado[] empleados;
+    private Cliente[] clientes;
+    private int totalClientes;
+    private int totalEmpleados;
 
-    // Constructor
-    public Sucursal() {}
-
-    public Sucursal(int noSucursal, String nombre, String horario, String ubicacion, String servicios, float cuota) {
-        this.noSucursal = noSucursal;
-        this.nombre = nombre;
-        this.horario = horario;
-        this.ubicacion = ubicacion;
-        this.servicios = servicios;
-        this.cuota = cuota;
-        empleados = new Empleado[100]; // MAXIMO 100 EMPLEADOS POR SUCURSAL
-        clientes = new Cliente[100]; // MAXIMO 100 CLIENTES POR SUCURSAL
-        noClientes = 0;
+    // CONSTRUCTORES
+    public Sucursal() {
+        inicializarColecciones();
     }
 
-    // Getters
-    public int getNoSucursal() {
-        return noSucursal;
+    public Sucursal(int numeroSucursal, String nombre, String horario, String ubicacion, String servicios, float cuota) {
+        this.numeroSucursal = numeroSucursal;
+        nombreSucursal = nombre;
+        horarioOperacion = horario;
+        ubicacionSucursal = ubicacion;
+        serviciosEspeciales = servicios;
+        cuotaMensual = cuota;
+        inicializarColecciones();
     }
 
-    public void setNoSucursal(int noSucursal) {
-        this.noSucursal = noSucursal;
+    private void inicializarColecciones() {
+        empleados = new Empleado[100];
+        clientes = new Cliente[100];
+        totalClientes = 0;
+        totalEmpleados = 0;
     }
 
-    public String getNombre(){
-        return nombre;
+    // GETTERS Y SETTERS
+    public int obtenerNumeroSucursal() {
+        return numeroSucursal;
     }
 
-    public void setNombre(String nombre){
-        this.nombre = nombre;
+    public void definirNumeroSucursal(int numeroSucursal) {
+        this.numeroSucursal = numeroSucursal;
     }
 
-    public String getHorario() {
-        return horario;
+    public String obtenerNombreSucursal() {
+        return nombreSucursal;
     }
 
-    public void setHorario(String horario) {
-        this.horario = horario;
+    public void definirNombreSucursal(String nombreSucursal) {
+        this.nombreSucursal = nombreSucursal;
     }
 
-    public float getCuota() {
-        return cuota;
+    public String obtenerHorarioOperacion() {
+        return horarioOperacion;
     }
 
-    public void setCuota(float cuota) {
-        this.cuota = cuota;
+    public void definirHorarioOperacion(String horarioOperacion) {
+        this.horarioOperacion = horarioOperacion;
     }
 
-    public String getServicios() {
-        return servicios;
+    public float obtenerCuotaMensual() {
+        return cuotaMensual;
     }
 
-    public void setServicios(String servicios) {
-        this.servicios = servicios;
+    public void definirCuotaMensual(float cuotaMensual) {
+        this.cuotaMensual = cuotaMensual;
     }
 
-    public String getUbicacion() {
-        return ubicacion;
+    public String obtenerServiciosEspeciales() {
+        return serviciosEspeciales;
     }
 
-    public void setUbicacion(String ubicacion) {
-        this.ubicacion = ubicacion;
+    public void definirServiciosEspeciales(String serviciosEspeciales) {
+        this.serviciosEspeciales = serviciosEspeciales;
     }
 
-    public Empleado[] getEmpleados() {
+    public String obtenerUbicacionSucursal() {
+        return ubicacionSucursal;
+    }
+
+    public void definirUbicacionSucursal(String ubicacionSucursal) {
+        this.ubicacionSucursal = ubicacionSucursal;
+    }
+
+    public Empleado[] obtenerEmpleados() {
         return empleados;
     }
 
-    public void setEmpleados(Empleado[] empleados) {
-        this.empleados = empleados;
-    }
-
-    public Cliente[] getClientes() {
+    public Cliente[] obtenerClientes() {
         return clientes;
     }
 
-    public void setClientes(Cliente[] clientes) {
-        this.clientes = clientes;
+    public int obtenerTotalClientes() {
+        return totalClientes;
     }
 
-    // Metodos
-    public void addClient(Cliente cliente) { 
-        if (noClientes < clientes.length) {
-			clientes[noClientes] = cliente;
-			noClientes++;
-		} else {
-			System.out.println("No se pueden agregar más clientes, capacidad máxima alcanzada.");
-		}
+    public int obtenerTotalEmpleados() {
+        return totalEmpleados;
     }
 
-    public void removeClient(long ID) {}
+    // METODOS PARA CLIENTES
+    public boolean agregarCliente(Cliente cliente) {
+        if (cliente == null)
+            return false;
+        if (totalClientes >= clientes.length)
+            return false;
+        clientes[totalClientes] = cliente;
+        totalClientes++;
+        return true;
+    }
 
-    public void registerEmploye(Empleado emleado) {}
+    public boolean eliminarCliente(long identificador) {
+        for (int i = 0; i < clientes.length; i++) {
+            Cliente cliente = clientes[i];
+            if (cliente != null && cliente.obtenerIdentificador() == identificador) {
+                clientes[i] = null;
+                reacomodarClientes();
+                totalClientes--;
+                return true;
+            }
+        }
+        return false;
+    }
 
-    public void removeEmploye(long ID) {}
+    private void reacomodarClientes() {
+        Cliente[] temporal = new Cliente[clientes.length];
+        int indice = 0;
+        for (Cliente cliente : clientes) {
+            if (cliente != null) {
+                temporal[indice] = cliente;
+                indice++;
+            }
+        }
+        clientes = temporal;
+    }
 
-    public Cliente buscarCliente(long ID) {
-        for(Cliente c : clientes) 
-            if(c != null && c.getID() == ID) 
-                return c;
+    public Cliente buscarCliente(long identificador) {
+        for (Cliente cliente : clientes)
+            if (cliente != null && cliente.obtenerIdentificador() == identificador)
+                return cliente;
         return null;
     }
 
-    public String toString() {    //MUESTRA LA INFORMACION DE LA SUCURSAL
-        return "Sucursal{" +
-                "horario='" + horario + '\'' +
-                ", ubicacion='" + ubicacion + '\'' +
-                ", servicios='" + servicios + '\'' +
-                ", cuota=" + cuota +
-                ", noClientes=" + noClientes +
-                '}';
+    // METODOS PARA EMPLEADOS
+    public boolean registrarEmpleado(Empleado empleado) {
+        if (empleado == null)
+            return false;
+        if (totalEmpleados >= empleados.length)
+            return false;
+        empleados[totalEmpleados] = empleado;
+        totalEmpleados++;
+        return true;
+    }
 
+    public boolean eliminarEmpleado(long identificador) {
+        for (int i = 0; i < empleados.length; i++) {
+            Empleado empleado = empleados[i];
+            if (empleado != null && empleado.obtenerIdentificador() == identificador) {
+                empleados[i] = null;
+                reacomodarEmpleados();
+                totalEmpleados--;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void reacomodarEmpleados() {
+        Empleado[] temporal = new Empleado[empleados.length];
+        int indice = 0;
+        for (Empleado empleado : empleados) {
+            if (empleado != null) {
+                temporal[indice] = empleado;
+                indice++;
+            }
+        }
+        empleados = temporal;
+    }
+
+    public Empleado buscarEmpleado(long identificador) {
+        for (Empleado empleado : empleados)
+            if (empleado != null && empleado.obtenerIdentificador() == identificador)
+                return empleado;
+        return null;
+    }
+
+    // DESCRIPCION DE LA SUCURSAL
+    @Override
+    public String toString() {
+        return "Sucursal{" +
+                "numero=" + numeroSucursal +
+                ", nombre='" + nombreSucursal + '\'' +
+                ", horario='" + horarioOperacion + '\'' +
+                ", ubicacion='" + ubicacionSucursal + '\'' +
+                ", servicios='" + serviciosEspeciales + '\'' +
+                ", cuota=" + cuotaMensual +
+                ", clientes=" + totalClientes +
+                ", empleados=" + totalEmpleados +
+                '}';
     }
 }

@@ -7,8 +7,8 @@ public class MenuCliente {
   public static void menu(Cliente cliente, Sucursal sucursal) {
     String opciones = "";
     do {
-      opciones = JOptionPane.showInputDialog(null, "Bienvenido " +
-          cliente.getnombre() +
+        opciones = JOptionPane.showInputDialog(null, "Bienvenido " +
+          cliente.obtenerNombre() +
           "\nPor favor Seleccione una de las siguientes opciones: "+
           "\n[1] Mostrar Informacion del Cliente"+
           "\n[2] Modificar Informacion del Cliente"+
@@ -31,7 +31,7 @@ public class MenuCliente {
             String in = JOptionPane.showInputDialog("Ingrese el nuevo telefono del cliente:");
             if (in == null) break;
             long telefono = Long.parseLong(in.trim());
-            cliente.settelefono(telefono);
+            cliente.definirTelefono(telefono);
             JOptionPane.showMessageDialog(null, "Informacion actualizada exitosamente");
           } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, "Telefono inválido.");

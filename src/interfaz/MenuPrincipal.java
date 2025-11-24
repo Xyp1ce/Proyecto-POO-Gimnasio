@@ -11,18 +11,19 @@ public class MenuPrincipal {
     String opcion = "";
     int opcSurcusal = -1;
     do{
-      opciones = JOptionPane.showInputDialog(null, "Bienvenido al nuevo super genial " +
-          gimnasio.twoString() +
+        opciones = JOptionPane.showInputDialog(null, "Bienvenido al nuevo super genial " +
+          gimnasio.resumenSucursales() +
           "\nPor favor Seleccione una de las siguientes opciones: "+
           "\n[1] Agregar Sucursal"+
           "\n[2] Mostrar Lista de Sucursales"+
           "\n[3] Seleccionar Sucursal"+
           "\n[4] Salir"+
           "\nOpcion:\t");
-      switch(opciones){
-        case null:
+        if (opciones == null) {
           JOptionPane.showMessageDialog(null, "Regresando (cancelado)");
           return;
+        }
+        switch(opciones){
         case "1": //LLAMAR AL METODO ADECUADO PARA AGREGAR UNA SUCURSAL
           agregarSucursal();
           break;
@@ -32,8 +33,8 @@ public class MenuPrincipal {
         case "3": 
           // SUCURSAL SELECCIONADA Y LLAMAR A SUS METODOS
           // MENU SUCURSAL
-          opcion = JOptionPane.showInputDialog(null,"Selecciona una sucursal\n" + gimnasio.twoString());
-          if (opcion == null) break; // usuario canceló
+          opcion = JOptionPane.showInputDialog(null,"Selecciona una sucursal\n" + gimnasio.resumenSucursales());
+          if (opcion == null) break; // USUARIO CANCELO
           try {
             opcSurcusal = Integer.parseInt(opcion.trim());
           } catch (NumberFormatException e) {
@@ -75,7 +76,7 @@ public class MenuPrincipal {
       float cuota = Float.parseFloat(cuotaStr.trim());
 
       Sucursal sucursal = new Sucursal(noSucursal, nombre, horario, ubicacion, servicios, cuota );
-      gimnasio.addSucursal(sucursal);
+      gimnasio.agregarSucursal(sucursal);
 
       JOptionPane.showMessageDialog(null, "Sucursal agregada exitosamente");
     } catch (NumberFormatException ex) {

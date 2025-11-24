@@ -2,91 +2,64 @@ package entidades;
 
 import control.Gimnasio;
 
-public class Cliente {
-    private long ID;
-    private String nombre;
-    private String tipo;
-    private int historialVisitas;
-    private long telefono;
+public class Cliente extends Persona {
+	private static final long serialVersionUID = 1L;
+	// ATRIBUTOS PARTICULARES
+	private String tipoCliente;
+	private int historialVisitas;
 
-    // Constructor
-    public Cliente() {
-        setID();
-        historialVisitas = 0;
-    }
+	// CONSTRUCTORES
+	public Cliente() {
+		super();
+		asignarIdentificadorCliente();
+		historialVisitas = 0;
+	}
 
-    public Cliente(String nombre, String tipo, long telefono) {
-        setID();
-        this.nombre = nombre;
-        this.tipo = tipo;
-        this.telefono = telefono;
-        historialVisitas = 0;
-    }
+	public Cliente(String nombre, String documento, String tipoCliente, long telefono) {
+		super(nombre, documento, telefono);
+		this.tipoCliente = tipoCliente;
+		historialVisitas = 0;
+		asignarIdentificadorCliente();
+	}
 
-    // GETTERS Y SETTERS 
-    public void setID() {
-        long nuevoID;
-        do {
-            nuevoID = (long)(Math.random() * 90000000L) + 10000000L; // 8 dígitos
-        } while (Gimnasio.validarIDcliente(nuevoID) != false);
-        this.ID = nuevoID;
-    }
+	// GETTERS Y SETTERS
+	public String obtenerTipoCliente() {
+		return tipoCliente;
+	}
 
-    public long getID() {
-        return ID;
-    }
+	public void definirTipoCliente(String tipoCliente) {
+		this.tipoCliente = tipoCliente;
+	}
 
-    public String getnombre() {
-        return nombre;
-    }
+	public int obtenerHistorialVisitas() {
+		return historialVisitas;
+	}
 
-    public long gettelefono() {
-        return telefono;
-    }
-    
-    public void settelefono(long telefono) {
-        this.telefono = telefono;
-    }
+	public void definirHistorialVisitas(int historialVisitas) {
+		this.historialVisitas = historialVisitas;
+	}
 
-    public String gettipo() {
-        return tipo;
-    }
+	// METODOS PARTICULARES
+	public void registrarVisita() {
+		historialVisitas++;
+	}
 
-    public void settipo(String tipo) {
-        this.tipo = tipo;
-    }
+	private void asignarIdentificadorCliente() {
+		long nuevoIdentificador;
+		do
+			nuevoIdentificador = (long) (Math.random() * 90000000L) + 10000000L;
+		while (Gimnasio.validarIdCliente(nuevoIdentificador));
+		definirIdentificador(nuevoIdentificador);
+	}
 
-
-    // Metodos
-    public void registrarVisita() {
-        historialVisitas++;
-    }
-
-    @Override
-    public String toString() {      //MUESTRA LA INFORMACION DEL CLIENTE
-        return "Cliente{" +
-                "ID=" + ID +
-                ", nombre='" + nombre + '\'' +
-                ", tipo='" + tipo + '\'' +
-                ", historialVisitas='" + historialVisitas + '\'' +
-                ", telefono='" + telefono + '\'' +
-                '}';
-    }
-
-    // PROXIMAS FUNCIONES
-    /*
-    public boolean evaluarEntrenador() {    // true si lo recomienda false si no
-
-    } 
-
-
-    public boolean pagarMembresia() {  // true si se pago bien false si no
-        
-    }
-
-    public boolean cancelarMembresia() { // true si se cancelo bien false si no
-    
-    }
-    */
-
+	@Override
+	public String generarDescripcion() {
+		return "Cliente{" +
+				"identificador=" + obtenerIdentificador() +
+				", nombre='" + obtenerNombre() + '\'' +
+				", tipoCliente='" + tipoCliente + '\'' +
+				", historialVisitas='" + historialVisitas + '\'' +
+				", telefono='" + obtenerTelefono() + '\'' +
+				'}';
+	}
 }

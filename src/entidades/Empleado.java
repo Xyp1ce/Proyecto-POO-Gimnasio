@@ -2,74 +2,89 @@ package entidades;
 
 import control.Gimnasio;
 
-public class Empleado {
-    protected long ID; // El ID ES UN NUMERO DE 8 DIGITOS QUE SE GENERA ALEATORIAMENTE
-    protected String tipo;
-    protected String tareas_programadas;    //ANTES DE LLAMABA WORK_SCHEDULE    
-    protected String nombre;
-    protected long telefono;
+public abstract class Empleado extends Persona {
+    private static final long serialVersionUID = 1L;
+    // ATRIBUTOS DEL EMPLEADO
+    protected String tipoEmpleado;
+    protected String tareasProgramadas;
     protected String direccion;
     protected float salario;
 
     // CONSTRUCTORES
-    public Empleado(){
-        setID();
+    public Empleado() {
+        super();
+        asignarIdentificadorEmpleado();
     }
 
-    public Empleado(String tipo, String nombre, long telefono, String direccion){
-        setID();
-        this.tipo = tipo;
-        this.nombre = nombre;
-        this.telefono = telefono;
+    public Empleado(String tipoEmpleado, String nombre, String documento, long telefono, String direccion) {
+        super(nombre, documento, telefono);
+        this.tipoEmpleado = tipoEmpleado;
         this.direccion = direccion;
+        tareasProgramadas = "";
+        salario = 0;
+        asignarIdentificadorEmpleado();
+    }
+
+    public Empleado(String tipoEmpleado, String nombre, long telefono, String direccion) {
+        this(tipoEmpleado, nombre, "", telefono, direccion);
     }
 
     // GETTERS Y SETTERS
-    public void setID() {
-        long nuevoID;
-        do {
-            nuevoID = (long)(Math.random() * 90000000L) + 10000000L; // 8 dígitos
-        } while (Gimnasio.validarIDempleado(nuevoID) != false);
-        this.ID = nuevoID;
+    public String obtenerTipoEmpleado() {
+        return tipoEmpleado;
     }
 
-    public long getID() {
-        return ID;
+    public void definirTipoEmpleado(String tipoEmpleado) {
+        this.tipoEmpleado = tipoEmpleado;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String obtenerTareasProgramadas() {
+        return tareasProgramadas;
     }
 
-    public long getTelefono() {
-        return telefono;
+    public void definirTareasProgramadas(String tareasProgramadas) {
+        this.tareasProgramadas = tareasProgramadas;
     }
 
-    public String getDireccion() {
+    public String obtenerDireccion() {
         return direccion;
     }
 
-    public void setDireccion(String direccion) { // En caso de que el wey cambie de direccion
+    public void definirDireccion(String direccion) {
         this.direccion = direccion;
     }
 
-    public void setTelefono(long telefono) {
-        this.telefono = telefono;
+    public float obtenerSalario() {
+        return salario;
     }
-    // METODOS
-    public void registrarEntrada() {}
 
-    public void registrarSalida() {}
+    public void definirSalario(float salario) {
+        this.salario = salario;
+    }
 
-    public String toString() {
+    // METODOS COMPARTIDOS
+    private void asignarIdentificadorEmpleado() {
+        long nuevoIdentificador;
+        do
+            nuevoIdentificador = (long) (Math.random() * 90000000L) + 10000000L;
+        while (Gimnasio.validarIdEmpleado(nuevoIdentificador));
+        definirIdentificador(nuevoIdentificador);
+    }
+
+    @Override
+    public String generarDescripcion() {
         return "Empleado{" +
-                "ID=" + ID +
-                ", tipo='" + tipo + '\'' +
-                ", tareas_programadas='" + tareas_programadas + '\'' +
-                ", nombre='" + nombre + '\'' +
-                ", telefono=" + telefono +
+                "identificador=" + obtenerIdentificador() +
+                ", tipoEmpleado='" + tipoEmpleado + '\'' +
+                ", tareasProgramadas='" + tareasProgramadas + '\'' +
+                ", nombre='" + obtenerNombre() + '\'' +
+                ", telefono=" + obtenerTelefono() +
                 ", direccion='" + direccion + '\'' +
                 ", salario=" + salario +
                 '}';
     }
+
+    public abstract void registrarEntrada();
+
+    public abstract void registrarSalida();
 }
