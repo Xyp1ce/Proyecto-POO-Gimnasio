@@ -1,8 +1,6 @@
 package entidades;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class Pago implements Serializable
 {
@@ -12,8 +10,8 @@ public class Pago implements Serializable
 	private long idPago;
 	private long idCliente;
 	private float monto;
-	private LocalDate fechaPago;
-	private String metodoPago; // "Efectivo", "Tarjeta", "Transferencia"
+	private String fechaPago;	// Formato: "dd/MM/yyyy"
+	private String metodoPago;	// "Efectivo", "Tarjeta", "Transferencia"
 	private String concepto;
 	private String referencia;
 
@@ -21,7 +19,7 @@ public class Pago implements Serializable
 	public Pago()
 	{
 		this.idPago = generarIdPago();
-		this.fechaPago = LocalDate.now();
+		this.fechaPago = obtenerFechaActual();
 		this.metodoPago = "Efectivo";
 		this.concepto = "Pago de membresía";
 		this.monto = 0.0f;
@@ -33,7 +31,7 @@ public class Pago implements Serializable
 		this.idPago = generarIdPago();
 		this.idCliente = idCliente;
 		this.monto = monto;
-		this.fechaPago = LocalDate.now();
+		this.fechaPago = obtenerFechaActual();
 		this.metodoPago = metodoPago;
 		this.concepto = "Pago de membresía";
 		this.referencia = generarReferencia();
@@ -44,7 +42,7 @@ public class Pago implements Serializable
 		this.idPago = generarIdPago();
 		this.idCliente = idCliente;
 		this.monto = monto;
-		this.fechaPago = LocalDate.now();
+		this.fechaPago = obtenerFechaActual();
 		this.metodoPago = metodoPago;
 		this.concepto = concepto;
 		this.referencia = generarReferencia();
@@ -81,12 +79,12 @@ public class Pago implements Serializable
 		this.monto = monto;
 	}
 
-	public LocalDate obtenerFechaPago()
+	public String obtenerFechaPago()
 	{
 		return fechaPago;
 	}
 
-	public void definirFechaPago(LocalDate fechaPago)
+	public void definirFechaPago(String fechaPago)
 	{
 		this.fechaPago = fechaPago;
 	}
@@ -146,7 +144,7 @@ public class Pago implements Serializable
 		return validarMonto() &&
 				validarMetodoPago() &&
 				idCliente > 0 &&
-				fechaPago != null;
+				fechaPago != null && !fechaPago.isEmpty();
 	}
 
 	// METODOS DE NEGOCIO
@@ -163,8 +161,9 @@ public class Pago implements Serializable
 
 	public boolean esReciente(int dias)
 	{
-		LocalDate limite = LocalDate.now().minusDays(dias);
-		return fechaPago.isAfter(limite) || fechaPago.isEqual(limite);
+		String fechaActual = obtenerFechaActual();
+		int diasTranscurridos = calcularDiasEntre(fechaPago, fechaActual);
+		return diasTranscurridos <= dias;
 	}
 
 	// METODOS PRIVADOS DE SOPORTE
@@ -174,12 +173,49 @@ public class Pago implements Serializable
 		return (long) (Math.random() * 9000000L) + 1000000L;
 	}
 
+	private String obtenerFechaActual()
+	{
+		java.util.Calendar cal = java.util.Calendar.getInstance();
+		int dia = cal.get(java.util.Calendar.DAY_OF_MONTH);
+		int mes = cal.get(java.util.Calendar.MONTH) + 1; // Enero es 0
+		int year = cal.get(java.util.Calendar.YEAR);
+		return String.format("%02d/%02d/%04d", dia, mes, year);
+	}
+
 	private String generarReferencia()
 	{
-		DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyyMMdd");
-		String fecha = LocalDate.now().format(formato);
+		java.util.Calendar cal = java.util.Calendar.getInstance();
+		int dia = cal.get(java.util.Calendar.DAY_OF_MONTH);
+		int mes = cal.get(java.util.Calendar.MONTH) + 1;
+		int year = cal.get(java.util.Calendar.YEAR);
+
+		String fecha = String.format("%04d%02d%02d", year, mes, dia);
 		int aleatorio = (int) (Math.random() * 9000) + 1000;
 		return "PAG-" + fecha + "-" + aleatorio;
+	}
+
+	private int calcularDiasEntre(String fecha1, String fecha2)
+	{
+		String[] partes1 = fecha1.split("/");
+		String[] partes2 = fecha2.split("/");
+
+		if (partes1.length != 3 || partes2.length != 3)
+			return 0;
+
+		int dia1 = Integer.parseInt(partes1[0]);
+		int mes1 = Integer.parseInt(partes1[1]);
+		int year1 = Integer.parseInt(partes1[2]);
+
+		int dia2 = Integer.parseInt(partes2[0]);
+		int mes2 = Integer.parseInt(partes2[1]);
+		int year2 = Integer.parseInt(partes2[2]);
+
+		// Cálculo aproximado
+		int diasYears = (year2 - year1) * 365;
+		int diasMeses = (mes2 - mes1) * 30;
+		int diasDias = (dia2 - dia1);
+
+		return Math.abs(diasYears + diasMeses + diasDias);
 	}
 
 	// REPRESENTACION EN TEXTO
@@ -187,12 +223,11 @@ public class Pago implements Serializable
 	@Override
 	public String toString()
 	{
-		DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		return  "Pago{" +
+		return "Pago{" +
 				"id=" + idPago +
 				", cliente=" + idCliente +
 				", monto=$" + String.format("%.2f", monto) +
-				", fecha=" + fechaPago.format(formato) +
+				", fecha=" + fechaPago +
 				", metodo='" + metodoPago + '\'' +
 				", concepto='" + concepto + '\'' +
 				", referencia='" + referencia + '\'' +
@@ -201,11 +236,10 @@ public class Pago implements Serializable
 
 	public String generarRecibo()
 	{
-		DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-		return  "\n========== RECIBO DE PAGO ==========\n" +
+		return "\n========== RECIBO DE PAGO ==========\n" +
 				"Referencia: " + referencia + "\n" +
-				"Fecha: " + fechaPago.format(formato) + "\n" +
+				"Fecha: " + fechaPago + "\n" +
 				"Cliente ID: " + idCliente + "\n" +
 				"Concepto: " + concepto + "\n" +
 				"-----------------------------------\n" +
