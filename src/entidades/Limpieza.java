@@ -1,52 +1,59 @@
 package entidades;
 
 public class Limpieza extends Empleado {
-    private String area;
+    private static final long serialVersionUID = 1L;
+    // ATRIBUTO PARTICIPANTE
+    private String areaAsignada;
 
-    // Constructor
+    // CONSTRUCTORES
     public Limpieza() {
         super();
+        areaAsignada = "";
     }
 
     public Limpieza(String area) {
         super();
-        this.area = area;
+        areaAsignada = area;
     }
 
-    public Limpieza(String type, String name, long telephone, String address, String area) {
-        super(type, name, telephone, address);
-        this.area = area;
+    public Limpieza(String tipoEmpleado, String nombre, long telefono, String direccion, String area) {
+        super(tipoEmpleado, nombre, telefono, direccion);
+        areaAsignada = area;
     }
 
-    // Getters
-    public String getArea() {
-        return area;
+    // GETTERS Y SETTERS
+    public String obtenerAreaAsignada() {
+        return areaAsignada;
     }
 
-    // Setters
-    public void setArea(String area) {
-        this.area = area;
+    public void definirAreaAsignada(String areaAsignada) {
+        this.areaAsignada = areaAsignada;
     }
 
-    public void setsalario(float salario) {
-        this.salario = salario;
-    }
-
-    // Metodos
+    // METODOS PARTICULARES
     public void limpiarArea() {}
 
     public void reportarDano() {}
 
+    // METODOS POLIMORFICOS
     @Override
-    public String toString() {
+    public void registrarEntrada() {
+        tareasProgramadas = "LIMPIEZA EN SERVICIO";
+    }
+
+    @Override
+    public void registrarSalida() {
+        tareasProgramadas = "LIMPIEZA FUERA DE SERVICIO";
+    }
+
+    @Override
+    public String generarDescripcion() {
         return "Limpieza{" +
-                "ID=" + ID +
-                ", tipo='" + tipo + '\'' +
-                ", nombre='" + nombre + '\'' +
-                ", telefono=" + telefono +
-                ", direccion='" + direccion + '\'' +
-                ", salario=" + salario +
-                ", area='" + area + '\'' +
+                "identificador=" + obtenerIdentificador() +
+                ", nombre='" + obtenerNombre() + '\'' +
+                ", telefono=" + obtenerTelefono() +
+                ", direccion='" + obtenerDireccion() + '\'' +
+                ", areaAsignada='" + areaAsignada + '\'' +
                 '}';
     }
 }

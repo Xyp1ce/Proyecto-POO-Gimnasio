@@ -23,7 +23,7 @@ public class Persistencia {
 
 	//METODOS
 	//METODO PARA LEER LOS OBJETOS SERIALIZADOS
-	public static Gimnasio getDatos() {	
+	public static Gimnasio obtenerDatos() {	
 		FileInputStream fisPer = null;
 		
 		try {
@@ -40,7 +40,7 @@ public class Persistencia {
 		return null;
 	}
 	
-	public static void setDatos() {
+	public static void guardarDatos() {
 		FileOutputStream archivo;
 		File f =  new File("Gimnasio.ser");
 		

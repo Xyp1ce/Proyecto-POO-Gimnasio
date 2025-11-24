@@ -1,125 +1,137 @@
 package entidades;
 
 public class Entrenador extends Empleado {
-    // Varios son arreglos porque pueden tener varias
-    private String especialidades[];
-    private String certificaciones[];
-    private String rutinas[];
-    private float commssion;
+    // ATRIBUTOS PARTICULARES DEL ENTRENADOR
+    private String[] especialidades;
+    private String[] certificaciones;
+    private String[] rutinas;
+    private float comision;
 
-    // Constructor
+    // CONSTRUCTORES
     public Entrenador() {
         super();
+        inicializarColecciones();
+        comision = 0;
     }
 
-    public Entrenador(String especialidad, String certificaciones, String rutinas) {
-        super();
-        addEspecialidad(especialidad);
-        addCertificacion(certificaciones);
-        addRutina(rutinas);
-        commssion = 0;
+    public Entrenador(String tipoEmpleado, String nombre, long telefono, String direccion, String especialidad, String certificacion, String rutina) {
+        super(tipoEmpleado, nombre, telefono, direccion);
+        inicializarColecciones();
+        agregarEspecialidad(especialidad);
+        agregarCertificacion(certificacion);
+        agregarRutina(rutina);
+        comision = 0;
     }
 
-    public Entrenador(String tipo, String nombre, long telefono, String direccion, String especialidad, String certificaciones, String rutinas) {
-        super(tipo, nombre, telefono, direccion);
-        addEspecialidad(especialidad);
-        addCertificacion(certificaciones);
-        addRutina(rutinas);
-        commssion = 0;
+    private void inicializarColecciones() {
+        especialidades = new String[0];
+        certificaciones = new String[0];
+        rutinas = new String[0];
     }
 
-    // Getters
-    public String[] getEspecialidad() {
+    // GETTERS Y SETTERS
+    public String[] obtenerEspecialidades() {
         return especialidades;
     }
 
-    public String[] getCertificaciones() {
+    public String[] obtenerCertificaciones() {
         return certificaciones;
     }
 
-    public String[] getRutinas() {
+    public String[] obtenerRutinas() {
         return rutinas;
     }
-    public float getCommssion() {
-        return commssion;
+
+    public float obtenerComision() {
+        return comision;
     }
 
-    // Setters
-    public void setCommssion(float commssion) {
-        this.commssion = commssion;
+    public void definirComision(float comision) {
+        this.comision = comision;
     }
 
-    public void setsalario(float salario) {
-        this.salario = salario;
-    }
-
-    // Metodos
-    public void addEspecialidad(String especialidad) { //AGREGAR ESPECIALIDAD CUANDO YA SE TIENE
-        // CICLO QUE VERIFICA SI YA EXISTE LA ESPECIALIDAD, EN CASO DE QUE NO, LA AGREGA
-        for (String esp : especialidades) {
-            if (esp.equalsIgnoreCase(especialidad)) {
-                return; // Ya existe, no agregar
-            }
+    // METODOS PARTICULARES
+    public void agregarEspecialidad(String especialidad) {
+        if (especialidad == null || especialidad.trim().isEmpty())
+            return;
+        for (String registro : especialidades) {
+            if (registro.equalsIgnoreCase(especialidad))
+                return;
         }
-        //EN CASO DE NO EXISTIR, COMO NO SE CUENTA CON EL NUMERO DE ESPECIALIDADES, SE AGREGA ESPACIO AL ARREGLO
-        String temp[] = new String[especialidades.length + 1];
+        String[] temporal = new String[especialidades.length + 1];
         for (int i = 0; i < especialidades.length; i++) {
-            temp[i] = especialidades[i];
+            temporal[i] = especialidades[i];
         }
-        especialidades = temp;
-        especialidades[especialidades.length - 1] = especialidad;
+        temporal[especialidades.length] = especialidad;
+        especialidades = temporal;
     }
 
-    public void addCertificacion(String certificacion) { //AGREGAR CERTIFICACION CUANDO YA SE TIENE
-        // CICLO QUE VERIFICA SI YA EXISTE LA CERTIFICACION, EN CASO DE QUE NO, LA AGREGA
-        for (String cert : certificaciones) {
-            if (cert.equalsIgnoreCase(certificacion)) {
-                return; // Ya existe, no agregar
-            }
+    public void agregarCertificacion(String certificacion) {
+        if (certificacion == null || certificacion.trim().isEmpty())
+            return;
+        for (String registro : certificaciones) {
+            if (registro.equalsIgnoreCase(certificacion))
+                return;
         }
-
-        //EN CASO DE NO EXISTIR, COMO NO SE CUENTA CON EL NUMERO DE CERTIFICACIONES, SE AGREGA ESPACIO AL ARREGLO
-        String temp[] = new String[certificaciones.length + 1];
+        String[] temporal = new String[certificaciones.length + 1];
         for (int i = 0; i < certificaciones.length; i++) {
-            temp[i] = certificaciones[i];
+            temporal[i] = certificaciones[i];
         }
-        certificaciones = temp;
-        certificaciones[certificaciones.length - 1] = certificacion;
+        temporal[certificaciones.length] = certificacion;
+        certificaciones = temporal;
     }
-    public void addRutina(String rutina) { //AGREGAR RUTINA CUANDO YA SE TIENE
-        // CICLO QUE VERIFICA SI YA EXISTE LA RUTINA, EN CASO DE QUE NO, LA AGREGA
-        for (String rut : rutinas) {
-            if (rut.equalsIgnoreCase(rutina)) {
-                return; // Ya existe, no agregar
-            }
-        }
 
-        //EN CASO DE NO EXISTIR, COMO NO SE CUENTA CON EL NUMERO DE RUTINAS, SE AGREGA ESPACIO AL ARREGLO
-        String temp[] = new String[rutinas.length + 1];
+    public void agregarRutina(String rutina) {
+        if (rutina == null || rutina.trim().isEmpty())
+            return;
+        for (String registro : rutinas) {
+            if (registro.equalsIgnoreCase(rutina))
+                return;
+        }
+        String[] temporal = new String[rutinas.length + 1];
         for (int i = 0; i < rutinas.length; i++) {
-            temp[i] = rutinas[i];
+            temporal[i] = rutinas[i];
         }
-        rutinas = temp;
-        rutinas[rutinas.length - 1] = rutina;
-    }
-    public void evaluarProgreso() {
-
+        temporal[rutinas.length] = rutina;
+        rutinas = temporal;
     }
 
-    public String toString() {
+    public void evaluarProgreso() {}
+
+    // METODOS POLIMORFICOS
+    @Override
+    public void registrarEntrada() {
+        tareasProgramadas = "ENTRENADOR EN SERVICIO";
+    }
+
+    @Override
+    public void registrarSalida() {
+        tareasProgramadas = "ENTRENADOR FUERA DE SERVICIO";
+    }
+
+    @Override
+    public String generarDescripcion() {
         return "Entrenador{" +
-                "ID=" + getID() +
-                ", tipo='" + tipo + '\'' +
-                ", tareas_programadas='" + tareas_programadas + '\'' +
-                ", nombre='" + getNombre() + '\'' +
-                ", telefono=" + getTelefono() +
-                ", direccion='" + getDireccion() + '\'' +
-                ", salario=" + salario +
-                ", especialidades=" + getEspecialidad() +
-                ", certificaciones=" + getCertificaciones() +
-                ", rutinas=" + getRutinas() +
-                ", commssion=" + commssion +
+                "identificador=" + obtenerIdentificador() +
+                ", nombre='" + obtenerNombre() + '\'' +
+                ", especialidades=" + formatearArreglo(especialidades) +
+                ", certificaciones=" + formatearArreglo(certificaciones) +
+                ", rutinas=" + formatearArreglo(rutinas) +
+                ", comision=" + comision +
+                ", salario=" + obtenerSalario() +
                 '}';
     }
 
+    private String formatearArreglo(String[] datos) {
+        if (datos == null || datos.length == 0)
+            return "[]";
+        String texto = "[";
+        for (int i = 0; i < datos.length; i++) {
+            texto += datos[i];
+            if (i < datos.length - 1)
+                texto += ", ";
+        }
+        texto += "]";
+        return texto;
+    }
 }

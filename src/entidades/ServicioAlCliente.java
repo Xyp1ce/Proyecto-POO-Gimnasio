@@ -1,65 +1,87 @@
 package entidades;
 
 public class ServicioAlCliente extends Empleado {
-    private String idioma; // Bueno, regular, malo, peor
-    private int noCustomers;
-    private float commission;
+    private static final long serialVersionUID = 1L;
+    // ATRIBUTOS PARTICULARES DEL SERVICIO
+    private String idiomaServicio;
+    private int clientesAtendidos;
+    private float comision;
 
-    // Constructor
-    public ServicioAlCliente(){ // vacio
+    // CONSTRUCTORES
+    public ServicioAlCliente() {
         super();
-        commission = 0;
+        idiomaServicio = "";
+        clientesAtendidos = 0;
+        comision = 0;
     }
 
-    public ServicioAlCliente(String idioma, int noCustomers) {
+    public ServicioAlCliente(String idioma, int clientesAtendidos) {
         super();
-        this.idioma = idioma;
-        this.noCustomers = noCustomers;
-        commission = 0; // se calculara en base a las encuestas de satisfaccion
+        this.idiomaServicio = idioma;
+        this.clientesAtendidos = clientesAtendidos;
+        comision = 0;
     }
 
-    public ServicioAlCliente(String type, String name, long telephone, String address, String idioma, int noCustomers) {
-        super(type, name, telephone, address);
-        this.idioma = idioma;
-        this.noCustomers = noCustomers;
-        commission = 0;
+    public ServicioAlCliente(String tipoEmpleado, String nombre, long telefono, String direccion, String idioma, int clientesAtendidos) {
+        super(tipoEmpleado, nombre, telefono, direccion);
+        this.idiomaServicio = idioma;
+        this.clientesAtendidos = clientesAtendidos;
+        comision = 0;
     }
 
-    // Getters
-    public String getLanguague() {
-        return idioma;
+    // GETTERS Y SETTERS
+    public String obtenerIdiomaServicio() {
+        return idiomaServicio;
     }
 
-    // Setters
-    public void setComission(float commission) {
-        this.commission = commission;
+    public void definirIdiomaServicio(String idiomaServicio) {
+        this.idiomaServicio = idiomaServicio;
     }
 
-    public void setsalario(float salario) {
-        this.salario = salario;
+    public int obtenerClientesAtendidos() {
+        return clientesAtendidos;
     }
 
-    // Metodos
-    public void attendCustomer() {
-        noCustomers++;
+    public void definirClientesAtendidos(int clientesAtendidos) {
+        this.clientesAtendidos = clientesAtendidos;
     }
 
-    public void addCompliment() {}
+    public float obtenerComision() {
+        return comision;
+    }
 
-    public void doSatisfactionSurvey() {}
+    public void definirComision(float comision) {
+        this.comision = comision;
+    }
+
+    // METODOS PARTICULARES
+    public void atenderCliente() {
+        clientesAtendidos++;
+    }
+
+    public void registrarEncuestaSatisfaccion() {}
+
+    public void registrarFelicitacion() {}
+
+    // METODOS POLIMORFICOS
+    @Override
+    public void registrarEntrada() {
+        tareasProgramadas = "SERVICIO AL CLIENTE EN SERVICIO";
+    }
 
     @Override
-    public String toString() {
+    public void registrarSalida() {
+        tareasProgramadas = "SERVICIO AL CLIENTE FUERA DE SERVICIO";
+    }
+
+    @Override
+    public String generarDescripcion() {
         return "ServicioAlCliente{" +
-                "ID=" + ID +
-                ", tipo='" + tipo + '\'' +
-                ", nombre='" + nombre + '\'' +
-                ", telefono=" + telefono +
-                ", direccion='" + direccion + '\'' +
-                ", salario=" + salario +
-                ", idioma='" + idioma + '\'' +
-                ", noCustomers=" + noCustomers +
-                ", commission=" + commission +
+                "identificador=" + obtenerIdentificador() +
+                ", nombre='" + obtenerNombre() + '\'' +
+                ", idiomaServicio='" + idiomaServicio + '\'' +
+                ", clientesAtendidos=" + clientesAtendidos +
+                ", comision=" + comision +
                 '}';
     }
 }
