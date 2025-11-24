@@ -28,7 +28,7 @@ public abstract class Persona implements Serializable, Identificable
 		return identificador;
 	}
 
-	protected void definirIdentificador(long identificador)
+	public void definirIdentificador(long identificador)
 	{
 		this.identificador = identificador;
 	}
