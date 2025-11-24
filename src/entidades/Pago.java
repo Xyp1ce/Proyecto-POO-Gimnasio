@@ -2,7 +2,7 @@ package entidades;
 
 import java.io.Serializable;
 
-public class Pago implements Serializable
+public class Pago implements Serializable, ConCosto, Reportable
 {
 	private static final long serialVersionUID = 1L;
 
@@ -10,8 +10,8 @@ public class Pago implements Serializable
 	private long idPago;
 	private long idCliente;
 	private float monto;
-	private String fechaPago;	// Formato: "dd/MM/yyyy"
-	private String metodoPago;	// "Efectivo", "Tarjeta", "Transferencia"
+	private String fechaPago; // Formato: "dd/MM/yyyy"
+	private String metodoPago; // "Efectivo", "Tarjeta", "Transferencia"
 	private String concepto;
 	private String referencia;
 
@@ -178,8 +178,8 @@ public class Pago implements Serializable
 		java.util.Calendar cal = java.util.Calendar.getInstance();
 		int dia = cal.get(java.util.Calendar.DAY_OF_MONTH);
 		int mes = cal.get(java.util.Calendar.MONTH) + 1; // Enero es 0
-		int year = cal.get(java.util.Calendar.YEAR);
-		return String.format("%02d/%02d/%04d", dia, mes, year);
+		int anio = cal.get(java.util.Calendar.YEAR);
+		return String.format("%02d/%02d/%04d", dia, mes, anio);
 	}
 
 	private String generarReferencia()
@@ -187,9 +187,9 @@ public class Pago implements Serializable
 		java.util.Calendar cal = java.util.Calendar.getInstance();
 		int dia = cal.get(java.util.Calendar.DAY_OF_MONTH);
 		int mes = cal.get(java.util.Calendar.MONTH) + 1;
-		int year = cal.get(java.util.Calendar.YEAR);
+		int anio = cal.get(java.util.Calendar.YEAR);
 
-		String fecha = String.format("%04d%02d%02d", year, mes, dia);
+		String fecha = String.format("%04d%02d%02d", anio, mes, dia);
 		int aleatorio = (int) (Math.random() * 9000) + 1000;
 		return "PAG-" + fecha + "-" + aleatorio;
 	}
@@ -204,18 +204,18 @@ public class Pago implements Serializable
 
 		int dia1 = Integer.parseInt(partes1[0]);
 		int mes1 = Integer.parseInt(partes1[1]);
-		int year1 = Integer.parseInt(partes1[2]);
+		int anio1 = Integer.parseInt(partes1[2]);
 
 		int dia2 = Integer.parseInt(partes2[0]);
 		int mes2 = Integer.parseInt(partes2[1]);
-		int year2 = Integer.parseInt(partes2[2]);
+		int anio2 = Integer.parseInt(partes2[2]);
 
 		// Cálculo aproximado
-		int diasYears = (year2 - year1) * 365;
+		int diasAnios = (anio2 - anio1) * 365;
 		int diasMeses = (mes2 - mes1) * 30;
 		int diasDias = (dia2 - dia1);
 
-		return Math.abs(diasYears + diasMeses + diasDias);
+		return Math.abs(diasAnios + diasMeses + diasDias);
 	}
 
 	// REPRESENTACION EN TEXTO
@@ -249,5 +249,29 @@ public class Pago implements Serializable
 				"-----------------------------------\n" +
 				"Método de pago: " + metodoPago + "\n" +
 				"====================================\n";
+	}
+
+	// IMPLEMENTACION DE INTERFACES
+
+	@Override
+	public float obtenerCosto()
+	{
+		return monto;
+	}
+
+	@Override
+	public String generarReporte()
+	{
+		return "=== REPORTE DE PAGO ===\n" +
+				"ID Pago: " + idPago + "\n" +
+				"Cliente: " + idCliente + "\n" +
+				"Fecha: " + fechaPago + "\n" +
+				"Monto: $" + String.format("%.2f", monto) + "\n" +
+				"IVA: $" + String.format("%.2f", calcularIVA()) + "\n" +
+				"Total: $" + String.format("%.2f", obtenerMontoConIVA()) + "\n" +
+				"Método: " + metodoPago + "\n" +
+				"Concepto: " + concepto + "\n" +
+				"Referencia: " + referencia + "\n" +
+				"========================\n";
 	}
 }

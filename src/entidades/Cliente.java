@@ -86,7 +86,6 @@ public class Cliente extends Persona
 
 	// METODOS DE MEMBRESIA
 
-	// Verifica si el cliente tiene una membresía activa y vigente.
 	public boolean estaActivaMembresia()
 	{
 		if (membresia == null)
@@ -95,7 +94,6 @@ public class Cliente extends Persona
 		return membresia.verificarVigencia();
 	}
 
-	// Asigna una nueva membresía al cliente.
 	public boolean asignarMembresia(Membresia nuevaMembresia)
 	{
 		if (nuevaMembresia == null)
@@ -105,7 +103,6 @@ public class Cliente extends Persona
 		return true;
 	}
 
-	// Renueva la membresía actual del cliente.
 	public boolean renovarMembresia()
 	{
 		if (membresia == null)
@@ -115,7 +112,6 @@ public class Cliente extends Persona
 		return true;
 	}
 
-	// Obtiene el estado de la membresía en formato texto.
 	public String obtenerEstadoMembresia()
 	{
 		if (membresia == null)
@@ -134,7 +130,6 @@ public class Cliente extends Persona
 
 	// METODOS DE PAGOS
 
-	// Registra un nuevo pago del cliente.
 	public boolean realizarPago(Pago pago)
 	{
 		if (pago == null || !pago.validarPago())
@@ -152,7 +147,6 @@ public class Cliente extends Persona
 		return true;
 	}
 
-	// Calcula el total de pagos realizados por el cliente.
 	public float calcularTotalPagado()
 	{
 		float total = 0.0f;
@@ -168,7 +162,6 @@ public class Cliente extends Persona
 		return total;
 	}
 
-	// Obtiene el último pago realizado.
 	public Pago obtenerUltimoPago()
 	{
 		if (totalPagos == 0)
@@ -177,7 +170,6 @@ public class Cliente extends Persona
 		return historialPagos[totalPagos - 1];
 	}
 
-	// Genera un reporte de todos los pagos del cliente.
 	public String generarReportePagos()
 	{
 		if (totalPagos == 0)
@@ -204,7 +196,6 @@ public class Cliente extends Persona
 		return reporte.toString();
 	}
 
-	// Verifica si el cliente está al día con sus pagos.
 	public boolean estaAlDia()
 	{
 		return estaActivaMembresia();

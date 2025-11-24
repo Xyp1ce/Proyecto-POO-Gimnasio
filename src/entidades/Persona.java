@@ -2,9 +2,10 @@ package entidades;
 
 import java.io.Serializable;
 
-public abstract class Persona implements Serializable
+public abstract class Persona implements Serializable, Identificable
 {
 	private static final long serialVersionUID = 1L;
+
 	// ATRIBUTOS COMPARTIDOS
 	protected long identificador;
 	protected String nombre;
@@ -60,6 +61,13 @@ public abstract class Persona implements Serializable
 	public void definirTelefono(long telefono)
 	{
 		this.telefono = telefono;
+	}
+
+	// IMPLEMENTACION DE IDENTIFICABLE
+	@Override
+	public long obtenerId()
+	{
+		return identificador;
 	}
 
 	// METODO OBLIGATORIO PARA DESCRIPCION

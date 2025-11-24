@@ -2,16 +2,16 @@ package entidades;
 
 import java.io.Serializable;
 
-public class Membresia implements Serializable
+public class Membresia implements Serializable, ConCosto, Reportable
 {
 	private static final long serialVersionUID = 1L;
 
 	// ATRIBUTOS
 	private long idMembresia;
-	private String tipo;				// "Mensual", "Trimestral", "Anual"
+	private String tipo; // "Mensual", "Trimestral", "Anual"
 	private float precio;
-	private String fechaInicio;			// Formato: "dd/MM/yyyy"
-	private String fechaVencimiento;	// Formato: "dd/MM/yyyy"
+	private String fechaInicio; // Formato: "dd/MM/yyyy"
+	private String fechaVencimiento; // Formato: "dd/MM/yyyy"
 	private boolean activa;
 
 	// CONSTRUCTORES
@@ -310,5 +310,27 @@ public class Membresia implements Serializable
 		String estado = verificarVigencia() ? "✓ Vigente" : "✗ Vencida";
 		return String.format("%s | $%.2f | %s (%d días)",
 				tipo, precio, estado, obtenerDiasRestantes());
+	}
+
+	// IMPLEMENTACION DE INTERFACES
+
+	@Override
+	public float obtenerCosto()
+	{
+		return precio;
+	}
+
+	@Override
+	public String generarReporte()
+	{
+		return "=== REPORTE DE MEMBRESÍA ===\n" +
+				"ID: " + idMembresia + "\n" +
+				"Tipo: " + tipo + "\n" +
+				"Precio: $" + String.format("%.2f", precio) + "\n" +
+				"Fecha inicio: " + fechaInicio + "\n" +
+				"Fecha vencimiento: " + fechaVencimiento + "\n" +
+				"Estado: " + (verificarVigencia() ? "VIGENTE" : "VENCIDA") + "\n" +
+				"Días restantes: " + obtenerDiasRestantes() + "\n" +
+				"============================\n";
 	}
 }
