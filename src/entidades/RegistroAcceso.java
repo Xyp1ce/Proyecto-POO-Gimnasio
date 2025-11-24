@@ -1,5 +1,6 @@
 package entidades;
 
-public class RegistroAcceso {
+public class RegistroAcceso
+{
 
 }

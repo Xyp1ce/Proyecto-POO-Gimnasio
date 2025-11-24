@@ -2,7 +2,8 @@ package entidades;
 
 import java.io.Serializable;
 
-public abstract class Persona implements Serializable {
+public abstract class Persona implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 	// ATRIBUTOS COMPARTIDOS
 	protected long identificador;
@@ -13,42 +14,51 @@ public abstract class Persona implements Serializable {
 	// CONSTRUCTORES
 	protected Persona() {}
 
-	protected Persona(String nombre, String documento, long telefono) {
+	protected Persona(String nombre, String documento, long telefono)
+	{
 		this.nombre = nombre;
 		this.documento = documento;
 		this.telefono = telefono;
 	}
 
-	// GETTERS Y SETTERS EN ESPAÑOL
-	public long obtenerIdentificador() {
+	// GETTERS Y SETTERS
+	public long obtenerIdentificador()
+	{
 		return identificador;
 	}
 
-	protected void definirIdentificador(long identificador) {
+	protected void definirIdentificador(long identificador)
+	{
 		this.identificador = identificador;
 	}
 
-	public String obtenerNombre() {
+	public String obtenerNombre()
+	{
 		return nombre;
 	}
 
-	public void definirNombre(String nombre) {
+	public void definirNombre(String nombre)
+	{
 		this.nombre = nombre;
 	}
 
-	public String obtenerDocumento() {
+	public String obtenerDocumento()
+	{
 		return documento;
 	}
 
-	public void definirDocumento(String documento) {
+	public void definirDocumento(String documento)
+	{
 		this.documento = documento;
 	}
 
-	public long obtenerTelefono() {
+	public long obtenerTelefono()
+	{
 		return telefono;
 	}
 
-	public void definirTelefono(long telefono) {
+	public void definirTelefono(long telefono)
+	{
 		this.telefono = telefono;
 	}
 
@@ -56,7 +66,8 @@ public abstract class Persona implements Serializable {
 	public abstract String generarDescripcion();
 
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return generarDescripcion();
 	}
 }

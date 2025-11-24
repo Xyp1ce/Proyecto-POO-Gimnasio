@@ -9,7 +9,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 @SuppressWarnings("unused")
-public class Persistencia {
+public class Persistencia
+{
 	//ATRIBUTOS
 	
 	
@@ -23,10 +24,12 @@ public class Persistencia {
 
 	//METODOS
 	//METODO PARA LEER LOS OBJETOS SERIALIZADOS
-	public static Gimnasio obtenerDatos() {	
+	public static Gimnasio obtenerDatos()
+	{
 		FileInputStream fisPer = null;
 		
-		try {
+		try
+		{
 			fisPer = new FileInputStream("Gimnasio.ser");
 			ObjectInputStream oisPer = new ObjectInputStream(fisPer);
 			
@@ -34,13 +37,15 @@ public class Persistencia {
 			Gimnasio g = (Gimnasio) oisPer.readObject();
 			return g;
 			
-		} catch(Exception e){
+		} catch(Exception e)
+		{
 			e.printStackTrace();
 		}
 		return null;
 	}
 	
-	public static void guardarDatos() {
+	public static void guardarDatos()
+	{
 		FileOutputStream archivo;
 		File f =  new File("Gimnasio.ser");
 		
@@ -53,8 +58,5 @@ public class Persistencia {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
-	
-
 }
