@@ -3,30 +3,31 @@ import javax.swing.JOptionPane;
 import control.*;
 import entidades.*;
 
-public class MenuSucursal{
+public class MenuSucursal
+{
 	Sucursal sucursal;
 	static long idCliente;
 
 	public static void menu(Sucursal opcSucursal)
 	{
 		// SUCURSAL LLAMADA DESDE MENU PRINCIPAL
-		Sucursal sucursal = opcSucursal;
 		String opciones = "";
 		do
 		{
 			opciones = JOptionPane.showInputDialog(null, "Bienvenido a la sucursal " +
-				sucursal.toString() +
-				"\nPor favor Seleccione una de las siguientes opciones: "+
-				"\n[1] Agregar Cliente"+
-				"\n[2] Mostrar Lista de Clientes"+
-				"\n[3] Seleccionar Cliente"+
-				"\n[4] Remover Cliente"+
-				"\n[5] Ver Lista de Empleados"+
-				"\n[6] Agregar Empleado"+
-				"\n[7] Remover Empleado"+
-				"\n[8] Seleccionar Empleado"+
-				"\n[9] Salir"+
-				"\nOpcion:\t");
+					opcSucursal.toString() +
+					"\nPor favor Seleccione una de las siguientes opciones: "+
+					"\n[1] Agregar Cliente"+
+					"\n[2] Mostrar Lista de Clientes"+
+					"\n[3] Seleccionar Cliente"+
+					"\n[4] Remover Cliente"+
+					"\n[5] Ver Lista de Empleados"+
+					"\n[6] Agregar Empleado"+
+					"\n[7] Remover Empleado"+
+					"\n[8] Seleccionar Empleado"+
+					"\n[9] Gestión de Membresías y Pagos" + // NUEVA OPCION
+					"\n[10] Salir"+
+					"\nOpcion:\t");
 
 			if (opciones == null)
 			{
@@ -41,7 +42,7 @@ public class MenuSucursal{
 					Cliente nuevo = agregarCliente();
 					if (nuevo != null)
 					{
-						if (sucursal.agregarCliente(nuevo))
+						if (opcSucursal.agregarCliente(nuevo))
 							JOptionPane.showMessageDialog(null, "Cliente agregado exitosamente");
 						else
 							JOptionPane.showMessageDialog(null, "No fue posible agregar al cliente");
@@ -50,22 +51,22 @@ public class MenuSucursal{
 				}
 				case "2": // VER CLIENTES
 				{
-					JOptionPane.showMessageDialog(null, verClientes(sucursal));
+					JOptionPane.showMessageDialog(null, verClientes(opcSucursal));
 					break;
 				}
 				case "3": // SELECCIONAR CLIENTE
 				{
-					seleccionarCliente(sucursal);
+					seleccionarCliente(opcSucursal);
 					break;
 				}
 				case "4": // REMOVER CLIENTE
 				{
-					removerCliente(sucursal);
+					removerCliente(opcSucursal);
 					break;
 				}
 				case "5": // VER EMPLEADOS
 				{
-					JOptionPane.showMessageDialog(null, verEmpleados(sucursal));
+					JOptionPane.showMessageDialog(null, verEmpleados(opcSucursal));
 					break;
 				}
 				case "6": // AGREGAR EMPLEADO
@@ -73,24 +74,29 @@ public class MenuSucursal{
 					Empleado emp = agregarEmpleado();
 					if (emp != null)
 					{
-						if (sucursal.registrarEmpleado(emp))
-						JOptionPane.showMessageDialog(null, "Empleado registrado exitosamente");
+						if (opcSucursal.registrarEmpleado(emp))
+							JOptionPane.showMessageDialog(null, "Empleado registrado exitosamente");
 						else
-						JOptionPane.showMessageDialog(null, "No fue posible registrar al empleado");
+							JOptionPane.showMessageDialog(null, "No fue posible registrar al empleado");
 					}
 					break;
 				}
 				case "7": // REMOVER EMPLEADO
 				{
-					removerEmpleado(sucursal);
+					removerEmpleado(opcSucursal);
 					break;
 				}
 				case "8": // SELECCIONAR EMPLEADO Y LLAMAR A SU MENU
 				{
-					seleccionarEmpleado(sucursal);
+					seleccionarEmpleado(opcSucursal);
 					break;
 				}
-				case "9":
+				case "9": // GESTION DE MEMBRESIAS Y PAGOS (NUEVA OPCION)
+				{
+					MenuMembresias.menu(opcSucursal);
+					break;
+				}
+				case "10":
 				{
 					JOptionPane.showMessageDialog(null, "Regresando al menu principal...");
 					return;
@@ -98,7 +104,7 @@ public class MenuSucursal{
 				default:
 					JOptionPane.showMessageDialog(null, "Opcion invalida");
 			}
-		} while (!"9".equals(opciones));
+		} while (!"10".equals(opciones));
 	}
 
 	public static Cliente agregarCliente()
@@ -136,8 +142,8 @@ public class MenuSucursal{
 
 	public static String verClientes(Sucursal sucursal)
 	{
-		String StrClientes = "";
-		Cliente clientes[] = sucursal.obtenerClientes();
+		StringBuilder strClientes = new StringBuilder();
+		Cliente[] clientes = sucursal.obtenerClientes();
 		if (clientes == null)
 			return "No hay clientes registrados.";
 		int count = 0;
@@ -145,13 +151,13 @@ public class MenuSucursal{
 		{
 			if (c != null)
 			{
-				StrClientes += c.toString() + "\n";
+				strClientes.append(c).append("\n");
 				count++;
 			}
 		}
 		if (count == 0)
 			return "No hay clientes registrados.";
-		return StrClientes;
+		return strClientes.toString();
 	}
 
 	public static Empleado agregarEmpleado()
@@ -170,12 +176,12 @@ public class MenuSucursal{
 		while (true)
 		{
 			String tel = JOptionPane.showInputDialog(null, "Ingrese el telefono del empleado:");
-			
+
 			if (tel == null)
 				return null;
-			
+
 			tel = tel.trim();
-			
+
 			if (tel.matches("\\d+"))
 			{
 				telefono = Long.parseLong(tel);
@@ -183,47 +189,49 @@ public class MenuSucursal{
 			}
 			JOptionPane.showMessageDialog(null, "TELEFONO INVALIDO, SOLO DIGITOS");
 		}
-		
+
 		String direccion = JOptionPane.showInputDialog(null, "Ingrese la direccion del empleado:");
 		if (direccion == null)
 			return null;
 
-		if ("1".equals(opcionTipo.trim()))
-		{
-			String especialidad = JOptionPane.showInputDialog(null, "Ingrese una especialidad inicial:");
-			if (especialidad == null)
-				especialidad = "";
-			String certificacion = JOptionPane.showInputDialog(null, "Ingrese una certificacion inicial:");
-			if (certificacion == null)
-				certificacion = "";
-			String rutina = JOptionPane.showInputDialog(null, "Ingrese una rutina inicial:");
-			if (rutina == null)
-				rutina = "";
-			Entrenador entrenador = new Entrenador("Entrenador", nombre, telefono, direccion, especialidad, certificacion, rutina);
-			entrenador.definirDocumento(documento);
-			return entrenador;
-		}
-		if ("2".equals(opcionTipo.trim()))
-		{
-			String area = JOptionPane.showInputDialog(null, "Ingrese el area asignada:");
-			if (area == null)
-				area = "General";
-			Limpieza limpieza = new Limpieza("Limpieza", nombre, telefono, direccion, area);
-			limpieza.definirDocumento(documento);
-			return limpieza;
-		}
-		if ("3".equals(opcionTipo.trim()))
-		{
-			String idioma = JOptionPane.showInputDialog(null, "Ingrese el idioma principal:");
-			if (idioma == null)
-				idioma = "Español";
-			String total = JOptionPane.showInputDialog(null, "Ingrese clientes atendidos previamente:");
-			int atendidos = 0;
-			if (total != null && total.trim().matches("\\d+"))
-				atendidos = Integer.parseInt(total.trim());
-			ServicioAlCliente servicio = new ServicioAlCliente("Servicio", nombre, telefono, direccion, idioma, atendidos);
-			servicio.definirDocumento(documento);
-			return servicio;
+		switch (opcionTipo.trim()) {
+			case "1":
+			{
+				String especialidad = JOptionPane.showInputDialog(null, "Ingrese una especialidad inicial:");
+				if (especialidad == null)
+					especialidad = "";
+				String certificacion = JOptionPane.showInputDialog(null, "Ingrese una certificacion inicial:");
+				if (certificacion == null)
+					certificacion = "";
+				String rutina = JOptionPane.showInputDialog(null, "Ingrese una rutina inicial:");
+				if (rutina == null)
+					rutina = "";
+				Entrenador entrenador = new Entrenador("Entrenador", nombre, telefono, direccion, especialidad, certificacion, rutina);
+				entrenador.definirDocumento(documento);
+				return entrenador;
+			}
+			case "2":
+			{
+				String area = JOptionPane.showInputDialog(null, "Ingrese el area asignada:");
+				if (area == null)
+					area = "General";
+				Limpieza limpieza = new Limpieza("Limpieza", nombre, telefono, direccion, area);
+				limpieza.definirDocumento(documento);
+				return limpieza;
+			}
+			case "3":
+			{
+				String idioma = JOptionPane.showInputDialog(null, "Ingrese el idioma principal:");
+				if (idioma == null)
+					idioma = "Español";
+				String total = JOptionPane.showInputDialog(null, "Ingrese clientes atendidos previamente:");
+				int atendidos = 0;
+				if (total != null && total.trim().matches("\\d+"))
+					atendidos = Integer.parseInt(total.trim());
+				ServicioAlCliente servicio = new ServicioAlCliente("Servicio", nombre, telefono, direccion, idioma, atendidos);
+				servicio.definirDocumento(documento);
+				return servicio;
+			}
 		}
 		JOptionPane.showMessageDialog(null, "Opcion de empleado invalida");
 		return null;
@@ -231,8 +239,8 @@ public class MenuSucursal{
 
 	public static String verEmpleados(Sucursal sucursal)
 	{
-		String StrEmpleados = "";
-		Empleado empleados[] = sucursal.obtenerEmpleados();
+		StringBuilder strEmpleados = new StringBuilder();
+		Empleado[] empleados = sucursal.obtenerEmpleados();
 		if (empleados == null)
 			return "No hay empleados registrados.";
 		int count = 0;
@@ -240,19 +248,19 @@ public class MenuSucursal{
 		{
 			if (e != null)
 			{
-				StrEmpleados += e.toString() + "\n";
+				strEmpleados.append(e).append("\n");
 				count++;
 			}
 		}
 		if (count == 0)
 			return "No hay empleados registrados.";
-		return StrEmpleados;
+		return strEmpleados.toString();
 	}
 
 	public static void seleccionarEmpleado(Sucursal sucursal)
 	{
 		// IMPLEMENTAR SELECCIONAR EMPLEADO
-		try 
+		try
 		{
 			String in = JOptionPane.showInputDialog(null, verEmpleados(sucursal) + "\nIngrese el ID del empleado:");
 			if (in == null)
