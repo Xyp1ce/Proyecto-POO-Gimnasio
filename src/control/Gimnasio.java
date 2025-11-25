@@ -20,7 +20,7 @@ public class Gimnasio implements Serializable
 	public static void main(String[] args)
 	{
 		// PREPARAR LOS COMPONENTES DE PERSISTENCIA
-		PersistenciaBasica.inicializar();
+		Persistencia.inicializar();
 
 		// CREAR EL NUCLEO DEL SISTEMA CON SUCURSALES BASE
 		Gimnasio gimnasio = new Gimnasio();
@@ -28,7 +28,7 @@ public class Gimnasio implements Serializable
 
 		// INTENTAR CARGAR DATOS DESDE LOS ARCHIVOS EXISTENTES
 		System.out.println("Intentando cargar datos previos...");
-		boolean datoscargados = PersistenciaBasica.cargarTodo();
+		boolean datoscargados = Persistencia.cargarTodo();
 
 		if (datoscargados)
 		{
@@ -57,7 +57,7 @@ public class Gimnasio implements Serializable
 		detenerAutoGuardado();
 		System.out.println("Guardando datos...");
 		DatosSistema.definirSucursales(sucursales);
-		PersistenciaBasica.guardarTodo();
+		Persistencia.guardarTodo();
 		System.out.println("Datos guardados. Hasta luego!");
 	}
 

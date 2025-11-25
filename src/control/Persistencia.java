@@ -11,7 +11,7 @@ import java.util.Map;
  * Formato: campos separados por | (pipe)
  * Archivos: data/personas.txt, data/sucursales.txt, data/sesiones.txt
  */
-public class PersistenciaBasica
+public class Persistencia
 {
 	// CENTRALIZAR LA CONFIGURACION DE ARCHIVOS DE TEXTO
 	// RUTAS DE ARCHIVOS

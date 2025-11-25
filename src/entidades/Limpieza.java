@@ -60,15 +60,11 @@ public class Limpieza extends Empleado
 	}
 
 	@Override
-	public String generarDescripcion()
+	protected String describirCamposEspecificos()
 	{
-		// INCLUIR EL AREA PARA IDENTIFICAR SUS RESPONSABILIDADES
-		return "Limpieza{" +
-				"identificador=" + obtenerIdentificador() +
-				", nombre='" + obtenerNombre() + '\'' +
-				", telefono=" + obtenerTelefono() +
-				", direccion='" + obtenerDireccion() + '\'' +
-				", areaAsignada='" + areaAsignada + '\'' +
-				'}';
+		String camposBase = super.describirCamposEspecificos();
+		String descripcion = (camposBase == null || camposBase.isEmpty()) ? "" : camposBase + ", ";
+		descripcion += "areaAsignada='" + textoSeguro(areaAsignada) + '\'';
+		return descripcion;
 	}
 }

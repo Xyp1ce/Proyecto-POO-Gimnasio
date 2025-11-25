@@ -43,7 +43,7 @@ Guía de metas y versiones (roadmap detallado)
 
 1.2.0 Persistencia mínima con TXT
 
-    Crear PersistenciaBasica con métodos: guardar/cargarPersonas, guardar/cargarSucursales, guardar/cargarSesiones.
+    Crear Persistencia con métodos: guardar/cargarPersonas, guardar/cargarSucursales, guardar/cargarSesiones.
     Crear carpeta data/ y archivos vacíos si no existen.
     Integrar al flujo de la app: cargar al iniciar, guardar al salir.
 

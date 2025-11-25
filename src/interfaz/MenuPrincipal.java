@@ -338,7 +338,7 @@ public class MenuPrincipal
 		if (confirmacion == JOptionPane.YES_OPTION)
 		{
 			DatosSistema.definirSucursales(Gimnasio.obtenerSucursales());
-			boolean exito = PersistenciaBasica.guardarTodo();
+			boolean exito = Persistencia.guardarTodo();
 
 			if (exito)
 			{

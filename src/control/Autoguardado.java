@@ -33,7 +33,7 @@ public class Autoguardado extends Thread
 		// REPLICAR LAS SUCURSALES ACTUALES EN EL CONTENEDOR GLOBAL
 		DatosSistema.definirSucursales(Gimnasio.obtenerSucursales());
 		// GUARDAR TODO EL ESTADO DEL SISTEMA EN ALMACENAMIENTO
-		boolean exito = PersistenciaBasica.guardarTodo();
+		boolean exito = Persistencia.guardarTodo();
 		System.out.println("Autoguardado del sistema");
 
 		if (!exito)

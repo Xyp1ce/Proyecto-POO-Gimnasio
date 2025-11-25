@@ -1,4 +1,0 @@
-SUCURSAL|0|Peninsula|Centro|6:00-22:00|Pesas, Cardio|300.0
-SUCURSAL|1|Plaza Rio|Norte|5:00-23:00|Yoga, Pilates|450.0
-SUCURSAL|2|Santa Fe|Sur|24 horas|Natación, Spa|600.0
-SUCURSAL|3|Dubai|Este|7:00-21:00|Crossfit, Boxeo|750.0

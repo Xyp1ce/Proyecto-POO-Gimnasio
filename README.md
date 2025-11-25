@@ -87,7 +87,7 @@ src/
 ├─ control/
 │  ├─ Gimnasio.java
 │  ├─ Sucursal.java
-│  ├─ PersistenciaBasica.java
+│  ├─ Persistencia.java
 │  ├─ DatosSistema.java
 1  ├─ Autoguardado.java
 │  ├─ Operacion.java
@@ -184,7 +184,7 @@ Convenciones:
     - `SESION|id|clienteId|entrenadorId|fechaEpochMillis|duracionMin|descripcionCorta`
 
 Clases relacionadas:
-- `control.PersistenciaBasica` centraliza `cargar...()` y `guardar...()` para los tres archivos.
+- `control.Persistencia` centraliza `cargar...()` y `guardar...()` para los tres archivos.
 - `control.DatosSistema` mantiene en memoria listas/arreglos usados por la aplicación.
 
 
@@ -244,7 +244,7 @@ Plan de versiones incrementales hasta cubrir todos los temas actualmente soporta
 - 1.0.5 Subtipos de `Empleado`: `Entrenador`, `Limpieza`, `ServicioAlCliente`.
 - 1.0.6 `Membresia` y `Pago` (validación de vigencia y registro de pagos).
 - 1.1.0 Menú principal y submenús con `JOptionPane`.
-- 1.2.0 Persistencia mínima: `PersistenciaBasica` + `DatosSistema` (personas, sucursales, sesiones en `.txt`).
+- 1.2.0 Persistencia mínima: `Persistencia` + `DatosSistema` (personas, sucursales, sesiones en `.txt`).
 - 1.3.0 Interfaces (`Identificable`, `ConCosto`, `Reportable`) para polimorfismo por interfaz.
 - 1.3.1 Clases abstractas y método plantilla (`Operacion` + `OperacionRegistrarPago`).
 - 1.3.2 Polimorfismo en servicios y reportes (`ServicioReportes`).

@@ -222,21 +222,13 @@ public class Cliente extends Persona
 
 	// REPRESENTACION
 	@Override
-	public String generarDescripcion()
+	protected String describirCamposEspecificos()
 	{
-		String estadoMembresia = obtenerEstadoMembresia();
-
-		// MOSTRAR UNA DESCRIPCION COMPLETA DEL ESTADO DEL CLIENTE
-		return "Cliente{" +
-				"identificador=" + obtenerIdentificador() +
-				", nombre='" + obtenerNombre() + '\'' +
-				", tipoCliente='" + tipoCliente + '\'' +
+		return "tipoCliente='" + textoSeguro(tipoCliente) + '\'' +
 				", historialVisitas=" + historialVisitas +
-				", telefono=" + obtenerTelefono() +
-				", membresia=" + estadoMembresia +
+				", estadoMembresia='" + obtenerEstadoMembresia() + '\'' +
 				", totalPagos=" + totalPagos +
-				", totalPagado=$" + String.format("%.2f", calcularTotalPagado()) +
-				'}';
+				", totalPagado=$" + String.format("%.2f", calcularTotalPagado());
 	}
 
 	public String generarResumenCompleto()

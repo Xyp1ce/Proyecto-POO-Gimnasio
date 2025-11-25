@@ -73,13 +73,28 @@ public abstract class Persona implements Serializable, Identificable
 		return identificador;
 	}
 
-	// METODO OBLIGATORIO PARA DESCRIPCION
-	public abstract String generarDescripcion();
+	// METODOS PARA DESCRIPCION EN TEXTO
+	protected String describirCamposEspecificos()
+	{
+		// PERMITIR A LAS SUBCLASES APORTAR SUS CAMPOS PARTICULARES
+		return "";
+	}
 
 	@Override
 	public String toString()
 	{
-		// UTILIZAR LA DESCRIPCION PARA REPRESENTAR A LA PERSONA
-		return generarDescripcion();
+		String extras = describirCamposEspecificos();
+		return getClass().getSimpleName() + '{' +
+				"identificador=" + identificador +
+				", nombre='" + textoSeguro(nombre) + '\'' +
+				", documento='" + textoSeguro(documento) + '\'' +
+				", telefono=" + telefono +
+				(extras != null && !extras.trim().isEmpty() ? ", " + extras : "") +
+				'}';
+	}
+
+	protected String textoSeguro(String valor)
+	{
+		return valor == null ? "" : valor;
 	}
 }

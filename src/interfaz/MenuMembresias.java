@@ -103,8 +103,8 @@ public class MenuMembresias
 			{
 				int respuesta = JOptionPane.showConfirmDialog(null,
 						"El cliente ya tiene una membresía activa.\n" +
-								cliente.obtenerMembresia().resumen() + "\n\n" +
-								"¿Desea reemplazarla?",
+								cliente.obtenerMembresia() + "\n\n" +
+						"¿Desea reemplazarla?",
 						"Membresía Existente",
 						JOptionPane.YES_NO_OPTION);
 
@@ -190,8 +190,8 @@ public class MenuMembresias
 			Membresia membresia = cliente.obtenerMembresia();
 
 			int respuesta = JOptionPane.showConfirmDialog(null,
-					"Cliente: " + cliente.obtenerNombre() + "\n" +
-					"Membresia actual: " + membresia.resumen() + "\n\n" +
+					"Cliente seleccionado:\n" + cliente + "\n\n" +
+					"Membresía actual:\n" + membresia + "\n\n" +
 					"¿Confirma la renovacion?",
 				"Renovar Membresia",
 					JOptionPane.YES_NO_OPTION);
@@ -233,8 +233,8 @@ public class MenuMembresias
 			if (cliente.obtenerMembresia() == null)
 			{
 				JOptionPane.showMessageDialog(null,
-						"Cliente: " + cliente.obtenerNombre() + "\n" +
-								"Estado: Sin membresía asignada");
+						"Cliente seleccionado:\n" + cliente + "\n\n" +
+						"Estado: Sin membresía asignada");
 				return;
 			}
 
@@ -243,13 +243,12 @@ public class MenuMembresias
 
 			JOptionPane.showMessageDialog(null,
 					"===== ESTADO DE MEMBRESÍA =====\n" +
-							"Cliente: " + cliente.obtenerNombre() + "\n" +
-							"ID: " + cliente.obtenerIdentificador() + "\n" +
-							"-------------------------------\n" +
-							membresia + "\n" +
-							"-------------------------------\n" +
-							"Estado: " + estado + "\n" +
-							"===============================");
+					cliente + "\n" +
+					"-------------------------------\n" +
+					membresia + "\n" +
+					"-------------------------------\n" +
+					"Estado: " + estado + "\n" +
+					"===============================");
 		}
 		catch (NumberFormatException ex)
 		{
@@ -278,8 +277,8 @@ public class MenuMembresias
 			}
 
 			String montoStr = JOptionPane.showInputDialog(null,
-					"Cliente: " + cliente.obtenerNombre() + "\n\n" +
-							"Ingrese el monto del pago:");
+					"Cliente seleccionado:\n" + cliente + "\n\n" +
+						"Ingrese el monto del pago:");
 
 			if (montoStr == null)
 				return;
@@ -389,9 +388,8 @@ public class MenuMembresias
 			else
 			{
 				clientesMorosos++;
-				reporte.append("✗ ").append(cliente.obtenerNombre());
-				reporte.append(" (ID: ").append(cliente.obtenerIdentificador()).append(")");
-				reporte.append(" - Membresía vencida\n");
+				reporte.append("✗ ").append(cliente).append("\n");
+				reporte.append("   Membresía vencida\n");
 			}
 		}
 

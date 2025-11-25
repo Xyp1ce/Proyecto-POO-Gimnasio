@@ -137,18 +137,15 @@ public class Entrenador extends Empleado
 	}
 
 	@Override
-	public String generarDescripcion()
+	protected String describirCamposEspecificos()
 	{
-		// INCLUIR LISTAS PARA EXPLICAR LA EXPERIENCIA DEL ENTRENADOR
-		return "Entrenador{" +
-				"identificador=" + obtenerIdentificador() +
-				", nombre='" + obtenerNombre() + '\'' +
-				", especialidades=" + formatearArreglo(especialidades) +
-				", certificaciones=" + formatearArreglo(certificaciones) +
-				", rutinas=" + formatearArreglo(rutinas) +
-				", comision=" + comision +
-				", salario=" + obtenerSalario() +
-				'}';
+		String camposBase = super.describirCamposEspecificos();
+		String descripcion = (camposBase == null || camposBase.isEmpty()) ? "" : camposBase + ", ";
+		descripcion += "especialidades=" + formatearArreglo(especialidades);
+		descripcion += ", certificaciones=" + formatearArreglo(certificaciones);
+		descripcion += ", rutinas=" + formatearArreglo(rutinas);
+		descripcion += ", comision=" + comision;
+		return descripcion;
 	}
 
 	private String formatearArreglo(String[] datos)
