@@ -2,6 +2,7 @@ package entidades;
 
 public class Limpieza extends Empleado
 {
+	// ESPECIALIZAR EMPLEADO PARA ACTIVIDADES DE LIMPIEZA
 	private static final long serialVersionUID = 1L;
 	// ATRIBUTO PARTICIPANTE
 	private String areaAsignada;
@@ -10,12 +11,14 @@ public class Limpieza extends Empleado
 	public Limpieza()
 	{
 		super();
+		// ASIGNAR UN AREA VACIA HASTA SER CONFIGURADA
 		areaAsignada = "";
 	}
 
 	public Limpieza(String area)
 	{
 		super();
+		// PERMITIR CREAR INSTANCIAS SOLO CON EL AREA
 		areaAsignada = area;
 	}
 
@@ -45,18 +48,21 @@ public class Limpieza extends Empleado
 	@Override
 	public void registrarEntrada()
 	{
+		// INDICAR QUE EL PERSONAL ESTA ACTIVO
 		tareasProgramadas = "LIMPIEZA EN SERVICIO";
 	}
 
 	@Override
 	public void registrarSalida()
 	{
+		// MOSTRAR QUE LAS LABORES HAN CONCLUIDO
 		tareasProgramadas = "LIMPIEZA FUERA DE SERVICIO";
 	}
 
 	@Override
 	public String generarDescripcion()
 	{
+		// INCLUIR EL AREA PARA IDENTIFICAR SUS RESPONSABILIDADES
 		return "Limpieza{" +
 				"identificador=" + obtenerIdentificador() +
 				", nombre='" + obtenerNombre() + '\'' +

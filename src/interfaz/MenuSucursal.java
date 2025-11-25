@@ -5,7 +5,9 @@ import entidades.*;
 
 public class MenuSucursal
 {
+	// GUARDA REFERENCIA CUANDO SE REQUIERE CONTEXTO DE INSTANCIA
 	Sucursal sucursal;
+	// CONSERVA EL ID DEL CLIENTE SELECCIONADO ENTRE ACCIONES
 	static long idCliente;
 
 	public static void menu(Sucursal opcSucursal)
@@ -31,6 +33,7 @@ public class MenuSucursal
 
 			if (opciones == null)
 			{
+				// REGRESAR SI EL USUARIO CANCELA EL DIALOGO
 				JOptionPane.showMessageDialog(null, "Regresando al menu principal...");
 				return;
 			}
@@ -109,6 +112,7 @@ public class MenuSucursal
 
 	public static Cliente agregarCliente()
 	{
+		// SOLICITA DATOS DEL CLIENTE Y VERIFICA NUMEROS TELEFONICOS
 		String nombre = JOptionPane.showInputDialog("Ingrese el nombre del cliente:");
 		if (nombre == null)
 			return null;
@@ -124,7 +128,7 @@ public class MenuSucursal
 
 		while (true)
 		{
-			String tel = JOptionPane.showInputDialog("Ingrese el telefono del cliente (solo dígitos):");
+			String tel = JOptionPane.showInputDialog("Ingrese el telefono del cliente (solo digitos):");
 			if (tel == null)
 				return null; // CANCELAR
 			tel = tel.trim();
@@ -135,13 +139,14 @@ public class MenuSucursal
 			}
 			else
 			{
-				JOptionPane.showMessageDialog(null, "Telefono inválido. Introduce sólo dígitos o pulsa Cancelar.");
+				JOptionPane.showMessageDialog(null, "Telefono invalido. Introduce solo digitos o pulsa Cancelar.");
 			}
 		}
 	}
 
 	public static String verClientes(Sucursal sucursal)
 	{
+		// GENERA LISTA FORMATEADA DE CLIENTES EXISTENTES
 		StringBuilder strClientes = new StringBuilder();
 		Cliente[] clientes = sucursal.obtenerClientes();
 		if (clientes == null)
@@ -162,7 +167,7 @@ public class MenuSucursal
 
 	public static Empleado agregarEmpleado()
 	{
-		// DATOS DEL EMPLEADO
+		// CAPTURA DATOS DEL EMPLEADO Y CREA INSTANCIA SEGUN EL TIPO
 		String opcionTipo = JOptionPane.showInputDialog(null, "Seleccione el tipo de empleado:\n[1] Entrenador\n[2] Limpieza\n[3] Servicio Al Cliente");
 		if (opcionTipo == null)
 			return null;
@@ -259,7 +264,7 @@ public class MenuSucursal
 
 	public static void seleccionarEmpleado(Sucursal sucursal)
 	{
-		// IMPLEMENTAR SELECCIONAR EMPLEADO
+		// BUSCA EMPLEADO POR ID Y ABRE MENU ESPECIFICO
 		try
 		{
 			String in = JOptionPane.showInputDialog(null, verEmpleados(sucursal) + "\nIngrese el ID del empleado:");
@@ -292,6 +297,7 @@ public class MenuSucursal
 
 	public static void removerEmpleado(Sucursal sucursal)
 	{
+		// SOLICITA ID Y ELIMINA EMPLEADO SI EXISTE
 		try
 		{
 			String in = JOptionPane.showInputDialog(null, verEmpleados(sucursal) + "\nIngrese el ID del empleado a eliminar:");
@@ -311,6 +317,7 @@ public class MenuSucursal
 
 	public static void seleccionarCliente(Sucursal sucursal)
 	{
+		// PERMITE NAVEGAR A LAS OPCIONES DE UN CLIENTE EN PARTICULAR
 		try
 		{
 			String in = JOptionPane.showInputDialog(null, verClientes(sucursal) + "\nIngrese el ID del cliente:");
@@ -335,6 +342,7 @@ public class MenuSucursal
 
 	public static void removerCliente(Sucursal sucursal)
 	{
+		// ELIMINA CLIENTE DESPUES DE CONFIRMAR IDENTIFICADOR
 		try
 		{
 			String in = JOptionPane.showInputDialog(null, verClientes(sucursal) + "\nIngrese el ID del cliente a eliminar:");

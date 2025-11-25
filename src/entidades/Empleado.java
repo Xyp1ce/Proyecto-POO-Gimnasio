@@ -4,6 +4,7 @@ import control.Gimnasio;
 
 public abstract class Empleado extends Persona
 {
+	// ESPECIALIZAR PERSONA PARA MANEJAR EMPLEADOS DEL GIMNASIO
 	private static final long serialVersionUID = 1L;
 	// ATRIBUTOS DEL EMPLEADO
 	protected String tipoEmpleado;
@@ -15,12 +16,14 @@ public abstract class Empleado extends Persona
 	public Empleado()
 	{
 		super();
+		// ASIGNAR IDENTIFICADOR UNICO DESDE EL INICIO
 		asignarIdentificadorEmpleado();
 	}
 
 	public Empleado(String tipoEmpleado, String nombre, String documento, long telefono, String direccion)
 	{
 		super(nombre, documento, telefono);
+		// CONFIGURAR LA INFORMACION CORE DEL EMPLEADO
 		this.tipoEmpleado = tipoEmpleado;
 		this.direccion = direccion;
 		tareasProgramadas = "";
@@ -77,6 +80,7 @@ public abstract class Empleado extends Persona
 	// METODOS COMPARTIDOS
 	private void asignarIdentificadorEmpleado()
 	{
+		// GENERAR UN IDENTIFICADOR ALEATORIO QUE NO SE REPITA EN EL GIMNASIO
 		long nuevoIdentificador;
 		do
 			nuevoIdentificador = (long) (Math.random() * 90000000L) + 10000000L;
@@ -93,6 +97,7 @@ public abstract class Empleado extends Persona
 	@Override
 	public String generarDescripcion()
 	{
+		// CONSTRUIR UNA CADENA QUE RESUME LOS ATRIBUTOS CLAVE
 		return "Empleado{" +
 				"identificador=" + obtenerIdentificador() +
 				", tipoEmpleado='" + tipoEmpleado + '\'' +

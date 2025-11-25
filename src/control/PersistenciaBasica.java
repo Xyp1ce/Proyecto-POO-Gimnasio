@@ -10,6 +10,7 @@ import java.io.*;
  */
 public class PersistenciaBasica
 {
+	// CENTRALIZAR LA CONFIGURACION DE ARCHIVOS DE TEXTO
 	// RUTAS DE ARCHIVOS
 	private static final String CARPETA_DATA = "data";
 	private static final String ARCHIVO_PERSONAS = CARPETA_DATA + "/personas.txt";
@@ -21,13 +22,13 @@ public class PersistenciaBasica
 	{
 		File carpeta = new File(CARPETA_DATA);
 
-		// Crear carpeta si no existe
+		// CREAR LA CARPETA BASE SI AUN NO EXISTE
 		if (!carpeta.exists())
 		{
 			carpeta.mkdir();
 		}
 
-		// Crear archivos si no existen
+		// CREAR CADA ARCHIVO NECESARIO SI FALTA
 		crearArchivoSiNoExiste(ARCHIVO_PERSONAS);
 		crearArchivoSiNoExiste(ARCHIVO_SUCURSALES);
 		crearArchivoSiNoExiste(ARCHIVO_SESIONES);
@@ -40,6 +41,7 @@ public class PersistenciaBasica
 		{
 			try
 			{
+				// CREAR EL ARCHIVO VACIO PARA QUE LOS SIGUIENTES GUARDADOS FUNCIONEN
 				archivo.createNewFile();
 			}
 			catch (IOException e)
@@ -59,6 +61,7 @@ public class PersistenciaBasica
 	 */
 	public static synchronized boolean guardarPersonas(Persona[] personas)
 	{
+		// IMPEDIR OPERAR CON ARREGLOS NULOS
 		if (personas == null)
 			return false;
 
@@ -66,6 +69,7 @@ public class PersistenciaBasica
 
 		try
 		{
+			// SOBREESCRIBIR EL ARCHIVO COMPLETO CON EL CONTENIDO ACTUAL
 			writer = new BufferedWriter(new FileWriter(ARCHIVO_PERSONAS));
 
 			for (Persona persona : personas)
@@ -75,6 +79,7 @@ public class PersistenciaBasica
 
 				if (persona instanceof Cliente)
 				{
+					// FORMATEAR LOS CAMPOS DEL CLIENTE CON EL SEPARADOR DEFINIDO
 					Cliente cliente = (Cliente) persona;
 					String linea = "CLIENTE" + SEPARADOR +
 							cliente.obtenerIdentificador() + SEPARADOR +
@@ -86,6 +91,7 @@ public class PersistenciaBasica
 				}
 				else if (persona instanceof Empleado)
 				{
+					// IDENTIFICAR LA SUBCLASE PARA CONSERVAR EL ROL ORIGINAL
 					Empleado empleado = (Empleado) persona;
 					String rol = "EMPLEADO";
 
@@ -136,6 +142,7 @@ public class PersistenciaBasica
 	 */
 	public static synchronized boolean guardarSucursales(Sucursal[] sucursales)
 	{
+		// DETENER GUARDADO SI NO HAY INFORMACION
 		if (sucursales == null)
 			return false;
 
@@ -150,6 +157,7 @@ public class PersistenciaBasica
 				if (sucursal == null)
 					continue;
 
+				// ESCRIBIR TODOS LOS CAMPOS DE LA SUCURSAL EN UNA SOLA LINEA
 				String linea = "SUCURSAL" + SEPARADOR +
 						sucursal.obtenerNumeroSucursal() + SEPARADOR +
 						sucursal.obtenerNombreSucursal() + SEPARADOR +
@@ -191,6 +199,7 @@ public class PersistenciaBasica
 	 */
 	public static synchronized boolean guardarSesiones(SesionEntrenamiento[] sesiones)
 	{
+		// CONFIRMAR QUE EXISTEN SESIONES PARA SERIALIZAR
 		if (sesiones == null)
 			return false;
 
@@ -205,6 +214,7 @@ public class PersistenciaBasica
 				if (sesion == null)
 					continue;
 
+				// ESCRIBIR IDENTIFICADORES Y METADATOS DE CADA SESION
 				String linea = "SESION" + SEPARADOR +
 						sesion.obtenerIdSesion() + SEPARADOR +
 						sesion.obtenerIdCliente() + SEPARADOR +
@@ -247,6 +257,7 @@ public class PersistenciaBasica
 	 */
 	public static synchronized Persona[] cargarPersonas()
 	{
+		// PREPARAR UN ARREGLO AMPLIO PARA RECIBIR LOS REGISTROS
 		Persona[] personas = new Persona[500];
 		int indice = 0;
 		BufferedReader reader = null;
@@ -261,6 +272,7 @@ public class PersistenciaBasica
 				if (linea.trim().isEmpty())
 					continue;
 
+				// DIVIDIR LA LINEA SEGUN EL SEPARADOR PARA IDENTIFICAR CAMPOS
 				String[] partes = linea.split("\\" + SEPARADOR);
 
 				if (partes.length < 5)
@@ -306,6 +318,7 @@ public class PersistenciaBasica
 
 					if (empleado != null)
 					{
+						// RESTAURAR IDENTIFICADOR Y DOCUMENTO ANTES DE GUARDAR
 						empleado.definirIdentificador(id);
 						empleado.definirDocumento(documento);
 						personas[indice++] = empleado;
@@ -346,6 +359,7 @@ public class PersistenciaBasica
 	 */
 	public static synchronized Sucursal[] cargarSucursales()
 	{
+		// UTILIZAR UN ARREGLO TEMPORAL Y LUEGO AJUSTAR SU TAMANO
 		Sucursal[] sucursales = new Sucursal[50];
 		int indice = 0;
 		BufferedReader reader = null;
@@ -360,6 +374,7 @@ public class PersistenciaBasica
 				if (linea.trim().isEmpty())
 					continue;
 
+				// DIVIDIR CADA REGISTRO PARA RECONSTRUIR LA SUCURSAL
 				String[] partes = linea.split("\\" + SEPARADOR);
 
 				if (partes.length < 7)
@@ -377,7 +392,7 @@ public class PersistenciaBasica
 				sucursales[indice++] = sucursal;
 			}
 
-			// Redimensionar al tamaño real
+			// REDIMENSIONAR AL TAMANO REAL PARA EVITAR ESPACIOS VACIOS
 			Sucursal[] resultado = new Sucursal[indice];
 			for (int i = 0; i < indice; i++)
 			{
@@ -417,6 +432,7 @@ public class PersistenciaBasica
 	 */
 	public static synchronized SesionEntrenamiento[] cargarSesiones()
 	{
+		// RESERVAR UN ARREGLO GRANDE PARA SESIONES Y POBLARLO DESDE ARCHIVO
 		SesionEntrenamiento[] sesiones = new SesionEntrenamiento[200];
 		int indice = 0;
 		BufferedReader reader = null;
@@ -431,6 +447,7 @@ public class PersistenciaBasica
 				if (linea.trim().isEmpty())
 					continue;
 
+				// DIVIDIR LOS CAMPOS PARA RECONSTRUIR CADA SESION
 				String[] partes = linea.split("\\" + SEPARADOR);
 
 				if (partes.length < 7)
@@ -485,6 +502,7 @@ public class PersistenciaBasica
 	 */
 	public static synchronized boolean guardarTodo()
 	{
+		// SINCRONIZAR TODOS LOS ARREGLOS EN UNA SOLA OPERACION ATOMICA
 		boolean exitoPersonas = guardarPersonas(DatosSistema.obtenerPersonas());
 		boolean exitoSucursales = guardarSucursales(DatosSistema.obtenerSucursales());
 		boolean exitoSesiones = guardarSesiones(DatosSistema.obtenerSesiones());
@@ -499,6 +517,7 @@ public class PersistenciaBasica
 	{
 		try
 		{
+			// CARGAR CADA ARREGLO Y LUEGO REGISTRARLO EN DATOS DEL SISTEMA
 			Persona[] personas = cargarPersonas();
 			Sucursal[] sucursales = cargarSucursales();
 			SesionEntrenamiento[] sesiones = cargarSesiones();

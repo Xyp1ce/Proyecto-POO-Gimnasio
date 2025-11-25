@@ -10,13 +10,14 @@ public class SesionEntrenamiento implements Serializable
 	private long idSesion;
 	private long idCliente;
 	private long idEntrenador;
-	private String fecha; // Formato: "dd/MM/yyyy"
+	private String fecha; // FORMATO DD/MM/YYYY
 	private int duracionMinutos;
 	private String descripcion;
 
 	// CONSTRUCTORES
 	public SesionEntrenamiento()
 	{
+		// CREA SESION CON VALORES ESTANDAR PARA EVITAR NULOS
 		this.idSesion = generarIdSesion();
 		this.fecha = obtenerFechaActual();
 		this.duracionMinutos = 60;
@@ -25,6 +26,7 @@ public class SesionEntrenamiento implements Serializable
 
 	public SesionEntrenamiento(long idCliente, long idEntrenador, int duracionMinutos)
 	{
+		// REGISTRA SESION BASICA CON CLIENTE ENTRENADOR Y DURACION DEFINIDOS
 		this.idSesion = generarIdSesion();
 		this.idCliente = idCliente;
 		this.idEntrenador = idEntrenador;
@@ -35,6 +37,7 @@ public class SesionEntrenamiento implements Serializable
 
 	public SesionEntrenamiento(long idCliente, long idEntrenador, int duracionMinutos, String descripcion)
 	{
+		// PERMITE ASIGNAR UNA DESCRIPCION DETALLADA AL CREAR LA SESION
 		this.idSesion = generarIdSesion();
 		this.idCliente = idCliente;
 		this.idEntrenador = idEntrenador;
@@ -108,11 +111,13 @@ public class SesionEntrenamiento implements Serializable
 
 	private long generarIdSesion()
 	{
+		// GENERA IDENTIFICADOR EN RANGO AMPLIO PARA EVITAR COLISIONES
 		return (long) (Math.random() * 9000000L) + 1000000L;
 	}
 
 	private String obtenerFechaActual()
 	{
+		// ENTREGA FECHA ACTUAL EN FORMATO COMPATIBLE CON PERSISTENCIA
 		java.util.Calendar cal = java.util.Calendar.getInstance();
 		int dia = cal.get(java.util.Calendar.DAY_OF_MONTH);
 		int mes = cal.get(java.util.Calendar.MONTH) + 1;
@@ -125,6 +130,7 @@ public class SesionEntrenamiento implements Serializable
 	@Override
 	public String toString()
 	{
+		// PROPORCIONA RESUMEN PARA LISTADOS Y REPORTES
 		return "SesionEntrenamiento{" +
 				"id=" + idSesion +
 				", cliente=" + idCliente +

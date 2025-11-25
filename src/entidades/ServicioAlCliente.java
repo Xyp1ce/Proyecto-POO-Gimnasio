@@ -2,6 +2,7 @@ package entidades;
 
 public class ServicioAlCliente extends Empleado
 {
+	// MODELAR EMPLEADOS ENFOCADOS EN ATENCION AL CLIENTE
 	private static final long serialVersionUID = 1L;
 	// ATRIBUTOS PARTICULARES DEL SERVICIO
 	private String idiomaServicio;
@@ -12,6 +13,7 @@ public class ServicioAlCliente extends Empleado
 	public ServicioAlCliente()
 	{
 		super();
+		// CONFIGURAR VALORES BASE SIN CARGA DE DATOS
 		idiomaServicio = "";
 		clientesAtendidos = 0;
 		comision = 0;
@@ -20,6 +22,7 @@ public class ServicioAlCliente extends Empleado
 	public ServicioAlCliente(String idioma, int clientesAtendidos)
 	{
 		super();
+		// PERMITIR CREAR INSTANCIAS RAPIDAS CON LOS DATOS PRINCIPALES
 		this.idiomaServicio = idioma;
 		this.clientesAtendidos = clientesAtendidos;
 		comision = 0;
@@ -67,6 +70,7 @@ public class ServicioAlCliente extends Empleado
 	// METODOS PARTICULARES
 	public void atenderCliente()
 	{
+		// INCREMENTAR EL CONTADOR PARA FINES DE REPORTE
 		clientesAtendidos++;
 	}
 
@@ -78,18 +82,21 @@ public class ServicioAlCliente extends Empleado
 	@Override
 	public void registrarEntrada()
 	{
+		// INDICAR QUE EL PERSONAL ESTA DISPONIBLE EN PISOS O LINEA
 		tareasProgramadas = "SERVICIO AL CLIENTE EN SERVICIO";
 	}
 
 	@Override
 	public void registrarSalida()
 	{
+		// MOSTRAR QUE YA NO ESTA ATENDIENDO
 		tareasProgramadas = "SERVICIO AL CLIENTE FUERA DE SERVICIO";
 	}
 
 	@Override
 	public String generarDescripcion()
 	{
+		// RESUMIR IDIOMA Y ESTADISTICAS DE ATENCION
 		return "ServicioAlCliente{" +
 				"identificador=" + obtenerIdentificador() +
 				", nombre='" + obtenerNombre() + '\'' +
