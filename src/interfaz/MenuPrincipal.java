@@ -4,10 +4,12 @@ import control.*;
 
 public class MenuPrincipal
 {
+	// INSTANCIA GLOBAL PARA COORDINAR OPERACIONES DEL GIMNASIO
 	static Gimnasio gimnasio = new Gimnasio();
 
 	public static void menu()
 	{
+		// PRESENTA MENU PRINCIPAL Y DESPACHA A SUBMENUS ESPECIALIZADOS
 		String opciones = "";
 
 		do
@@ -27,6 +29,7 @@ public class MenuPrincipal
 
 			if (opciones == null)
 			{
+				// CONFIRMAR SALIDA SI EL DIALOGO SE CANCELA
 				confirmarSalida();
 				return;
 			}
@@ -69,13 +72,14 @@ public class MenuPrincipal
 					return;
 				}
 				default:
-					JOptionPane.showMessageDialog(null, "Opción inválida");
+					JOptionPane.showMessageDialog(null, "Opcion invalida");
 			}
 		} while (!"7".equals(opciones));
 	}
 
 	private static void agregarSucursal()
 	{
+		// CAPTURA DATOS DE UNA NUEVA SUCURSAL CON VALIDACIONES BASICAS
 		try
 		{
 			String inputNo = JOptionPane.showInputDialog("Ingrese el número de la sucursal:");
@@ -109,6 +113,7 @@ public class MenuPrincipal
 				return;
 			float cuota = Float.parseFloat(cuotaStr.trim());
 
+			// CREAR INSTANCIA Y REGISTRARLA EN EL GIMNASIO
 			Sucursal sucursal = new Sucursal(noSucursal, nombre, horario, ubicacion, servicios, cuota);
 			gimnasio.agregarSucursal(sucursal);
 
@@ -127,6 +132,7 @@ public class MenuPrincipal
 
 	private static void seleccionarSucursal()
 	{
+		// BUSCA SUCURSAL POR NUMERO Y ABRE EL MENU ESPECIFICO
 		try
 		{
 			String opcion = JOptionPane.showInputDialog(null,
@@ -163,6 +169,7 @@ public class MenuPrincipal
 
 	private static void eliminarSucursal()
 	{
+		// SOLICITA CONFIRMACION ANTES DE ELIMINAR SUCURSAL DEL SISTEMA
 		try
 		{
 			String opcion = JOptionPane.showInputDialog(null,
@@ -211,6 +218,7 @@ public class MenuPrincipal
 
 	private static void menuReportes()
 	{
+		// AGRUPA REPORTES DEL SISTEMA PARA PERSONAS PAGOS Y SESIONES
 		String opciones = "";
 
 		do
@@ -237,7 +245,7 @@ public class MenuPrincipal
 				}
 				case "2":
 				{
-					// Recopilar todos los clientes de todas las sucursales
+					// COMPILAR TODOS LOS CLIENTES DISPONIBLES ANTES DE GENERAR REPORTE
 					entidades.Cliente[] todosClientes = recopilarClientes();
 					String reporte = ServicioReportes.generarReporteMembresias(todosClientes);
 					JOptionPane.showMessageDialog(null, reporte);
@@ -287,13 +295,14 @@ public class MenuPrincipal
 					return;
 				}
 				default:
-					JOptionPane.showMessageDialog(null, "Opción inválida");
+					JOptionPane.showMessageDialog(null, "Opcion invalida");
 			}
 		} while (!"5".equals(opciones));
 	}
 
 	private static entidades.Cliente[] recopilarClientes()
 	{
+		// UNE CLIENTES DE TODAS LAS SUCURSALES EN UN SOLO ARREGLO TEMPORAL
 		entidades.Cliente[] resultado = new entidades.Cliente[500];
 		int indice = 0;
 
@@ -320,6 +329,7 @@ public class MenuPrincipal
 
 	private static void confirmarSalida()
 	{
+		// OFRECE GUARDAR ANTES DE CERRAR EL SISTEMA Y DETIENE AUTOGUARDADO
 		int confirmacion = JOptionPane.showConfirmDialog(null,
 				"¿Desea guardar los datos antes de salir?",
 				"Confirmar Salida",
@@ -343,13 +353,15 @@ public class MenuPrincipal
 								"Saliendo de todas formas...");
 			}
 
+			Gimnasio.detenerAutoGuardado();
 			System.exit(0);
 		}
 		else if (confirmacion == JOptionPane.NO_OPTION)
 		{
 			JOptionPane.showMessageDialog(null, "Saliendo sin guardar...");
+			Gimnasio.detenerAutoGuardado();
 			System.exit(0);
 		}
-		// Si es CANCEL, no hacer nada (volver al menú)
+		// SI ES CANCEL NO HACER NADA Y REGRESAR AL MENU
 	}
 }

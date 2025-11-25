@@ -6,46 +6,55 @@ import interfaz.*;
 
 public class Gimnasio implements Serializable
 {
+	// CENTRALIZAR TODA LA LOGICA GLOBAL DEL SISTEMA
 	private static final long serialVersionUID = 1L;
 
 	// ATRIBUTOS
 	private String nombre = "Gimnasio POO";
+	// MANTENER EL INVENTARIO DE SUCURSALES CARGADAS
 	private static Sucursal[] sucursales;
+	// ADMINISTRAR EL HILO DE RESPALDO AUTOMATICO
+	private static Autoguardado autoGuardado;
 
 	// MAIN
 	public static void main(String[] args)
 	{
-		// Inicializar sistema de persistencia
+		// PREPARAR LOS COMPONENTES DE PERSISTENCIA
 		PersistenciaBasica.inicializar();
 
-		// Crear gimnasio
+		// CREAR EL NUCLEO DEL SISTEMA CON SUCURSALES BASE
 		Gimnasio gimnasio = new Gimnasio();
 		System.out.println(gimnasio);
 
-		// Intentar cargar datos previos
+		// INTENTAR CARGAR DATOS DESDE LOS ARCHIVOS EXISTENTES
 		System.out.println("Intentando cargar datos previos...");
 		boolean datoscargados = PersistenciaBasica.cargarTodo();
 
 		if (datoscargados)
 		{
+			// REUTILIZAR LAS SUCURSALES PERSISTIDAS SI EXISTEN
 			System.out.println("Datos cargados exitosamente.");
 			sucursales = DatosSistema.obtenerSucursales();
 
 			if (sucursales.length == 0)
 			{
+				// GENERAR SUCURSALES DE REFERENCIA CUANDO NO HAY DATOS
 				System.out.println("No hay sucursales guardadas. Generando sucursales de ejemplo...");
 				gimnasio.generarSucursales();
 			}
 		}
 		else
 		{
+			// ARRANCAR CON DATOS LIMPIOS SI NO EXISTEN ARCHIVOS
 			System.out.println("No se encontraron datos previos. Iniciando con datos nuevos.");
 		}
 
-		// Iniciar menú principal
+		// INICIAR RESPALDO AUTOMATICO Y MOSTRAR LA INTERFAZ PRINCIPAL
+		iniciarAutoGuardado();
 		MenuPrincipal.menu();
 
-		// Guardar al salir
+		// GUARDAR TODO CUANDO EL USUARIO SALE DEL MENU
+		detenerAutoGuardado();
 		System.out.println("Guardando datos...");
 		DatosSistema.definirSucursales(sucursales);
 		PersistenciaBasica.guardarTodo();
@@ -55,8 +64,10 @@ public class Gimnasio implements Serializable
 	// CONSTRUCTORES
 	public Gimnasio()
 	{
+		// GARANTIZAR QUE LAS SUCURSALES EXISTAN EN MEMORIA
 		if (sucursales == null)
 		{
+			// CREAR EL ARREGLO BASE Y POBLARLO CON DATOS DE EJEMPLO
 			sucursales = new Sucursal[0];
 			generarSucursales();
 		}
@@ -70,12 +81,15 @@ public class Gimnasio implements Serializable
 
 	public String obtenerUbicaciones()
 	{
+		// ARMAR UNA CADENA CON TODAS LAS UBICACIONES REGISTRADAS
 		String ubicaciones = "";
 		boolean primera = true;
 		for (Sucursal sucursal : sucursales)
 		{
+			// OMITIR POSICIONES VACIAS EN EL ARREGLO
 			if (sucursal != null)
 			{
+				// AGREGAR COMAS SOLO DESPUES DEL PRIMER ELEMENTO
 				if (!primera)
 					ubicaciones += ", ";
 				ubicaciones += sucursal.obtenerUbicacionSucursal();
@@ -87,27 +101,54 @@ public class Gimnasio implements Serializable
 
 	public static Sucursal[] obtenerSucursales()
 	{
+		// PROPORCIONAR ACCESO GLOBAL A LAS SUCURSALES
 		return sucursales;
+	}
+
+	private static void iniciarAutoGuardado()
+	{
+		// CREAR EL HILO SOLO UNA VEZ PARA EVITAR DUPLICADOS
+		if (autoGuardado == null)
+		{
+			// ARRANCAR EL HILO Y COMENZAR CICLOS DE GUARDADO
+			autoGuardado = new Autoguardado();
+			autoGuardado.start();
+		}
+	}
+
+	public static void detenerAutoGuardado()
+	{
+		// DETENER EL HILO UNICAMENTE SI ESTA ACTIVO
+		if (autoGuardado != null)
+		{
+			// SOLICITAR EL CIERRE Y LIBERAR LA REFERENCIA
+			autoGuardado.detener();
+			autoGuardado = null;
+		}
 	}
 
 	// METODOS DE VALIDACION
 
 	public static boolean validarIdEmpleado(long ID)
 	{
+		// ABORTAR SI NO HAY SUCURSALES REGISTRADAS
 		if (sucursales == null)
 			return false;
 
 		for (Sucursal sucursal : sucursales)
 		{
+			// CONTINUAR CUANDO LA POSICION ESTA VACIA
 			if (sucursal == null)
 				continue;
 
+			// CONSULTAR EL ARREGLO DE EMPLEADOS DE LA SUCURSAL
 			Empleado[] empleados = sucursal.obtenerEmpleados();
 			if (empleados == null)
 				continue;
 
 			for (Empleado empleado : empleados)
 			{
+				// DETECTAR SI ALGUN EMPLEADO USA EL IDENTIFICADOR BUSCADO
 				if (empleado != null && empleado.obtenerIdentificador() == ID)
 					return true;
 			}
@@ -117,20 +158,24 @@ public class Gimnasio implements Serializable
 
 	public static boolean validarIdCliente(long ID)
 	{
+		// ABORTAR SI NO HAY SUCURSALES REGISTRADAS
 		if (sucursales == null)
 			return false;
 
 		for (Sucursal sucursal : sucursales)
 		{
+			// CONTINUAR CUANDO LA POSICION ESTA VACIA
 			if (sucursal == null)
 				continue;
 
+			// CONSULTAR EL ARREGLO DE CLIENTES DE LA SUCURSAL
 			Cliente[] clientes = sucursal.obtenerClientes();
 			if (clientes == null)
 				continue;
 
 			for (Cliente cliente : clientes)
 			{
+				// DETECTAR SI ALGUN CLIENTE USA EL IDENTIFICADOR BUSCADO
 				if (cliente != null && cliente.obtenerIdentificador() == ID)
 					return true;
 			}
@@ -142,6 +187,7 @@ public class Gimnasio implements Serializable
 
 	public void generarSucursales()
 	{
+		// DEFINIR LISTAS DE ATRIBUTOS PARA CREAR SUCURSALES DE EJEMPLO
 		String[] nombres = {"Peninsula", "Plaza Rio", "Santa Fe", "Dubai"};
 		String[] horarios = {"6:00-22:00", "5:00-23:00", "24 horas", "7:00-21:00"};
 		String[] ubicaciones = {"Centro", "Norte", "Sur", "Este"};
@@ -150,26 +196,32 @@ public class Gimnasio implements Serializable
 
 		for (int i = 0; i < 4; i++)
 		{
+			// CREAR UNA SUCURSAL COMPLETA CON LOS DATOS DEL INDICE
 			Sucursal nueva = new Sucursal(i, nombres[i], horarios[i], ubicaciones[i], servicios[i], cuotas[i]);
+			// INCORPORAR LA SUCURSAL A LA LISTA GLOBAL
 			agregarSucursal(nueva);
 		}
 	}
 
 	public void agregarSucursal(Sucursal sucursal)
 	{
+		// CREAR UN ARREGLO NUEVO CON ESPACIO ADICIONAL
 		Sucursal[] temp = new Sucursal[sucursales.length + 1];
 
 		for (int i = 0; i < sucursales.length; i++)
 		{
+			// COPIAR LAS REFERENCIAS EXISTENTES
 			temp[i] = sucursales[i];
 		}
 
+		// ESCRIBIR LA SUCURSAL NUEVA EN LA ULTIMA POSICION
 		temp[sucursales.length] = sucursal;
 		sucursales = temp;
 	}
 
 	public void eliminarSucursal(int noSucursal)
 	{
+		// CONTAR CUANTAS SUCURSALES SE QUEDARAN EN EL LISTADO
 		int count = 0;
 		for (Sucursal s : sucursales)
 		{
@@ -177,6 +229,7 @@ public class Gimnasio implements Serializable
 				count++;
 		}
 
+		// CREAR UN NUEVO ARREGLO SIN LA SUCURSAL ELIMINADA
 		Sucursal[] temp = new Sucursal[count];
 		int idx = 0;
 
@@ -184,6 +237,7 @@ public class Gimnasio implements Serializable
 		{
 			if (s != null && s.obtenerNumeroSucursal() != noSucursal)
 			{
+				// COPIAR SOLO LAS SUCURSALES QUE PERMANECEN
 				temp[idx++] = s;
 			}
 		}
@@ -193,11 +247,13 @@ public class Gimnasio implements Serializable
 
 	public Sucursal buscarSucursal(int noSucursal)
 	{
+		// RETORNAR NULO SI NO HAY SUCURSALES REGISTRADAS
 		if (sucursales == null)
 			return null;
 
 		for (Sucursal s : sucursales)
 		{
+			// DEVOLVER LA SUCURSAL CUANDO COINCIDE EL NUMERO
 			if (s != null && s.obtenerNumeroSucursal() == noSucursal)
 				return s;
 		}
@@ -210,6 +266,7 @@ public class Gimnasio implements Serializable
 	@Override
 	public String toString()
 	{
+		// CREAR UN ENCABEZADO CON DATOS GENERALES DEL GIMNASIO
 		String header =
 				"\n==============================\n" +
 						"      " + nombre + "\n" +
@@ -221,6 +278,7 @@ public class Gimnasio implements Serializable
 		if (sucursales.length == 0)
 			return header + "No hay sucursales registradas.\n";
 
+		// RECORRER LAS SUCURSALES PARA ARMAR LA DESCRIPCION DETALLADA
 		String sucursalesStr = "";
 		int idx = 1;
 
@@ -243,6 +301,7 @@ public class Gimnasio implements Serializable
 
 	public String resumenSucursales()
 	{
+		// GENERAR UN ENCABEZADO CON ESTADISTICAS RESUMIDAS
 		String header =
 				"\n==============================\n" +
 						"      " + nombre + "\n" +
@@ -254,6 +313,7 @@ public class Gimnasio implements Serializable
 		if (sucursales.length == 0)
 			return header + "No hay sucursales registradas.\n";
 
+		// LISTAR RESUMENES LINEA A LINEA PARA CADA SUCURSAL
 		String sucursalesStr = "";
 
 		for (Sucursal sucursal : sucursales)

@@ -2,12 +2,16 @@ package control;
 
 class OperacionRegistrarPago extends Operacion
 {
+	// RETENER EL CLIENTE QUE RECIBE EL MOVIMIENTO
 	private entidades.Cliente cliente;
+	// GUARDAR LOS DETALLES DEL PAGO A PROCESAR
 	private entidades.Pago pago;
+	// DESCRIBIR LA RAZON DE UNA VALIDACION FALLIDA
 	private String mensajeError;
 
 	public OperacionRegistrarPago(entidades.Cliente cliente, entidades.Pago pago)
 	{
+		// ASIGNAR LAS REFERENCIAS NECESARIAS PARA LA OPERACION
 		this.cliente = cliente;
 		this.pago = pago;
 		this.mensajeError = "";
@@ -16,21 +20,21 @@ class OperacionRegistrarPago extends Operacion
 	@Override
 	protected boolean validar()
 	{
-		// Validar que el cliente exista
+		// VALIDAR QUE EL CLIENTE EXISTA
 		if (cliente == null)
 		{
 			mensajeError = "Cliente no encontrado";
 			return false;
 		}
 
-		// Validar que el pago sea válido
+		// VALIDAR QUE EL PAGO SEA VALIDO
 		if (pago == null || !pago.validarPago())
 		{
 			mensajeError = "Datos del pago inválidos";
 			return false;
 		}
 
-		// Validar que el monto sea positivo
+		// VALIDAR QUE EL MONTO SEA POSITIVO
 		if (pago.obtenerMonto() <= 0)
 		{
 			mensajeError = "El monto debe ser mayor a cero";
@@ -43,7 +47,7 @@ class OperacionRegistrarPago extends Operacion
 	@Override
 	protected boolean realizarOperacion()
 	{
-		// Registrar el pago en el cliente
+		// REGISTRAR EL PAGO EN EL HISTORIAL DEL CLIENTE
 		return cliente.realizarPago(pago);
 	}
 
@@ -58,12 +62,14 @@ class OperacionRegistrarPago extends Operacion
 	@Override
 	protected void revertir()
 	{
+		// INDICAR QUE NO SE COMPLETO EL REGISTRO
 		mensajeResultado = "No se pudo registrar el pago. Verifique los datos.";
 	}
 
 	@Override
 	protected String obtenerMensajeError()
 	{
+		// DEVOLVER LA DESCRIPCION ACUMULADA DURANTE LA VALIDACION
 		return mensajeError;
 	}
 }

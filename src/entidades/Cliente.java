@@ -4,6 +4,7 @@ import control.Gimnasio;
 
 public class Cliente extends Persona
 {
+	// MANEJAR ESTADO DE MEMBRESIA, PAGOS Y VISITAS DE UN CLIENTE
 	private static final long serialVersionUID = 1L;
 
 	// ATRIBUTOS PARTICULARES
@@ -17,6 +18,7 @@ public class Cliente extends Persona
 	public Cliente()
 	{
 		super();
+		// ASIGNAR IDENTIFICADOR Y PREPARAR ESTADISTICAS
 		asignarIdentificadorCliente();
 		historialVisitas = 0;
 		inicializarHistorialPagos();
@@ -33,6 +35,7 @@ public class Cliente extends Persona
 
 	private void inicializarHistorialPagos()
 	{
+		// DEFINIR UNA CAPACIDAD FIJA PARA EVITAR REDIMENSIONAMIENTO COSTOSO
 		historialPagos = new Pago[50]; // Capacidad inicial de 50 pagos
 		totalPagos = 0;
 	}
@@ -81,6 +84,7 @@ public class Cliente extends Persona
 	// METODOS DE VISITAS
 	public void registrarVisita()
 	{
+		// ACUMULAR VISITAS PARA REPORTES DE USO
 		historialVisitas++;
 	}
 
@@ -99,6 +103,7 @@ public class Cliente extends Persona
 		if (nuevaMembresia == null)
 			return false;
 
+		// REEMPLAZAR LA MEMBRESIA ACTUAL POR LA NUEVA INSTANCIA
 		this.membresia = nuevaMembresia;
 		return true;
 	}
@@ -138,7 +143,7 @@ public class Cliente extends Persona
 		if (totalPagos >= historialPagos.length)
 			return false; // Historial lleno
 
-		// Asegurar que el pago tenga el ID correcto del cliente
+		// ASEGURAR QUE EL PAGO TENGA EL ID CORRECTO DEL CLIENTE
 		pago.definirIdCliente(this.identificador);
 
 		historialPagos[totalPagos] = pago;
@@ -155,6 +160,7 @@ public class Cliente extends Persona
 		{
 			if (historialPagos[i] != null)
 			{
+				// SUMAR SOLO PAGOS VALIDOS AL ACUMULADO
 				total += historialPagos[i].obtenerMonto();
 			}
 		}
@@ -185,6 +191,7 @@ public class Cliente extends Persona
 		{
 			if (historialPagos[i] != null)
 			{
+				// UTILIZAR EL TO_STRING DEL PAGO PARA MANTENER FORMATO UNIFORME
 				reporte.append(historialPagos[i].toString()).append("\n");
 			}
 		}
@@ -204,6 +211,7 @@ public class Cliente extends Persona
 	// METODOS PRIVADOS
 	private void asignarIdentificadorCliente()
 	{
+		// GENERAR UN ID NUMERICO QUE NO SE REPITA EN TODO EL SISTEMA
 		long nuevoIdentificador;
 		do
 			nuevoIdentificador = (long) (Math.random() * 90000000L) + 10000000L;
@@ -218,6 +226,7 @@ public class Cliente extends Persona
 	{
 		String estadoMembresia = obtenerEstadoMembresia();
 
+		// MOSTRAR UNA DESCRIPCION COMPLETA DEL ESTADO DEL CLIENTE
 		return "Cliente{" +
 				"identificador=" + obtenerIdentificador() +
 				", nombre='" + obtenerNombre() + '\'' +
@@ -244,6 +253,7 @@ public class Cliente extends Persona
 
 		if (membresia != null)
 		{
+			// INCLUIR EL RESUMEN DE LA MEMBRESIA SI ESTA PRESENTE
 			resumen.append("Membresía: ").append(membresia.resumen()).append("\n");
 		}
 		else

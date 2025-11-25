@@ -7,6 +7,7 @@ public class MenuCliente
 {
 	public static void menu(Cliente cliente, Sucursal sucursal)
 	{
+		// ADMINISTRA ACCIONES DISPONIBLES PARA UN CLIENTE ESPECIFICO
 		String opciones = "";
 		do
 		{
@@ -22,6 +23,7 @@ public class MenuCliente
 
 			if (opciones == null)
 			{
+				// SALIR DEL SUBMENU SI EL DIALOGO ES CANCELADO
 				JOptionPane.showMessageDialog(null, "Regresando al menu de sucursal...");
 				return;
 			}
@@ -45,12 +47,13 @@ public class MenuCliente
 					}
 					catch (NumberFormatException ex)
 					{
-						JOptionPane.showMessageDialog(null, "Telefono inválido.");
+						JOptionPane.showMessageDialog(null, "Telefono invalido.");
 					}
 					break;
 				}
 				case "3": // REGISTRAR ENTRADA
 				{
+					// INCREMENTAR CONTADORES DE VISITAS DEL CLIENTE
 					cliente.registrarVisita();
 					JOptionPane.showMessageDialog(null, "Entrada registrada exitosamente");
 					break;

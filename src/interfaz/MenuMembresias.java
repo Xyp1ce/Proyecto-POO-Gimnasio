@@ -8,6 +8,7 @@ public class MenuMembresias
 {
 	public static void menu(Sucursal sucursal)
 	{
+		// COORDINA OPERACIONES DE MEMBRESIAS Y PAGOS POR SUCURSAL
 		String opciones = "";
 
 		do
@@ -26,7 +27,8 @@ public class MenuMembresias
 
 			if (opciones == null)
 			{
-				JOptionPane.showMessageDialog(null, "Regresando al menú de sucursal...");
+				// SALIR SI EL USUARIO CANCELA EL DIALOGO PRINCIPAL
+				JOptionPane.showMessageDialog(null, "Regresando al menu de sucursal...");
 				return;
 			}
 
@@ -68,7 +70,7 @@ public class MenuMembresias
 					return;
 				}
 				default:
-					JOptionPane.showMessageDialog(null, "Opción inválida");
+					JOptionPane.showMessageDialog(null, "Opcion invalida");
 			}
 		} while (!"7".equals(opciones));
 	}
@@ -78,7 +80,7 @@ public class MenuMembresias
 	{
 		try
 		{
-			// Solicitar ID del cliente
+				// SOLICITAR ID DEL CLIENTE
 			String idStr = JOptionPane.showInputDialog(null,
 					"Clientes disponibles:\n" +
 							MenuSucursal.verClientes(sucursal) + "\n" +
@@ -96,7 +98,7 @@ public class MenuMembresias
 				return;
 			}
 
-			// Verificar si ya tiene membresía activa
+			// VERIFICAR SI YA CUENTA CON MEMBRESIA ACTIVA
 			if (cliente.estaActivaMembresia())
 			{
 				int respuesta = JOptionPane.showConfirmDialog(null,
@@ -110,7 +112,7 @@ public class MenuMembresias
 					return;
 			}
 
-			// Seleccionar tipo de membresía
+			// SELECCIONAR TIPO DE MEMBRESIA
 			String[] opciones = {"Mensual", "Trimestral", "Semestral", "Anual"};
 			String tipoSeleccionado = (String) JOptionPane.showInputDialog(null,
 					"Seleccione el tipo de membresía:",
@@ -123,7 +125,7 @@ public class MenuMembresias
 			if (tipoSeleccionado == null)
 				return;
 
-			// Solicitar precio
+			// SOLICITAR PRECIO
 			String precioStr = JOptionPane.showInputDialog(null,
 					"Precios sugeridos:\n" +
 							"Mensual: $300\n" +
@@ -143,7 +145,7 @@ public class MenuMembresias
 				return;
 			}
 
-			// Crear y asignar la membresía
+			// CREAR Y ASIGNAR LA MEMBRESIA GENERADA
 			Membresia nuevaMembresia = new Membresia(tipoSeleccionado, precio);
 			cliente.asignarMembresia(nuevaMembresia);
 
@@ -180,8 +182,8 @@ public class MenuMembresias
 			if (cliente.obtenerMembresia() == null)
 			{
 				JOptionPane.showMessageDialog(null,
-						"El cliente no tiene membresía asignada.\n" +
-								"Use la opción 'Asignar Membresía' primero.");
+						"El cliente no tiene membresia asignada.\n" +
+							"Use la opcion 'Asignar Membresia' primero.");
 				return;
 			}
 
@@ -189,9 +191,9 @@ public class MenuMembresias
 
 			int respuesta = JOptionPane.showConfirmDialog(null,
 					"Cliente: " + cliente.obtenerNombre() + "\n" +
-							"Membresía actual: " + membresia.resumen() + "\n\n" +
-							"¿Confirma la renovación?",
-					"Renovar Membresía",
+					"Membresia actual: " + membresia.resumen() + "\n\n" +
+					"¿Confirma la renovacion?",
+				"Renovar Membresia",
 					JOptionPane.YES_NO_OPTION);
 
 			if (respuesta == JOptionPane.YES_OPTION)

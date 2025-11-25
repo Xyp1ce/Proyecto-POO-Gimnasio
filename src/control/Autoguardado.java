@@ -1,0 +1,63 @@
+package control;
+
+public class Autoguardado extends Thread
+{
+	// DEFINIR RITMO DE GUARDADO PERIODICO
+	private static final long INTERVALO_MS = 40000L;
+	// CONTROLAR SI EL HILO CONTINUA TRABAJANDO
+	private volatile boolean ejecutando = true;
+
+	public Autoguardado()
+	{
+		// IDENTIFICAR EL HILO PARA SEGUIMIENTO EN LOGS
+		setName("AutoGuardadoThread");
+		// EVITAR BLOQUEAR EL CIERRE DEL PROGRAMA
+		setDaemon(true);
+	}
+
+	@Override
+	public void run()
+	{
+		// CICLAR HASTA QUE EL SISTEMA SOLICITE DETENER EL HILO
+		while (ejecutando)
+		{
+			// SINCRONIZAR DATOS EN MEMORIA CON LOS ARCHIVOS
+			guardarDatos();
+			// ESPERAR EL LAPSO DEFINIDO ANTES DEL SIGUIENTE GUARDADO
+			esperarIntervalo();
+		}
+	}
+
+	private void guardarDatos()
+	{
+		// REPLICAR LAS SUCURSALES ACTUALES EN EL CONTENEDOR GLOBAL
+		DatosSistema.definirSucursales(Gimnasio.obtenerSucursales());
+		// GUARDAR TODO EL ESTADO DEL SISTEMA EN DISCO
+		boolean exito = PersistenciaBasica.guardarTodo();
+
+		if (!exito)
+			// ALERTAR SOBRE UN GUARDADO FALLIDO
+			System.err.println("AutoGuardadoThread: No se pudieron guardar los datos.");
+	}
+
+	private void esperarIntervalo()
+	{
+		try
+		{
+			// PAUSAR EL HILO HASTA EL PROXIMO CICLO
+			Thread.sleep(INTERVALO_MS);
+		}
+		catch (InterruptedException ex)
+		{
+			// FINALIZAR PAUSA CUANDO DETENER INTERRUMPE EL SUENO
+		}
+	}
+
+	public void detener()
+	{
+		// CORTAR EL BUCLE PRINCIPAL
+		ejecutando = false;
+		// INTERRUMPIR EL SUENO ACTUAL PARA CERRAR DE INMEDIATO
+		interrupt();
+	}
+}

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public abstract class Persona implements Serializable, Identificable
 {
+	// SERVIR COMO BASE PARA CLIENTES Y EMPLEADOS
 	private static final long serialVersionUID = 1L;
 
 	// ATRIBUTOS COMPARTIDOS
@@ -17,6 +18,7 @@ public abstract class Persona implements Serializable, Identificable
 
 	protected Persona(String nombre, String documento, long telefono)
 	{
+		// GUARDAR LOS DATOS FUNDAMENTALES DESDE LA CREACION
 		this.nombre = nombre;
 		this.documento = documento;
 		this.telefono = telefono;
@@ -67,6 +69,7 @@ public abstract class Persona implements Serializable, Identificable
 	@Override
 	public long obtenerId()
 	{
+		// CUMPLIR EL CONTRATO DE IDENTIFICABLE
 		return identificador;
 	}
 
@@ -76,6 +79,7 @@ public abstract class Persona implements Serializable, Identificable
 	@Override
 	public String toString()
 	{
+		// UTILIZAR LA DESCRIPCION PARA REPRESENTAR A LA PERSONA
 		return generarDescripcion();
 	}
 }

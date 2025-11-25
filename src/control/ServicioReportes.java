@@ -4,12 +4,10 @@ import entidades.*;
 
 public class ServicioReportes
 {
-	/**
-	 * Genera un reporte consolidado de múltiples objetos Reportable.
-	 * Demuestra polimorfismo por interfaz.
-	 */
+	// GENERAR UN REPORTE CONSOLIDADO DE OBJETOS REPORTABLE USANDO POLIMORFISMO
 	public static String generarReporteConsolidado(Reportable[] objetos)
 	{
+		// VALIDAR QUE EXISTAN OBJETOS PARA PROCESAR
 		if (objetos == null || objetos.length == 0)
 			return "No hay objetos para reportar.";
 
@@ -21,9 +19,11 @@ public class ServicioReportes
 		int contador = 0;
 		for (Reportable objeto : objetos)
 		{
+			// EVITAR NULOS PARA APROVECHAR EL POLIMORFISMO
 			if (objeto != null)
 			{
 				consolidado.append("--- Item ").append(++contador).append(" ---\n");
+				// DELEGAR LA GENERACION DEL REPORTE A CADA OBJETO
 				consolidado.append(objeto.generarReporte());
 				consolidado.append("\n");
 			}
@@ -33,18 +33,17 @@ public class ServicioReportes
 		return consolidado.toString();
 	}
 
-	/**
-	 * Calcula el costo total de múltiples objetos ConCosto.
-	 * Demuestra polimorfismo por interfaz.
-	 */
+	// CALCULAR COSTO TOTAL DE OBJETOS CONCOSTO USANDO POLIMORFISMO
 	public static float calcularCostoTotal(ConCosto[] objetos)
 	{
+		// RETORNAR CERO CUANDO NO HAY ELEMENTOS
 		if (objetos == null || objetos.length == 0)
 			return 0.0f;
 
 		float total = 0.0f;
 		for (ConCosto objeto : objetos)
 		{
+			// SUMAR SOLAMENTE LOS OBJETOS VALIDOS
 			if (objeto != null)
 			{
 				total += objeto.obtenerCosto();
@@ -54,11 +53,10 @@ public class ServicioReportes
 		return total;
 	}
 
-	/**
-	 * Genera reporte de costos detallado.
-	 */
+	// GENERAR REPORTE DETALLADO DE COSTOS PARA CADA OBJETO CONCOSTO
 	public static String generarReporteCostos(ConCosto[] objetos)
 	{
+		// VALIDAR QUE EXISTAN COSTOS PARA MOSTRAR
 		if (objetos == null || objetos.length == 0)
 			return "No hay objetos con costo.";
 
@@ -72,6 +70,7 @@ public class ServicioReportes
 
 		for (ConCosto objeto : objetos)
 		{
+			// IDENTIFICAR EL TIPO CON REFLEXION PARA HACER EL REPORTE CLARO
 			if (objeto != null)
 			{
 				float costo = objeto.obtenerCosto();
@@ -89,11 +88,10 @@ public class ServicioReportes
 		return reporte.toString();
 	}
 
-	/**
-	 * Lista todas las personas del sistema (polimorfismo por herencia).
-	 */
+	// LISTAR TODAS LAS PERSONAS DEL SISTEMA APLICANDO POLIMORFISMO POR HERENCIA
 	public static String listarPersonas(Persona[] personas)
 	{
+		// MANEJAR EL CASO SIN PERSONAS REGISTRADAS
 		if (personas == null || personas.length == 0)
 			return "No hay personas registradas.";
 
@@ -110,7 +108,7 @@ public class ServicioReportes
 			if (persona == null)
 				continue;
 
-			// Polimorfismo: toString() llama a generarDescripcion() según tipo
+			// APROVECHAR POLIMORFISMO PARA IMPRIMIR LA DESCRIPCION CORRESPONDIENTE
 			lista.append(persona.toString()).append("\n\n");
 
 			if (persona instanceof Cliente)
@@ -127,11 +125,10 @@ public class ServicioReportes
 		return lista.toString();
 	}
 
-	/**
-	 * Genera reporte de membresías activas vs vencidas.
-	 */
+	// GENERAR REPORTE DE MEMBRESIAS ACTIVAS VS VENCIDAS
 	public static String generarReporteMembresias(Cliente[] clientes)
 	{
+		// VERIFICAR QUE EXISTAN CLIENTES PARA ANALIZAR
 		if (clientes == null || clientes.length == 0)
 			return "No hay clientes registrados.";
 
@@ -159,7 +156,8 @@ public class ServicioReportes
 			else if (membresia.verificarVigencia())
 			{
 				activas++;
-				ingresoTotal += membresia.obtenerCosto(); // Polimorfismo por interfaz
+				// UTILIZAR LA INTERFAZ CONCOSTO PARA SUMAR INGRESOS
+				ingresoTotal += membresia.obtenerCosto();
 			}
 			else
 			{
@@ -177,11 +175,10 @@ public class ServicioReportes
 		return reporte.toString();
 	}
 
-	/**
-	 * Genera reporte de pagos recientes.
-	 */
+	// GENERAR REPORTE DE PAGOS RECIENTES PARA UN RANGO DE DIAS
 	public static String generarReportePagosRecientes(Cliente[] clientes, int dias)
 	{
+		// DETECTAR AUSENCIA DE CLIENTES PARA EVITAR PROCESAMIENTO INUTIL
 		if (clientes == null || clientes.length == 0)
 			return "No hay clientes registrados.";
 
@@ -210,8 +207,9 @@ public class ServicioReportes
 					reporte.append("  Monto: $").append(String.format("%.2f", pago.obtenerCosto()));
 					reporte.append(" | Fecha: ").append(pago.obtenerFechaPago()).append("\n");
 
+					// ACUMULAR EL TOTAL PARA RESUMIR EL PERIODO
 					totalPagosRecientes++;
-					montoTotal += pago.obtenerCosto(); // Polimorfismo por interfaz
+					montoTotal += pago.obtenerCosto();
 				}
 			}
 		}

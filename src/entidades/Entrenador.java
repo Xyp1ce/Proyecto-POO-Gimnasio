@@ -2,6 +2,7 @@ package entidades;
 
 public class Entrenador extends Empleado
 {
+	// ESPECIALIZAR EMPLEADO CON LISTAS DE HABILIDADES Y RUTINAS
 	// ATRIBUTOS PARTICULARES DEL ENTRENADOR
 	private String[] especialidades;
 	private String[] certificaciones;
@@ -12,6 +13,7 @@ public class Entrenador extends Empleado
 	public Entrenador()
 	{
 		super();
+		// ARRANCAR LAS LISTAS INTERNAS VACIAS
 		inicializarColecciones();
 		comision = 0;
 	}
@@ -20,6 +22,7 @@ public class Entrenador extends Empleado
 	{
 		super(tipoEmpleado, nombre, telefono, direccion);
 		inicializarColecciones();
+		// CARGAR LOS VALORES INICIALES PARA LAS LISTAS PERSONALIZADAS
 		agregarEspecialidad(especialidad);
 		agregarCertificacion(certificacion);
 		agregarRutina(rutina);
@@ -28,6 +31,7 @@ public class Entrenador extends Empleado
 
 	private void inicializarColecciones()
 	{
+		// EMPEZAR CON ARREGLOS SIN ELEMENTOS PARA FACIL REUSO
 		especialidades = new String[0];
 		certificaciones = new String[0];
 		rutinas = new String[0];
@@ -69,6 +73,7 @@ public class Entrenador extends Empleado
 			if (registro.equalsIgnoreCase(especialidad))
 				return;
 		}
+		// DUPLICAR EL ARREGLO PARA AGREGAR EL NUEVO DATO AL FINAL
 		String[] temporal = new String[especialidades.length + 1];
 		for (int i = 0; i < especialidades.length; i++)
 		{
@@ -87,6 +92,7 @@ public class Entrenador extends Empleado
 			if (registro.equalsIgnoreCase(certificacion))
 				return;
 		}
+		// REALIZAR UNA COPIA AMPLIADA PARA GUARDAR LA CERTIFICACION NUEVA
 		String[] temporal = new String[certificaciones.length + 1];
 		for (int i = 0; i < certificaciones.length; i++)
 		{
@@ -105,6 +111,7 @@ public class Entrenador extends Empleado
 			if (registro.equalsIgnoreCase(rutina))
 				return;
 		}
+		// MANTENER LAS RUTINAS SIN DUPLICADOS Y EN ORDEN DE REGISTRO
 		String[] temporal = new String[rutinas.length + 1];
 		for (int i = 0; i < rutinas.length; i++)
 		{
@@ -132,6 +139,7 @@ public class Entrenador extends Empleado
 	@Override
 	public String generarDescripcion()
 	{
+		// INCLUIR LISTAS PARA EXPLICAR LA EXPERIENCIA DEL ENTRENADOR
 		return "Entrenador{" +
 				"identificador=" + obtenerIdentificador() +
 				", nombre='" + obtenerNombre() + '\'' +

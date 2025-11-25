@@ -7,6 +7,7 @@ public class MenuPersistencia
 {
 	public static void menu()
 	{
+		// OFRECE OPCIONES PARA ADMINISTRAR LA PERSISTENCIA DEL SISTEMA
 		String opciones = "";
 
 		do
@@ -24,6 +25,7 @@ public class MenuPersistencia
 
 			if (opciones == null)
 			{
+				// SALIR SI EL USUARIO CANCELA EL DIALOGO
 				return;
 			}
 
@@ -64,13 +66,14 @@ public class MenuPersistencia
 					return;
 				}
 				default:
-					JOptionPane.showMessageDialog(null, "Opción inválida");
+					JOptionPane.showMessageDialog(null, "Opcion invalida");
 			}
 		} while (!"7".equals(opciones));
 	}
 
 	private static void guardarTodo()
 	{
+			// DISPARA UN GUARDADO COMPLETO DE LAS ENTIDADES EN MEMORIA
 		int confirmacion = JOptionPane.showConfirmDialog(null,
 				"¿Confirma que desea guardar todos los datos?\n" +
 						"Esto sobrescribirá los archivos existentes.",
@@ -103,6 +106,7 @@ public class MenuPersistencia
 
 	private static void cargarTodo()
 	{
+			// RECUPERA INFORMACION DESDE ARCHIVOS Y SOBREESCRIBE LO EN MEMORIA
 		int confirmacion = JOptionPane.showConfirmDialog(null,
 				"¿Confirma que desea cargar todos los datos?\n" +
 						"Esto reemplazará los datos actuales en memoria.",
@@ -136,6 +140,7 @@ public class MenuPersistencia
 
 	private static void guardarPersonas()
 	{
+			// PERSISTE UNICAMENTE LA LISTA DE PERSONAS REGISTRADAS
 		boolean exito = PersistenciaBasica.guardarPersonas(DatosSistema.obtenerPersonas());
 
 		if (exito)
@@ -155,6 +160,7 @@ public class MenuPersistencia
 
 	private static void guardarSucursales()
 	{
+			// GUARDA EL CATALOGO DE SUCURSALES ACTUAL
 		boolean exito = PersistenciaBasica.guardarSucursales(DatosSistema.obtenerSucursales());
 
 		if (exito)
@@ -174,6 +180,7 @@ public class MenuPersistencia
 
 	private static void guardarSesiones()
 	{
+			// ALMACENA LAS SESIONES DE ENTRENAMIENTO GENERADAS
 		boolean exito = PersistenciaBasica.guardarSesiones(DatosSistema.obtenerSesiones());
 
 		if (exito)
@@ -193,6 +200,7 @@ public class MenuPersistencia
 
 	private static void verEstadoArchivos()
 	{
+			// INSPECCIONA LOS ARCHIVOS Y MUESTRA SUS ESTADOS Y TAMANOS
 		java.io.File carpeta = new java.io.File("data");
 		java.io.File archivoPersonas = new java.io.File("data/personas.txt");
 		java.io.File archivoSucursales = new java.io.File("data/sucursales.txt");

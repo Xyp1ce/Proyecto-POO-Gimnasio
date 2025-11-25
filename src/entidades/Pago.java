@@ -10,35 +10,38 @@ public class Pago implements Serializable, ConCosto, Reportable
 	private long idPago;
 	private long idCliente;
 	private float monto;
-	private String fechaPago; // Formato: "dd/MM/yyyy"
-	private String metodoPago; // "Efectivo", "Tarjeta", "Transferencia"
+	private String fechaPago; // FORMATO DD/MM/YYYY
+	private String metodoPago; // POSIBLES VALORES EFECTIVO TARJETA TRANSFERENCIA
 	private String concepto;
 	private String referencia;
 
 	// CONSTRUCTORES
 	public Pago()
 	{
+		// PREPARAR OBJETO CON VALORES POR DEFECTO PARA INICIALIZACIONES AUTOMATICAS
 		this.idPago = generarIdPago();
 		this.fechaPago = obtenerFechaActual();
 		this.metodoPago = "Efectivo";
-		this.concepto = "Pago de membresía";
+		this.concepto = "Pago de membresia";
 		this.monto = 0.0f;
 		this.referencia = "";
 	}
 
 	public Pago(long idCliente, float monto, String metodoPago)
 	{
+		// CONSTRUYE UN PAGO TIPICO CON CLIENTE MONTO Y METODO DEFINIDOS
 		this.idPago = generarIdPago();
 		this.idCliente = idCliente;
 		this.monto = monto;
 		this.fechaPago = obtenerFechaActual();
 		this.metodoPago = metodoPago;
-		this.concepto = "Pago de membresía";
+		this.concepto = "Pago de membresia";
 		this.referencia = generarReferencia();
 	}
 
 	public Pago(long idCliente, float monto, String metodoPago, String concepto)
 	{
+		// PERMITE PERSONALIZAR EL CONCEPTO SIN DUPLICAR LA LOGICA BASE
 		this.idPago = generarIdPago();
 		this.idCliente = idCliente;
 		this.monto = monto;
@@ -123,11 +126,13 @@ public class Pago implements Serializable, ConCosto, Reportable
 
 	public boolean validarMonto()
 	{
+		// IMPIDE MONTOS NEGATIVOS O CERO QUE PROVOCARIAN REPORTES INCORRECTOS
 		return monto > 0;
 	}
 
 	public boolean validarMetodoPago()
 	{
+		// ACEPTA SOLO LOS METODOS SOPORTADOS PARA EVITAR INCONSISTENCIAS
 		if (metodoPago == null || metodoPago.trim().isEmpty())
 			return false;
 
@@ -141,6 +146,7 @@ public class Pago implements Serializable, ConCosto, Reportable
 
 	public boolean validarPago()
 	{
+		// AGRUPA TODAS LAS VALIDACIONES PARA UN USO MAS SENCILLO EN CAPAS SUPERIORES
 		return validarMonto() &&
 				validarMetodoPago() &&
 				idCliente > 0 &&
@@ -151,16 +157,19 @@ public class Pago implements Serializable, ConCosto, Reportable
 
 	public float calcularIVA()
 	{
+		// CALCULA IMPUESTO GENERAL PARA MOSTRARLO POR SEPARADO EN RECIBOS
 		return monto * 0.16f;
 	}
 
 	public float obtenerMontoConIVA()
 	{
+		// SUMA SUBTOTAL MAS IVA PARA REFLEJAR MONTO FINAL COBRADO
 		return monto + calcularIVA();
 	}
 
 	public boolean esReciente(int dias)
 	{
+		// VERIFICA SI EL PAGO SE ENCUENTRA DENTRO DE UN UMBRAL DE DIAS
 		String fechaActual = obtenerFechaActual();
 		int diasTranscurridos = calcularDiasEntre(fechaPago, fechaActual);
 		return diasTranscurridos <= dias;
@@ -170,20 +179,23 @@ public class Pago implements Serializable, ConCosto, Reportable
 
 	private long generarIdPago()
 	{
+		// UTILIZA NUMEROS ALEATORIOS EN UN RANGO PARA REDUCIR COLISIONES EN MEMORIA
 		return (long) (Math.random() * 9000000L) + 1000000L;
 	}
 
 	private String obtenerFechaActual()
 	{
+		// ENTREGA FECHA EN FORMATO CONSISTENTE CON LOS ARCHIVOS DE TEXTO
 		java.util.Calendar cal = java.util.Calendar.getInstance();
 		int dia = cal.get(java.util.Calendar.DAY_OF_MONTH);
-		int mes = cal.get(java.util.Calendar.MONTH) + 1; // Enero es 0
+		int mes = cal.get(java.util.Calendar.MONTH) + 1; // ENERO ES 0
 		int anio = cal.get(java.util.Calendar.YEAR);
 		return String.format("%02d/%02d/%04d", dia, mes, anio);
 	}
 
 	private String generarReferencia()
 	{
+		// COMBINA FECHA Y NUMERO ALEATORIO PARA TENER REFERENCIAS UNICAS
 		java.util.Calendar cal = java.util.Calendar.getInstance();
 		int dia = cal.get(java.util.Calendar.DAY_OF_MONTH);
 		int mes = cal.get(java.util.Calendar.MONTH) + 1;
@@ -196,6 +208,7 @@ public class Pago implements Serializable, ConCosto, Reportable
 
 	private int calcularDiasEntre(String fecha1, String fecha2)
 	{
+		// APLICA CALCULO SIMPLE SIN DEPENDER DE LIBRERIAS EXTERNAS
 		String[] partes1 = fecha1.split("/");
 		String[] partes2 = fecha2.split("/");
 
@@ -210,7 +223,7 @@ public class Pago implements Serializable, ConCosto, Reportable
 		int mes2 = Integer.parseInt(partes2[1]);
 		int anio2 = Integer.parseInt(partes2[2]);
 
-		// Cálculo aproximado
+		// CALCULO APROXIMADO BAJO SUPUESTO DE 30 DIAS POR MES
 		int diasAnios = (anio2 - anio1) * 365;
 		int diasMeses = (mes2 - mes1) * 30;
 		int diasDias = (dia2 - dia1);
@@ -223,6 +236,7 @@ public class Pago implements Serializable, ConCosto, Reportable
 	@Override
 	public String toString()
 	{
+		// PROPORCIONA RESUMEN COMPACTO PARA LOGS Y DEPURACION
 		return "Pago{" +
 				"id=" + idPago +
 				", cliente=" + idCliente +
@@ -236,7 +250,7 @@ public class Pago implements Serializable, ConCosto, Reportable
 
 	public String generarRecibo()
 	{
-
+		// CONSTRUYE RECIBO EN TEXTO PLANO PARA IMPRESION O ENVIO DIGITAL
 		return "\n========== RECIBO DE PAGO ==========\n" +
 				"Referencia: " + referencia + "\n" +
 				"Fecha: " + fechaPago + "\n" +
@@ -256,12 +270,14 @@ public class Pago implements Serializable, ConCosto, Reportable
 	@Override
 	public float obtenerCosto()
 	{
+		// PERMITE UTILIZAR EL PAGO EN CALCULOS GENERICOS DE COSTO
 		return monto;
 	}
 
 	@Override
 	public String generarReporte()
 	{
+		// COMPILA INFORMACION COMPLETA PARA REPORTES Y EXPORTES
 		return "=== REPORTE DE PAGO ===\n" +
 				"ID Pago: " + idPago + "\n" +
 				"Cliente: " + idCliente + "\n" +
