@@ -140,8 +140,8 @@ public class MenuPersistencia
 
 	private static void guardarPersonas()
 	{
-			// PERSISTE UNICAMENTE LA LISTA DE PERSONAS REGISTRADAS
-		boolean exito = PersistenciaBasica.guardarPersonas(DatosSistema.obtenerPersonas());
+		// PERSISTE UNICAMENTE LA LISTA DE PERSONAS REGISTRADAS
+		boolean exito = PersistenciaBasica.guardarPersonas(Gimnasio.obtenerSucursales());
 
 		if (exito)
 		{
@@ -160,8 +160,8 @@ public class MenuPersistencia
 
 	private static void guardarSucursales()
 	{
-			// GUARDA EL CATALOGO DE SUCURSALES ACTUAL
-		boolean exito = PersistenciaBasica.guardarSucursales(DatosSistema.obtenerSucursales());
+		// GUARDA EL CATALOGO DE SUCURSALES ACTUAL
+		boolean exito = PersistenciaBasica.guardarSucursales(Gimnasio.obtenerSucursales());
 
 		if (exito)
 		{

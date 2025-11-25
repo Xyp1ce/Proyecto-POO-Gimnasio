@@ -3,7 +3,7 @@ package control;
 public class Autoguardado extends Thread
 {
 	// DEFINIR RITMO DE GUARDADO PERIODICO
-	private static final long INTERVALO_MS = 40000L;
+	private static long INTERVALO_MS = 40000L;
 	// CONTROLAR SI EL HILO CONTINUA TRABAJANDO
 	private volatile boolean ejecutando = true;
 
@@ -32,11 +32,12 @@ public class Autoguardado extends Thread
 	{
 		// REPLICAR LAS SUCURSALES ACTUALES EN EL CONTENEDOR GLOBAL
 		DatosSistema.definirSucursales(Gimnasio.obtenerSucursales());
-		// GUARDAR TODO EL ESTADO DEL SISTEMA EN DISCO
+		// GUARDAR TODO EL ESTADO DEL SISTEMA EN ALMACENAMIENTO
 		boolean exito = PersistenciaBasica.guardarTodo();
+		System.out.println("Autoguardado del sistema");
 
 		if (!exito)
-			// ALERTAR SOBRE UN GUARDADO FALLIDO
+			// MENSAJE DE ERROR SOBRE UN GUARDADO FALLIDO
 			System.err.println("AutoGuardadoThread: No se pudieron guardar los datos.");
 	}
 
