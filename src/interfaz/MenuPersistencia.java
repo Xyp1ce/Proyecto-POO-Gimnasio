@@ -83,7 +83,7 @@ public class MenuPersistencia
 		if (confirmacion != JOptionPane.YES_OPTION)
 			return;
 
-		boolean exito = PersistenciaBasica.guardarTodo();
+		boolean exito = Persistencia.guardarTodo();
 
 		if (exito)
 		{
@@ -117,7 +117,7 @@ public class MenuPersistencia
 		if (confirmacion != JOptionPane.YES_OPTION)
 			return;
 
-		boolean exito = PersistenciaBasica.cargarTodo();
+		boolean exito = Persistencia.cargarTodo();
 
 		if (exito)
 		{
@@ -140,8 +140,8 @@ public class MenuPersistencia
 
 	private static void guardarPersonas()
 	{
-			// PERSISTE UNICAMENTE LA LISTA DE PERSONAS REGISTRADAS
-		boolean exito = PersistenciaBasica.guardarPersonas(DatosSistema.obtenerPersonas());
+		// PERSISTE UNICAMENTE LA LISTA DE PERSONAS REGISTRADAS
+		boolean exito = Persistencia.guardarPersonas(Gimnasio.obtenerSucursales());
 
 		if (exito)
 		{
@@ -160,8 +160,8 @@ public class MenuPersistencia
 
 	private static void guardarSucursales()
 	{
-			// GUARDA EL CATALOGO DE SUCURSALES ACTUAL
-		boolean exito = PersistenciaBasica.guardarSucursales(DatosSistema.obtenerSucursales());
+		// GUARDA EL CATALOGO DE SUCURSALES ACTUAL
+		boolean exito = Persistencia.guardarSucursales(Gimnasio.obtenerSucursales());
 
 		if (exito)
 		{
@@ -181,7 +181,7 @@ public class MenuPersistencia
 	private static void guardarSesiones()
 	{
 			// ALMACENA LAS SESIONES DE ENTRENAMIENTO GENERADAS
-		boolean exito = PersistenciaBasica.guardarSesiones(DatosSistema.obtenerSesiones());
+		boolean exito = Persistencia.guardarSesiones(DatosSistema.obtenerSesiones());
 
 		if (exito)
 		{

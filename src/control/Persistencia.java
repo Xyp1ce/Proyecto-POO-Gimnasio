@@ -2,17 +2,20 @@ package control;
 
 import entidades.*;
 import java.io.*;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Clase que centraliza la persistencia en archivos TXT.
  * Formato: campos separados por | (pipe)
  * Archivos: data/personas.txt, data/sucursales.txt, data/sesiones.txt
  */
-public class PersistenciaBasica
+public class Persistencia
 {
 	// CENTRALIZAR LA CONFIGURACION DE ARCHIVOS DE TEXTO
 	// RUTAS DE ARCHIVOS
-	private static final String CARPETA_DATA = "data";
+	private static final String CARPETA_DATA = resolverCarpetaData();
 	private static final String ARCHIVO_PERSONAS = CARPETA_DATA + "/personas.txt";
 	private static final String ARCHIVO_SUCURSALES = CARPETA_DATA + "/sucursales.txt";
 	private static final String ARCHIVO_SESIONES = CARPETA_DATA + "/sesiones.txt";
@@ -56,60 +59,53 @@ public class PersistenciaBasica
 
 	/**
 	 * Guarda todas las personas en el archivo.
-	 * Formato: CLIENTE|id|nombre|documento|telefono
-	 *          EMPLEADO|id|ROL|nombre|documento|telefono
+	 * Formato nuevo: CLIENTE|sucursalId|<payloadBase64>
+	 *                EMPLEADO|sucursalId|<payloadBase64>
 	 */
-	public static synchronized boolean guardarPersonas(Persona[] personas)
+	public static synchronized boolean guardarPersonas(Sucursal[] sucursales)
 	{
-		// IMPEDIR OPERAR CON ARREGLOS NULOS
-		if (personas == null)
-			return false;
+		if (sucursales == null)
+			sucursales = new Sucursal[0];
 
-		BufferedWriter writer = null;
-
-		try
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARCHIVO_PERSONAS)))
 		{
-			// SOBREESCRIBIR EL ARCHIVO COMPLETO CON EL CONTENIDO ACTUAL
-			writer = new BufferedWriter(new FileWriter(ARCHIVO_PERSONAS));
-
-			for (Persona persona : personas)
+			for (Sucursal sucursal : sucursales)
 			{
-				if (persona == null)
+				if (sucursal == null)
 					continue;
 
-				if (persona instanceof Cliente)
+				int sucursalId = sucursal.obtenerNumeroSucursal();
+
+				Cliente[] clientes = sucursal.obtenerClientes();
+				if (clientes != null)
 				{
-					// FORMATEAR LOS CAMPOS DEL CLIENTE CON EL SEPARADOR DEFINIDO
-					Cliente cliente = (Cliente) persona;
-					String linea = "CLIENTE" + SEPARADOR +
-							cliente.obtenerIdentificador() + SEPARADOR +
-							cliente.obtenerNombre() + SEPARADOR +
-							cliente.obtenerDocumento() + SEPARADOR +
-							cliente.obtenerTelefono();
-					writer.write(linea);
-					writer.newLine();
+					for (Cliente cliente : clientes)
+					{
+						if (cliente == null)
+							continue;
+
+						String linea = "CLIENTE" + SEPARADOR +
+								sucursalId + SEPARADOR +
+								serializarObjeto(cliente);
+						writer.write(linea);
+						writer.newLine();
+					}
 				}
-				else if (persona instanceof Empleado)
+
+				Empleado[] empleados = sucursal.obtenerEmpleados();
+				if (empleados != null)
 				{
-					// IDENTIFICAR LA SUBCLASE PARA CONSERVAR EL ROL ORIGINAL
-					Empleado empleado = (Empleado) persona;
-					String rol = "EMPLEADO";
+					for (Empleado empleado : empleados)
+					{
+						if (empleado == null)
+							continue;
 
-					if (empleado instanceof Entrenador)
-						rol = "ENTRENADOR";
-					else if (empleado instanceof Limpieza)
-						rol = "LIMPIEZA";
-					else if (empleado instanceof ServicioAlCliente)
-						rol = "SERVICIO_AL_CLIENTE";
-
-					String linea = "EMPLEADO" + SEPARADOR +
-							empleado.obtenerIdentificador() + SEPARADOR +
-							rol + SEPARADOR +
-							empleado.obtenerNombre() + SEPARADOR +
-							empleado.obtenerDocumento() + SEPARADOR +
-							empleado.obtenerTelefono();
-					writer.write(linea);
-					writer.newLine();
+						String linea = "EMPLEADO" + SEPARADOR +
+								sucursalId + SEPARADOR +
+								serializarObjeto(empleado);
+						writer.write(linea);
+						writer.newLine();
+					}
 				}
 			}
 
@@ -122,22 +118,10 @@ public class PersistenciaBasica
 			e.printStackTrace();
 			return false;
 		}
-		finally
-		{
-			try
-			{
-				if (writer != null)
-					writer.close();
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
 	}
 
 	/**
-	 * Guarda todas las sucursales en el archivo.
+	 * Guarda todas las sucursales en el archivo data.
 	 * Formato: SUCURSAL|id|nombre|ubicacion|horario|servicios|cuota
 	 */
 	public static synchronized boolean guardarSucursales(Sucursal[] sucursales)
@@ -194,7 +178,7 @@ public class PersistenciaBasica
 	}
 
 	/**
-	 * Guarda todas las sesiones en el archivo.
+	 * GUARDAR TODAS LAS SESIONES EN EL ARCHIVO.
 	 * Formato: SESION|id|clienteId|entrenadorId|fecha|duracionMin|descripcion
 	 */
 	public static synchronized boolean guardarSesiones(SesionEntrenamiento[] sesiones)
@@ -252,15 +236,14 @@ public class PersistenciaBasica
 
 	// ==================== CARGAR ====================
 
-	/**
-	 * Carga todas las personas desde el archivo.
-	 */
-	public static synchronized Persona[] cargarPersonas()
+	// CARGAR TODAS LAS PERSONAS DESDE EL ARCHIVO
+	public static synchronized Persona[] cargarPersonas(Sucursal[] sucursales)
 	{
 		// PREPARAR UN ARREGLO AMPLIO PARA RECIBIR LOS REGISTROS
 		Persona[] personas = new Persona[500];
 		int indice = 0;
 		BufferedReader reader = null;
+		Map<Integer, Sucursal> mapaSucursales = indexarSucursales(sucursales);
 
 		try
 		{
@@ -275,54 +258,19 @@ public class PersistenciaBasica
 				// DIVIDIR LA LINEA SEGUN EL SEPARADOR PARA IDENTIFICAR CAMPOS
 				String[] partes = linea.split("\\" + SEPARADOR);
 
-				if (partes.length < 5)
+				if (partes.length >= 3)
+				{
+					Persona reconstruida = reconstruirPersonaNueva(partes, mapaSucursales);
+					if (reconstruida != null && indice < personas.length)
+						personas[indice++] = reconstruida;
 					continue;
-
-				String tipo = partes[0];
-
-				if (tipo.equals("CLIENTE"))
-				{
-					// CLIENTE|id|nombre|documento|telefono
-					long id = Long.parseLong(partes[1]);
-					String nombre = partes[2];
-					String documento = partes[3];
-					long telefono = Long.parseLong(partes[4]);
-
-					Cliente cliente = new Cliente(nombre, documento, "Regular", telefono);
-					cliente.definirIdentificador(id);
-					personas[indice++] = cliente;
 				}
-				else if (tipo.equals("EMPLEADO") && partes.length >= 6)
+
+				if (partes.length >= 5)
 				{
-					// EMPLEADO|id|ROL|nombre|documento|telefono
-					long id = Long.parseLong(partes[1]);
-					String rol = partes[2];
-					String nombre = partes[3];
-					String documento = partes[4];
-					long telefono = Long.parseLong(partes[5]);
-
-					Empleado empleado = null;
-
-					if (rol.equals("ENTRENADOR"))
-					{
-						empleado = new Entrenador("Entrenador", nombre, telefono, "", "", "", "");
-					}
-					else if (rol.equals("LIMPIEZA"))
-					{
-						empleado = new Limpieza("Limpieza", nombre, telefono, "", "");
-					}
-					else if (rol.equals("SERVICIO_AL_CLIENTE"))
-					{
-						empleado = new ServicioAlCliente("Servicio", nombre, telefono, "", "", 0);
-					}
-
-					if (empleado != null)
-					{
-						// RESTAURAR IDENTIFICADOR Y DOCUMENTO ANTES DE GUARDAR
-						empleado.definirIdentificador(id);
-						empleado.definirDocumento(documento);
-						personas[indice++] = empleado;
-					}
+					Persona legacy = reconstruirPersonaLegacy(partes);
+					if (legacy != null && indice < personas.length)
+						personas[indice++] = legacy;
 				}
 			}
 
@@ -354,9 +302,7 @@ public class PersistenciaBasica
 		}
 	}
 
-	/**
-	 * Carga todas las sucursales desde el archivo.
-	 */
+	// CARGAR TODAS LAS SUCURSALES DESDE EL ARCHIVO
 	public static synchronized Sucursal[] cargarSucursales()
 	{
 		// UTILIZAR UN ARREGLO TEMPORAL Y LUEGO AJUSTAR SU TAMANO
@@ -427,9 +373,7 @@ public class PersistenciaBasica
 		}
 	}
 
-	/**
-	 * Carga todas las sesiones desde el archivo.
-	 */
+	// CARGAR TODAS LAS SESIONES DESDE EL ARCHIVO
 	public static synchronized SesionEntrenamiento[] cargarSesiones()
 	{
 		// RESERVAR UN ARREGLO GRANDE PARA SESIONES Y POBLARLO DESDE ARCHIVO
@@ -497,33 +441,32 @@ public class PersistenciaBasica
 
 	// ==================== METODOS DE UTILIDAD ====================
 
-	/**
-	 * Guarda todos los datos del sistema.
-	 */
+	// GUARDAR TODOS LOS DATOS DEL SISTEMA
 	public static synchronized boolean guardarTodo()
 	{
-		// SINCRONIZAR TODOS LOS ARREGLOS EN UNA SOLA OPERACION ATOMICA
-		boolean exitoPersonas = guardarPersonas(DatosSistema.obtenerPersonas());
-		boolean exitoSucursales = guardarSucursales(DatosSistema.obtenerSucursales());
+		Sucursal[] sucursales = Gimnasio.obtenerSucursales();
+		if (sucursales == null)
+			sucursales = new Sucursal[0];
+
+		boolean exitoPersonas = guardarPersonas(sucursales);
+		boolean exitoSucursales = guardarSucursales(sucursales);
 		boolean exitoSesiones = guardarSesiones(DatosSistema.obtenerSesiones());
 
 		return exitoPersonas && exitoSucursales && exitoSesiones;
 	}
 
-	/**
-	 * Carga todos los datos del sistema.
-	 */
+	//CARGAR TODOS LOS ARCHIVOS DEL SISTEMA
 	public static synchronized boolean cargarTodo()
 	{
 		try
 		{
-			// CARGAR CADA ARREGLO Y LUEGO REGISTRARLO EN DATOS DEL SISTEMA
-			Persona[] personas = cargarPersonas();
 			Sucursal[] sucursales = cargarSucursales();
+			DatosSistema.definirSucursales(sucursales);
+
+			Persona[] personas = cargarPersonas(sucursales);
 			SesionEntrenamiento[] sesiones = cargarSesiones();
 
 			DatosSistema.definirPersonas(personas);
-			DatosSistema.definirSucursales(sucursales);
 			DatosSistema.definirSesiones(sesiones);
 
 			return true;
@@ -534,5 +477,149 @@ public class PersistenciaBasica
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	private static String serializarObjeto(Serializable objeto) throws IOException
+	{
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		try (ObjectOutputStream oos = new ObjectOutputStream(baos))
+		{
+			oos.writeObject(objeto);
+		}
+		return Base64.getEncoder().encodeToString(baos.toByteArray());
+	}
+
+	private static <T> T deserializarObjeto(String base64, Class<T> tipo) throws IOException, ClassNotFoundException
+	{
+		byte[] datos = Base64.getDecoder().decode(base64);
+		try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(datos)))
+		{
+			Object objeto = ois.readObject();
+			return tipo.cast(objeto);
+		}
+	}
+
+	private static Map<Integer, Sucursal> indexarSucursales(Sucursal[] sucursales)
+	{
+		Map<Integer, Sucursal> mapa = new HashMap<>();
+		if (sucursales == null)
+			return mapa;
+
+		for (Sucursal sucursal : sucursales)
+		{
+			if (sucursal != null)
+				mapa.put(sucursal.obtenerNumeroSucursal(), sucursal);
+		}
+		return mapa;
+	}
+
+	private static Persona reconstruirPersonaNueva(String[] partes, Map<Integer, Sucursal> mapaSucursales)
+	{
+		if (partes.length < 3 || partes[0] == null)
+			return null;
+
+		try
+		{
+			String tipo = partes[0];
+			int sucursalId = Integer.parseInt(partes[1]);
+			String payload = partes[2];
+
+			if ("CLIENTE".equals(tipo))
+			{
+				Cliente cliente = deserializarObjeto(payload, Cliente.class);
+				asignarClienteASucursal(mapaSucursales.get(sucursalId), cliente);
+				return cliente;
+			}
+			else if ("EMPLEADO".equals(tipo))
+			{
+				Empleado empleado = deserializarObjeto(payload, Empleado.class);
+				asignarEmpleadoASucursal(mapaSucursales.get(sucursalId), empleado);
+				return empleado;
+			}
+		}
+		catch (NumberFormatException | IOException | ClassNotFoundException ex)
+		{
+			System.err.println("Registro de persona inválido: " + String.join(SEPARADOR, partes));
+			ex.printStackTrace();
+		}
+		return null;
+	}
+
+	private static void asignarClienteASucursal(Sucursal sucursal, Cliente cliente)
+	{
+		if (sucursal == null || cliente == null)
+			return;
+
+		if (!sucursal.agregarCliente(cliente))
+			System.err.println("No se pudo reasignar cliente " + cliente.obtenerIdentificador());
+	}
+
+	private static void asignarEmpleadoASucursal(Sucursal sucursal, Empleado empleado)
+	{
+		if (sucursal == null || empleado == null)
+			return;
+
+		if (!sucursal.registrarEmpleado(empleado))
+			System.err.println("No se pudo reasignar empleado " + empleado.obtenerIdentificador());
+	}
+
+	private static Persona reconstruirPersonaLegacy(String[] partes)
+	{
+		try
+		{
+			String tipo = partes[0];
+			if ("CLIENTE".equals(tipo) && partes.length >= 5)
+			{
+				long id = Long.parseLong(partes[1]);
+				String nombre = partes[2];
+				String documento = partes[3];
+				long telefono = Long.parseLong(partes[4]);
+				Cliente cliente = new Cliente(nombre, documento, "Regular", telefono);
+				cliente.definirIdentificador(id);
+				return cliente;
+			}
+
+			if ("EMPLEADO".equals(tipo) && partes.length >= 6)
+			{
+				long id = Long.parseLong(partes[1]);
+				String rol = partes[2];
+				String nombre = partes[3];
+				String documento = partes[4];
+				long telefono = Long.parseLong(partes[5]);
+
+				Empleado empleado = null;
+				if ("ENTRENADOR".equals(rol))
+					empleado = new Entrenador("Entrenador", nombre, telefono, "", "", "", "");
+				else if ("LIMPIEZA".equals(rol))
+					empleado = new Limpieza("Limpieza", nombre, telefono, "", "");
+				else if ("SERVICIO_AL_CLIENTE".equals(rol))
+					empleado = new ServicioAlCliente("Servicio", nombre, telefono, "", "", 0);
+
+				if (empleado != null)
+				{
+					empleado.definirIdentificador(id);
+					empleado.definirDocumento(documento);
+					return empleado;
+				}
+			}
+		}
+		catch (NumberFormatException ex)
+		{
+			System.err.println("Error de formato legacy en personas.txt");
+			ex.printStackTrace();
+		}
+		return null;
+	}
+
+	private static String resolverCarpetaData()
+	{
+		File cwd = new File(System.getProperty("user.dir"));
+		if ("bin".equalsIgnoreCase(cwd.getName()) && cwd.getParentFile() != null)
+		{
+			// Cuando la app se ejecuta desde bin/, redirigir a la carpeta de nivel superior
+			return new File(cwd.getParentFile(), "data").getPath();
+		}
+
+		return new File(cwd, "data").getPath();
 	}
 }

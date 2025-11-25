@@ -94,15 +94,13 @@ public class ServicioAlCliente extends Empleado
 	}
 
 	@Override
-	public String generarDescripcion()
+	protected String describirCamposEspecificos()
 	{
-		// RESUMIR IDIOMA Y ESTADISTICAS DE ATENCION
-		return "ServicioAlCliente{" +
-				"identificador=" + obtenerIdentificador() +
-				", nombre='" + obtenerNombre() + '\'' +
-				", idiomaServicio='" + idiomaServicio + '\'' +
-				", clientesAtendidos=" + clientesAtendidos +
-				", comision=" + comision +
-				'}';
+		String camposBase = super.describirCamposEspecificos();
+		String descripcion = (camposBase == null || camposBase.isEmpty()) ? "" : camposBase + ", ";
+		descripcion += "idiomaServicio='" + textoSeguro(idiomaServicio) + '\'';
+		descripcion += ", clientesAtendidos=" + clientesAtendidos;
+		descripcion += ", comision=" + comision;
+		return descripcion;
 	}
 }

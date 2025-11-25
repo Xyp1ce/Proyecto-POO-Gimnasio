@@ -95,17 +95,11 @@ public abstract class Empleado extends Persona
 	public abstract void registrarSalida();
 
 	@Override
-	public String generarDescripcion()
+	protected String describirCamposEspecificos()
 	{
-		// CONSTRUIR UNA CADENA QUE RESUME LOS ATRIBUTOS CLAVE
-		return "Empleado{" +
-				"identificador=" + obtenerIdentificador() +
-				", tipoEmpleado='" + tipoEmpleado + '\'' +
-				", tareasProgramadas='" + tareasProgramadas + '\'' +
-				", nombre='" + obtenerNombre() + '\'' +
-				", telefono=" + obtenerTelefono() +
-				", direccion='" + direccion + '\'' +
-				", salario=" + salario +
-				'}';
+		return "tipoEmpleado='" + textoSeguro(tipoEmpleado) + '\'' +
+				", tareasProgramadas='" + textoSeguro(tareasProgramadas) + '\'' +
+				", direccion='" + textoSeguro(direccion) + '\'' +
+				", salario=" + salario;
 	}
 }
