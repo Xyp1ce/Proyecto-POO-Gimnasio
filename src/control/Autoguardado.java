@@ -9,9 +9,10 @@ public class Autoguardado extends Thread
 
 	public Autoguardado()
 	{
-		// IDENTIFICAR EL HILO PARA SEGUIMIENTO EN LOGS
-		setName("AutoGuardadoThread");
 		// EVITAR BLOQUEAR EL CIERRE DEL PROGRAMA
+		// ESTABLECER ESTE PARAMETRO IMPITE QUE SE CIERRE LA EJECUCION EN JVM SI 
+		// SE INTERRUMPE EL HILO
+		// NO ES NECESARIO, PERO POR SI ACASO
 		setDaemon(true);
 	}
 
@@ -50,7 +51,7 @@ public class Autoguardado extends Thread
 		}
 		catch (InterruptedException ex)
 		{
-			// FINALIZAR PAUSA CUANDO DETENER INTERRUMPE EL SUENO
+			// FINALIZAR PAUSA CUANDO DETENER INTERRUMPE EL SLEEP
 		}
 	}
 
@@ -58,7 +59,7 @@ public class Autoguardado extends Thread
 	{
 		// CORTAR EL BUCLE PRINCIPAL
 		ejecutando = false;
-		// INTERRUMPIR EL SUENO ACTUAL PARA CERRAR DE INMEDIATO
+		// INTERRUMPIR EL SLEEP ACTUAL PARA CERRAR DE INMEDIATO
 		interrupt();
 	}
 }

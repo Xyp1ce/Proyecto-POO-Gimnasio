@@ -2,19 +2,18 @@ package control;
 
 import entidades.*;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Clase que centraliza la persistencia en archivos TXT.
- * Formato: campos separados por | (pipe)
- * Archivos: data/personas.txt, data/sucursales.txt, data/sesiones.txt
- */
+//CLASE DONDE SE MANEJAN TODOS LOS METODOS PARA LA PERSISTENCIA
 public class Persistencia
 {
-	// CENTRALIZAR LA CONFIGURACION DE ARCHIVOS DE TEXTO
-	// RUTAS DE ARCHIVOS
+	// CENTRALIZAR LA CONFIGURACION DE ARCHIVOS DE TEXTO PARA MAS FACIL
+	// RUTAS DE ARCHIVOS EN CONSTANTES NO MODIFICABLES
 	private static final String CARPETA_DATA = resolverCarpetaData();
 	private static final String ARCHIVO_PERSONAS = CARPETA_DATA + "/personas.txt";
 	private static final String ARCHIVO_SUCURSALES = CARPETA_DATA + "/sucursales.txt";
@@ -57,17 +56,17 @@ public class Persistencia
 
 	// ==================== GUARDAR ====================
 
-	/**
-	 * Guarda todas las personas en el archivo.
-	 * Formato nuevo: CLIENTE|sucursalId|<payloadBase64>
-	 *                EMPLEADO|sucursalId|<payloadBase64>
-	 */
+	//GUARDAR A TODAS LAS PERSONAS EN EL ARCHIVO
+	/* Formato nuevo: CLIENTE|sucursalId|<payloadBase64>
+	 *                EMPLEADO|sucursalId|<payloadBase64> */
 	public static synchronized boolean guardarPersonas(Sucursal[] sucursales)
 	{
 		if (sucursales == null)
 			sucursales = new Sucursal[0];
 
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARCHIVO_PERSONAS)))
+		StringBuilder contenido = new StringBuilder(1024);
+
+		try
 		{
 			for (Sucursal sucursal : sucursales)
 			{
@@ -87,8 +86,7 @@ public class Persistencia
 						String linea = "CLIENTE" + SEPARADOR +
 								sucursalId + SEPARADOR +
 								serializarObjeto(cliente);
-						writer.write(linea);
-						writer.newLine();
+						contenido.append(linea).append(System.lineSeparator());
 					}
 				}
 
@@ -103,13 +101,12 @@ public class Persistencia
 						String linea = "EMPLEADO" + SEPARADOR +
 								sucursalId + SEPARADOR +
 								serializarObjeto(empleado);
-						writer.write(linea);
-						writer.newLine();
+						contenido.append(linea).append(System.lineSeparator());
 					}
 				}
 			}
 
-			writer.flush();
+			escribirArchivo(ARCHIVO_PERSONAS, contenido.toString());
 			return true;
 		}
 		catch (IOException e)
@@ -130,12 +127,10 @@ public class Persistencia
 		if (sucursales == null)
 			return false;
 
-		BufferedWriter writer = null;
+		StringBuilder contenido = new StringBuilder(512);
 
 		try
 		{
-			writer = new BufferedWriter(new FileWriter(ARCHIVO_SUCURSALES));
-
 			for (Sucursal sucursal : sucursales)
 			{
 				if (sucursal == null)
@@ -150,11 +145,10 @@ public class Persistencia
 						sucursal.obtenerServiciosEspeciales() + SEPARADOR +
 						sucursal.obtenerCuotaMensual();
 
-				writer.write(linea);
-				writer.newLine();
+				contenido.append(linea).append(System.lineSeparator());
 			}
 
-			writer.flush();
+			escribirArchivo(ARCHIVO_SUCURSALES, contenido.toString());
 			return true;
 		}
 		catch (IOException e)
@@ -162,18 +156,6 @@ public class Persistencia
 			System.err.println("Error al guardar sucursales");
 			e.printStackTrace();
 			return false;
-		}
-		finally
-		{
-			try
-			{
-				if (writer != null)
-					writer.close();
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
 		}
 	}
 
@@ -187,12 +169,10 @@ public class Persistencia
 		if (sesiones == null)
 			return false;
 
-		BufferedWriter writer = null;
+		StringBuilder contenido = new StringBuilder(1024);
 
 		try
 		{
-			writer = new BufferedWriter(new FileWriter(ARCHIVO_SESIONES));
-
 			for (SesionEntrenamiento sesion : sesiones)
 			{
 				if (sesion == null)
@@ -207,11 +187,10 @@ public class Persistencia
 						sesion.obtenerDuracionMinutos() + SEPARADOR +
 						sesion.obtenerDescripcion();
 
-				writer.write(linea);
-				writer.newLine();
+				contenido.append(linea).append(System.lineSeparator());
 			}
 
-			writer.flush();
+			escribirArchivo(ARCHIVO_SESIONES, contenido.toString());
 			return true;
 		}
 		catch (IOException e)
@@ -220,18 +199,11 @@ public class Persistencia
 			e.printStackTrace();
 			return false;
 		}
-		finally
-		{
-			try
-			{
-				if (writer != null)
-					writer.close();
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
+	}
+
+	private static void escribirArchivo(String ruta, String contenido) throws IOException
+	{
+		Files.write(Paths.get(ruta), contenido.getBytes(StandardCharsets.UTF_8));
 	}
 
 	// ==================== CARGAR ====================
