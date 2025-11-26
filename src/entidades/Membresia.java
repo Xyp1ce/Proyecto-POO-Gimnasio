@@ -2,7 +2,7 @@ package entidades;
 
 import java.io.Serializable;
 
-public class Membresia implements Serializable, ConCosto, Reportable
+public class Membresia implements Serializable, Costeable, Reportable
 {
 	// REPRESENTAR LOS PLANES DE MEMBRESIA Y SU ESTADO DE VIGENCIA
 	private static final long serialVersionUID = 1L;

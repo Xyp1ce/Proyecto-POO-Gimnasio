@@ -34,14 +34,14 @@ public class ServicioReportes
 	}
 
 	// CALCULAR COSTO TOTAL DE OBJETOS CONCOSTO USANDO POLIMORFISMO
-	public static float calcularCostoTotal(ConCosto[] objetos)
+	public static float calcularCostoTotal(Costeable[] objetos)
 	{
 		// RETORNAR CERO CUANDO NO HAY ELEMENTOS
 		if (objetos == null || objetos.length == 0)
 			return 0.0f;
 
 		float total = 0.0f;
-		for (ConCosto objeto : objetos)
+		for (Costeable objeto : objetos)
 		{
 			// SUMAR SOLAMENTE LOS OBJETOS VALIDOS
 			if (objeto != null)
@@ -54,7 +54,7 @@ public class ServicioReportes
 	}
 
 	// GENERAR REPORTE DETALLADO DE COSTOS PARA CADA OBJETO CONCOSTO
-	public static String generarReporteCostos(ConCosto[] objetos)
+	public static String generarReporteCostos(Costeable[] objetos)
 	{
 		// VALIDAR QUE EXISTAN COSTOS PARA MOSTRAR
 		if (objetos == null || objetos.length == 0)
@@ -68,7 +68,7 @@ public class ServicioReportes
 		int item = 1;
 		float subtotal = 0.0f;
 
-		for (ConCosto objeto : objetos)
+		for (Costeable objeto : objetos)
 		{
 			// IDENTIFICAR EL TIPO CON REFLEXION PARA HACER EL REPORTE CLARO
 			if (objeto != null)
