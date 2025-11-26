@@ -326,7 +326,7 @@ public class Membresia implements Serializable, ConCosto, Reportable
 	public String resumen()
 	{
 		// ENTREGAR RESUMEN BREVE USADO EN MENUS E INFORMES RAPIDOS
-		String estado = verificarVigencia() ? "✓ Vigente" : "✗ Vencida";
+		String estado = verificarVigencia() ? " Vigente" : "✗ Vencida";
 		return String.format("%s | $%.2f | %s (%d días)",
 				tipo, precio, estado, obtenerDiasRestantes());
 	}

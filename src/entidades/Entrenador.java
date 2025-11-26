@@ -144,7 +144,7 @@ public class Entrenador extends Empleado
 		descripcion += "especialidades=" + formatearArreglo(especialidades);
 		descripcion += ", certificaciones=" + formatearArreglo(certificaciones);
 		descripcion += ", rutinas=" + formatearArreglo(rutinas);
-		descripcion += ", comision=" + comision;
+		descripcion += ", comision=" + comision + "\n";
 		return descripcion;
 	}
 

@@ -196,7 +196,7 @@ public class MenuPrincipal
 				if (confirmacion == JOptionPane.YES_OPTION)
 				{
 					gimnasio.eliminarSucursal(opcSucursal);
-					JOptionPane.showMessageDialog(null, "✓ Sucursal eliminada exitosamente");
+					JOptionPane.showMessageDialog(null, " Sucursal eliminada exitosamente");
 				}
 			}
 			else
