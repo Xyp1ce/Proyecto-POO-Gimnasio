@@ -255,7 +255,7 @@ public class Cliente extends Persona
 
 		resumen.append("Pagos realizados: ").append(totalPagos).append("\n");
 		resumen.append("Total pagado: $").append(String.format("%.2f", calcularTotalPagado())).append("\n");
-		resumen.append("Estado: ").append(estaAlDia() ? "✓ Al día" : "✗ Vencida").append("\n");
+		resumen.append("Estado: ").append(estaAlDia() ? " Al día" : "✗ Vencida").append("\n");
 		resumen.append("=============================\n");
 
 		return resumen.toString();

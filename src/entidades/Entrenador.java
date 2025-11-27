@@ -141,10 +141,10 @@ public class Entrenador extends Empleado
 	{
 		String camposBase = super.describirCamposEspecificos();
 		String descripcion = (camposBase == null || camposBase.isEmpty()) ? "" : camposBase + ", ";
-		descripcion += "especialidades=" + formatearArreglo(especialidades);
-		descripcion += ", certificaciones=" + formatearArreglo(certificaciones);
-		descripcion += ", rutinas=" + formatearArreglo(rutinas);
-		descripcion += ", comision=" + comision;
+		descripcion += "especialidades=" + formatearArreglo(especialidades) + "\n";
+		descripcion += ", certificaciones=" + formatearArreglo(certificaciones) + "\n";
+		descripcion += ", rutinas=" + formatearArreglo(rutinas) + "\n";
+		descripcion += ", comision=" + comision + "\n";
 		return descripcion;
 	}
 

@@ -150,7 +150,7 @@ public class MenuMembresias
 			cliente.asignarMembresia(nuevaMembresia);
 
 			JOptionPane.showMessageDialog(null,
-					"✓ Membresía asignada exitosamente\n\n" +
+					" Membresía asignada exitosamente\n\n" +
 							nuevaMembresia);
 		}
 		catch (NumberFormatException ex)
@@ -165,7 +165,7 @@ public class MenuMembresias
 		try
 		{
 			String idStr = JOptionPane.showInputDialog(null,
-					"Ingrese el ID del cliente:");
+					MenuSucursal.verClientes(sucursal) + "Ingrese el ID del cliente:");
 
 			if (idStr == null)
 				return;
@@ -200,7 +200,7 @@ public class MenuMembresias
 			{
 				cliente.renovarMembresia();
 				JOptionPane.showMessageDialog(null,
-						"✓ Membresía renovada exitosamente\n\n" +
+						" Membresía renovada exitosamente\n\n" +
 								membresia);
 			}
 		}
@@ -216,7 +216,7 @@ public class MenuMembresias
 		try
 		{
 			String idStr = JOptionPane.showInputDialog(null,
-					"Ingrese el ID del cliente:");
+					MenuSucursal.verClientes(sucursal) + "Ingrese el ID del cliente:");
 
 			if (idStr == null)
 				return;
@@ -239,7 +239,7 @@ public class MenuMembresias
 			}
 
 			Membresia membresia = cliente.obtenerMembresia();
-			String estado = membresia.verificarVigencia() ? "✓ VIGENTE" : "✗ VENCIDA";
+			String estado = membresia.verificarVigencia() ? " VIGENTE" : "✗ VENCIDA";
 
 			JOptionPane.showMessageDialog(null,
 					"===== ESTADO DE MEMBRESÍA =====\n" +
@@ -262,7 +262,7 @@ public class MenuMembresias
 		try
 		{
 			String idStr = JOptionPane.showInputDialog(null,
-					"Ingrese el ID del cliente:");
+					MenuSucursal.verClientes(sucursal) + "Ingrese el ID del cliente:");
 
 			if (idStr == null)
 				return;
@@ -315,7 +315,7 @@ public class MenuMembresias
 			if (cliente.realizarPago(nuevoPago))
 			{
 				JOptionPane.showMessageDialog(null,
-						"✓ Pago registrado exitosamente\n\n" +
+						" Pago registrado exitosamente\n\n" +
 								nuevoPago.generarRecibo());
 			}
 			else
@@ -337,7 +337,7 @@ public class MenuMembresias
 		try
 		{
 			String idStr = JOptionPane.showInputDialog(null,
-					"Ingrese el ID del cliente:");
+					MenuSucursal.verClientes(sucursal) + "Ingrese el ID del cliente:");
 
 			if (idStr == null)
 				return;

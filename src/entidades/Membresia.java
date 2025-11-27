@@ -2,7 +2,7 @@ package entidades;
 
 import java.io.Serializable;
 
-public class Membresia implements Serializable, ConCosto, Reportable
+public class Membresia implements Serializable, Costeable, Reportable
 {
 	// REPRESENTAR LOS PLANES DE MEMBRESIA Y SU ESTADO DE VIGENCIA
 	private static final long serialVersionUID = 1L;
@@ -326,7 +326,7 @@ public class Membresia implements Serializable, ConCosto, Reportable
 	public String resumen()
 	{
 		// ENTREGAR RESUMEN BREVE USADO EN MENUS E INFORMES RAPIDOS
-		String estado = verificarVigencia() ? "✓ Vigente" : "✗ Vencida";
+		String estado = verificarVigencia() ? " Vigente" : "✗ Vencida";
 		return String.format("%s | $%.2f | %s (%d días)",
 				tipo, precio, estado, obtenerDiasRestantes());
 	}

@@ -88,7 +88,7 @@ public class MenuPersistencia
 		if (exito)
 		{
 			JOptionPane.showMessageDialog(null,
-					"✓ Datos guardados exitosamente\n\n" +
+					" Datos guardados exitosamente\n\n" +
 							"Archivos actualizados:\n" +
 							"• data/personas.txt\n" +
 							"• data/sucursales.txt\n" +
@@ -122,7 +122,7 @@ public class MenuPersistencia
 		if (exito)
 		{
 			JOptionPane.showMessageDialog(null,
-					"✓ Datos cargados exitosamente\n\n" +
+					" Datos cargados exitosamente\n\n" +
 							"Información cargada:\n" +
 							"• Personas: " + DatosSistema.obtenerTotalPersonas() + "\n" +
 							"• Sucursales: " + DatosSistema.obtenerSucursales().length + "\n" +
@@ -146,7 +146,7 @@ public class MenuPersistencia
 		if (exito)
 		{
 			JOptionPane.showMessageDialog(null,
-					"✓ Personas guardadas exitosamente\n" +
+					" Personas guardadas exitosamente\n" +
 							"Total: " + DatosSistema.obtenerTotalPersonas());
 		}
 		else
@@ -166,7 +166,7 @@ public class MenuPersistencia
 		if (exito)
 		{
 			JOptionPane.showMessageDialog(null,
-					"✓ Sucursales guardadas exitosamente\n" +
+					" Sucursales guardadas exitosamente\n" +
 							"Total: " + DatosSistema.obtenerSucursales().length);
 		}
 		else
@@ -186,7 +186,7 @@ public class MenuPersistencia
 		if (exito)
 		{
 			JOptionPane.showMessageDialog(null,
-					"✓ Sesiones guardadas exitosamente\n" +
+					" Sesiones guardadas exitosamente\n" +
 							"Total: " + DatosSistema.obtenerTotalSesiones());
 		}
 		else
@@ -210,12 +210,12 @@ public class MenuPersistencia
 		estado.append("\tESTADO DE ARCHIVOS\n");
 
 		estado.append("Carpeta data/: ");
-		estado.append(carpeta.exists() ? "✓ Existe" : "✗ No existe").append("\n\n");
+		estado.append(carpeta.exists() ? " Existe" : "✗ No existe").append("\n\n");
 
 		estado.append("personas.txt:\n");
 		if (archivoPersonas.exists())
 		{
-			estado.append("  Estado: ✓ Existe\n");
+			estado.append("  Estado:  Existe\n");
 			estado.append("  Tamaño: ").append(archivoPersonas.length()).append(" bytes\n");
 		}
 		else
@@ -226,7 +226,7 @@ public class MenuPersistencia
 		estado.append("\nsucursales.txt:\n");
 		if (archivoSucursales.exists())
 		{
-			estado.append("  Estado: ✓ Existe\n");
+			estado.append("  Estado:  Existe\n");
 			estado.append("  Tamaño: ").append(archivoSucursales.length()).append(" bytes\n");
 		}
 		else
@@ -237,7 +237,7 @@ public class MenuPersistencia
 		estado.append("\nsesiones.txt:\n");
 		if (archivoSesiones.exists())
 		{
-			estado.append("  Estado: ✓ Existe\n");
+			estado.append("  Estado:  Existe\n");
 			estado.append("  Tamaño: ").append(archivoSesiones.length()).append(" bytes\n");
 		}
 		else

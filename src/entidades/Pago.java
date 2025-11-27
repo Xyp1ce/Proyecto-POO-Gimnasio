@@ -2,7 +2,7 @@ package entidades;
 
 import java.io.Serializable;
 
-public class Pago implements Serializable, ConCosto, Reportable
+public class Pago implements Serializable, Costeable, Reportable
 {
 	private static final long serialVersionUID = 1L;
 
